@@ -1,0 +1,1897 @@
+﻿# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 0.00% complete, ETA 00:10:40
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+66.894 us/op
+# Warmup Iteration   2: 63.759 us/op
+# Warmup Iteration   3: 65.748 us/op
+Iteration   1: 67.644 us/op
+Iteration   2: 64.327 us/op
+Iteration   3: 67.131 us/op
+Iteration   4: 64.201 us/op
+Iteration   5: 67.771 us/op
+
+# Run progress: 1.25% complete, ETA 00:11:04
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+66.274 us/op
+# Warmup Iteration   2: 66.893 us/op
+# Warmup Iteration   3: 62.589 us/op
+Iteration   1: 64.000 us/op
+Iteration   2: 63.629 us/op
+Iteration   3: 63.462 us/op
+Iteration   4: 63.571 us/op
+Iteration   5: 64.185 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  64.992 ±(99.9%) 2.679 us/op [Average]
+  (min, avg, max) = (63.462, 64.992, 67.771), stdev = 1.772
+  CI (99.9%): [62.313, 67.671] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 2.50% complete, ETA 00:10:55
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+87.976 us/op
+# Warmup Iteration   2: 81.372 us/op
+# Warmup Iteration   3: 81.275 us/op
+Iteration   1: 78.338 us/op
+Iteration   2: 80.059 us/op
+Iteration   3: 82.084 us/op
+Iteration   4: 79.157 us/op
+Iteration   5: 83.174 us/op
+
+# Run progress: 3.75% complete, ETA 00:10:48
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+79.767 us/op
+# Warmup Iteration   2: 80.876 us/op
+# Warmup Iteration   3: 80.868 us/op
+Iteration   1: 82.608 us/op
+Iteration   2: 82.401 us/op
+Iteration   3: 77.603 us/op
+Iteration   4: 78.428 us/op
+Iteration   5: 78.361 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  80.221 ±(99.9%) 3.222 us/op [Average]
+  (min, avg, max) = (77.603, 80.221, 83.174), stdev = 2.131
+  CI (99.9%): [76.999, 83.443] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 5.00% complete, ETA 00:10:40
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+20.656 us/op
+# Warmup Iteration   2: 19.951 us/op
+# Warmup Iteration   3: 17.617 us/op
+Iteration   1: 18.502 us/op
+Iteration   2: 18.929 us/op
+Iteration   3: 18.887 us/op
+Iteration   4: 19.141 us/op
+Iteration   5: 22.253 us/op
+
+# Run progress: 6.25% complete, ETA 00:10:31
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+22.101 us/op
+# Warmup Iteration   2: 20.558 us/op
+# Warmup Iteration   3: 17.997 us/op
+Iteration   1: 19.121 us/op
+Iteration   2: 19.291 us/op
+Iteration   3: 19.267 us/op
+Iteration   4: 19.861 us/op
+Iteration   5: 22.324 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  19.758 ±(99.9%) 2.083 us/op [Average]
+  (min, avg, max) = (18.502, 19.758, 22.324), stdev = 1.378
+  CI (99.9%): [17.674, 21.841] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 7.50% complete, ETA 00:10:23
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+23.338 us/op
+# Warmup Iteration   2: 23.709 us/op
+# Warmup Iteration   3: 22.762 us/op
+Iteration   1: 22.139 us/op
+Iteration   2: 22.696 us/op
+Iteration   3: 25.062 us/op
+Iteration   4: 23.380 us/op
+Iteration   5: 23.750 us/op
+
+# Run progress: 8.75% complete, ETA 00:10:14
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+23.208 us/op
+# Warmup Iteration   2: 23.327 us/op
+# Warmup Iteration   3: 25.753 us/op
+Iteration   1: 23.423 us/op
+Iteration   2: 22.573 us/op
+Iteration   3: 22.427 us/op
+Iteration   4: 23.181 us/op
+Iteration   5: 22.853 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  23.148 ±(99.9%) 1.267 us/op [Average]
+  (min, avg, max) = (22.139, 23.148, 25.062), stdev = 0.838
+  CI (99.9%): [21.882, 24.415] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 10.00% complete, ETA 00:10:05
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+23.793 us/op
+# Warmup Iteration   2: 23.310 us/op
+# Warmup Iteration   3: 23.196 us/op
+Iteration   1: 23.005 us/op
+Iteration   2: 23.009 us/op
+Iteration   3: 23.591 us/op
+Iteration   4: 23.181 us/op
+Iteration   5: 23.693 us/op
+
+# Run progress: 11.25% complete, ETA 00:09:57
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+24.131 us/op
+# Warmup Iteration   2: 23.460 us/op
+# Warmup Iteration   3: 23.204 us/op
+Iteration   1: 23.479 us/op
+Iteration   2: 24.082 us/op
+Iteration   3: 23.622 us/op
+Iteration   4: 23.573 us/op
+Iteration   5: 23.268 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  23.450 ±(99.9%) 0.509 us/op [Average]
+  (min, avg, max) = (23.005, 23.450, 24.082), stdev = 0.337
+  CI (99.9%): [22.941, 23.959] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 12.50% complete, ETA 00:09:49
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+57.898 us/op
+# Warmup Iteration   2: 60.514 us/op
+# Warmup Iteration   3: 57.647 us/op
+Iteration   1: 57.625 us/op
+Iteration   2: 59.241 us/op
+Iteration   3: 57.916 us/op
+Iteration   4: 58.120 us/op
+Iteration   5: 55.184 us/op
+
+# Run progress: 13.75% complete, ETA 00:09:40
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+58.383 us/op
+# Warmup Iteration   2: 57.519 us/op
+# Warmup Iteration   3: 58.582 us/op
+Iteration   1: 56.505 us/op
+Iteration   2: 58.861 us/op
+Iteration   3: 60.439 us/op
+Iteration   4: 55.592 us/op
+Iteration   5: 55.248 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap":
+  57.473 ±(99.9%) 2.721 us/op [Average]
+  (min, avg, max) = (55.184, 57.473, 60.439), stdev = 1.800
+  CI (99.9%): [54.752, 60.194] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 15.00% complete, ETA 00:09:32
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+72.163 us/op
+# Warmup Iteration   2: 71.475 us/op
+# Warmup Iteration   3: 72.831 us/op
+Iteration   1: 79.337 us/op
+Iteration   2: 70.741 us/op
+Iteration   3: 72.234 us/op
+Iteration   4: 72.224 us/op
+Iteration   5: 70.962 us/op
+
+# Run progress: 16.25% complete, ETA 00:09:23
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+71.063 us/op
+# Warmup Iteration   2: 70.042 us/op
+# Warmup Iteration   3: 70.194 us/op
+Iteration   1: 70.685 us/op
+Iteration   2: 72.498 us/op
+Iteration   3: 70.239 us/op
+Iteration   4: 74.556 us/op
+Iteration   5: 70.884 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap":
+  72.436 ±(99.9%) 4.142 us/op [Average]
+  (min, avg, max) = (70.239, 72.436, 79.337), stdev = 2.740
+  CI (99.9%): [68.294, 76.578] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 17.50% complete, ETA 00:09:15
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+11.493 us/op
+# Warmup Iteration   2: 10.895 us/op
+# Warmup Iteration   3: 10.226 us/op
+Iteration   1: 10.327 us/op
+Iteration   2: 10.532 us/op
+Iteration   3: 11.360 us/op
+Iteration   4: 10.893 us/op
+Iteration   5: 10.515 us/op
+
+# Run progress: 18.75% complete, ETA 00:09:07
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+11.640 us/op
+# Warmup Iteration   2: 10.613 us/op
+# Warmup Iteration   3: 10.753 us/op
+Iteration   1: 10.252 us/op
+Iteration   2: 10.520 us/op
+Iteration   3: 10.267 us/op
+Iteration   4: 10.607 us/op
+Iteration   5: 10.579 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap":
+  10.585 ±(99.9%) 0.501 us/op [Average]
+  (min, avg, max) = (10.252, 10.585, 11.360), stdev = 0.331
+  CI (99.9%): [10.084, 11.086] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 20.00% complete, ETA 00:08:58
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+8.457 us/op
+# Warmup Iteration   2: 8.204 us/op
+# Warmup Iteration   3: 8.231 us/op
+Iteration   1: 8.269 us/op
+Iteration   2: 8.329 us/op
+Iteration   3: 8.113 us/op
+Iteration   4: 8.213 us/op
+Iteration   5: 8.292 us/op
+
+# Run progress: 21.25% complete, ETA 00:08:50
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+8.328 us/op
+# Warmup Iteration   2: 8.184 us/op
+# Warmup Iteration   3: 8.557 us/op
+Iteration   1: 8.209 us/op
+Iteration   2: 8.097 us/op
+Iteration   3: 8.507 us/op
+Iteration   4: 8.507 us/op
+Iteration   5: 8.101 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap":
+  8.264 ±(99.9%) 0.229 us/op [Average]
+  (min, avg, max) = (8.097, 8.264, 8.507), stdev = 0.151
+  CI (99.9%): [8.035, 8.492] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 22.50% complete, ETA 00:08:41
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+8.373 us/op
+# Warmup Iteration   2: 8.325 us/op
+# Warmup Iteration   3: 8.201 us/op
+Iteration   1: 8.400 us/op
+Iteration   2: 8.388 us/op
+Iteration   3: 8.996 us/op
+Iteration   4: 8.568 us/op
+Iteration   5: 8.394 us/op
+
+# Run progress: 23.75% complete, ETA 00:08:33
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+8.557 us/op
+# Warmup Iteration   2: 8.182 us/op
+# Warmup Iteration   3: 8.262 us/op
+Iteration   1: 8.606 us/op
+Iteration   2: 9.194 us/op
+Iteration   3: 9.697 us/op
+Iteration   4: 8.367 us/op
+Iteration   5: 8.274 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.b_perRow_RoaringBitmap":
+  8.688 ±(99.9%) 0.699 us/op [Average]
+  (min, avg, max) = (8.274, 8.688, 9.697), stdev = 0.463
+  CI (99.9%): [7.989, 9.388] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 25.00% complete, ETA 00:08:24
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.472 us/op
+# Warmup Iteration   2: 0.493 us/op
+# Warmup Iteration   3: 0.521 us/op
+Iteration   1: 0.543 us/op
+Iteration   2: 0.499 us/op
+Iteration   3: 0.478 us/op
+Iteration   4: 0.480 us/op
+Iteration   5: 0.474 us/op
+
+# Run progress: 26.25% complete, ETA 00:08:16
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.514 us/op
+# Warmup Iteration   2: 0.462 us/op
+# Warmup Iteration   3: 0.471 us/op
+Iteration   1: 0.474 us/op
+Iteration   2: 0.481 us/op
+Iteration   3: 0.474 us/op
+Iteration   4: 0.500 us/op
+Iteration   5: 0.521 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange":
+  0.492 ±(99.9%) 0.036 us/op [Average]
+  (min, avg, max) = (0.474, 0.492, 0.543), stdev = 0.023
+  CI (99.9%): [0.457, 0.528] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 27.50% complete, ETA 00:08:08
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+1.928 us/op
+# Warmup Iteration   2: 1.829 us/op
+# Warmup Iteration   3: 1.864 us/op
+Iteration   1: 1.812 us/op
+Iteration   2: 1.843 us/op
+Iteration   3: 2.001 us/op
+Iteration   4: 1.821 us/op
+Iteration   5: 1.856 us/op
+
+# Run progress: 28.75% complete, ETA 00:07:59
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+1.902 us/op
+# Warmup Iteration   2: 1.786 us/op
+# Warmup Iteration   3: 1.801 us/op
+Iteration   1: 1.910 us/op
+Iteration   2: 2.252 us/op
+Iteration   3: 1.787 us/op
+Iteration   4: 1.936 us/op
+Iteration   5: 1.873 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange":
+  1.909 ±(99.9%) 0.206 us/op [Average]
+  (min, avg, max) = (1.787, 1.909, 2.252), stdev = 0.136
+  CI (99.9%): [1.703, 2.115] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 30.00% complete, ETA 00:07:51
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+2.911 us/op
+# Warmup Iteration   2: 2.995 us/op
+# Warmup Iteration   3: 3.137 us/op
+Iteration   1: 3.234 us/op
+Iteration   2: 3.223 us/op
+Iteration   3: 3.489 us/op
+Iteration   4: 3.160 us/op
+Iteration   5: 2.897 us/op
+
+# Run progress: 31.25% complete, ETA 00:07:43
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+2.996 us/op
+# Warmup Iteration   2: 2.915 us/op
+# Warmup Iteration   3: 2.908 us/op
+Iteration   1: 2.902 us/op
+Iteration   2: 2.935 us/op
+Iteration   3: 2.878 us/op
+Iteration   4: 2.893 us/op
+Iteration   5: 3.051 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange":
+  3.066 ±(99.9%) 0.310 us/op [Average]
+  (min, avg, max) = (2.878, 3.066, 3.489), stdev = 0.205
+  CI (99.9%): [2.756, 3.376] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 32.50% complete, ETA 00:07:34
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+0.006 us/op
+# Warmup Iteration   2: 0.006 us/op
+# Warmup Iteration   3: 0.006 us/op
+Iteration   1: 0.006 us/op
+Iteration   2: 0.006 us/op
+Iteration   3: 0.006 us/op
+Iteration   4: 0.006 us/op
+Iteration   5: 0.006 us/op
+
+# Run progress: 33.75% complete, ETA 00:07:26
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+0.006 us/op
+# Warmup Iteration   2: 0.006 us/op
+# Warmup Iteration   3: 0.006 us/op
+Iteration   1: 0.006 us/op
+Iteration   2: 0.006 us/op
+Iteration   3: 0.006 us/op
+Iteration   4: 0.006 us/op
+Iteration   5: 0.006 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange":
+  0.006 ±(99.9%) 0.001 us/op [Average]
+  (min, avg, max) = (0.006, 0.006, 0.006), stdev = 0.001
+  CI (99.9%): [0.006, 0.006] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 35.00% complete, ETA 00:07:17
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.268 us/op
+# Warmup Iteration   2: 0.297 us/op
+# Warmup Iteration   3: 0.253 us/op
+Iteration   1: 0.266 us/op
+Iteration   2: 0.252 us/op
+Iteration   3: 0.256 us/op
+Iteration   4: 0.255 us/op
+Iteration   5: 0.248 us/op
+
+# Run progress: 36.25% complete, ETA 00:07:09
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.259 us/op
+# Warmup Iteration   2: 0.250 us/op
+# Warmup Iteration   3: 0.252 us/op
+Iteration   1: 0.265 us/op
+Iteration   2: 0.267 us/op
+Iteration   3: 0.252 us/op
+Iteration   4: 0.255 us/op
+Iteration   5: 0.251 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.c_forAllInRange":
+  0.257 ±(99.9%) 0.010 us/op [Average]
+  (min, avg, max) = (0.248, 0.257, 0.267), stdev = 0.007
+  CI (99.9%): [0.246, 0.267] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 37.50% complete, ETA 00:07:00
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.399 us/op
+# Warmup Iteration   2: 0.450 us/op
+# Warmup Iteration   3: 0.414 us/op
+Iteration   1: 0.419 us/op
+Iteration   2: 0.411 us/op
+Iteration   3: 0.426 us/op
+Iteration   4: 0.437 us/op
+Iteration   5: 0.417 us/op
+
+# Run progress: 38.75% complete, ETA 00:06:52
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.421 us/op
+# Warmup Iteration   2: 0.429 us/op
+# Warmup Iteration   3: 0.465 us/op
+Iteration   1: 0.446 us/op
+Iteration   2: 0.472 us/op
+Iteration   3: 0.444 us/op
+Iteration   4: 0.489 us/op
+Iteration   5: 0.489 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange":
+  0.445 ±(99.9%) 0.044 us/op [Average]
+  (min, avg, max) = (0.411, 0.445, 0.489), stdev = 0.029
+  CI (99.9%): [0.401, 0.489] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 40.00% complete, ETA 00:06:44
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+1.729 us/op
+# Warmup Iteration   2: 1.588 us/op
+# Warmup Iteration   3: 1.663 us/op
+Iteration   1: 1.793 us/op
+Iteration   2: 1.630 us/op
+Iteration   3: 1.749 us/op
+Iteration   4: 1.675 us/op
+Iteration   5: 1.736 us/op
+
+# Run progress: 41.25% complete, ETA 00:06:35
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+3.469 us/op
+# Warmup Iteration   2: 2.339 us/op
+# Warmup Iteration   3: 2.759 us/op
+Iteration   1: 2.061 us/op
+Iteration   2: 2.115 us/op
+Iteration   3: 1.941 us/op
+Iteration   4: 1.992 us/op
+Iteration   5: 1.965 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange":
+  1.866 ±(99.9%) 0.257 us/op [Average]
+  (min, avg, max) = (1.630, 1.866, 2.115), stdev = 0.170
+  CI (99.9%): [1.609, 2.122] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 42.50% complete, ETA 00:06:27
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+3.566 us/op
+# Warmup Iteration   2: 3.507 us/op
+# Warmup Iteration   3: 3.528 us/op
+Iteration   1: 3.515 us/op
+Iteration   2: 3.478 us/op
+Iteration   3: 4.103 us/op
+Iteration   4: 7.252 us/op
+Iteration   5: 4.424 us/op
+
+# Run progress: 43.75% complete, ETA 00:06:19
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+3.796 us/op
+# Warmup Iteration   2: 3.311 us/op
+# Warmup Iteration   3: 3.970 us/op
+Iteration   1: 3.944 us/op
+Iteration   2: 3.914 us/op
+Iteration   3: 3.707 us/op
+Iteration   4: 3.612 us/op
+Iteration   5: 3.690 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange":
+  4.164 ±(99.9%) 1.698 us/op [Average]
+  (min, avg, max) = (3.478, 4.164, 7.252), stdev = 1.123
+  CI (99.9%): [2.466, 5.862] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 45.00% complete, ETA 00:06:10
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+2.824 us/op
+# Warmup Iteration   2: 2.977 us/op
+# Warmup Iteration   3: 3.440 us/op
+Iteration   1: 3.048 us/op
+Iteration   2: 2.569 us/op
+Iteration   3: 2.501 us/op
+Iteration   4: 3.482 us/op
+Iteration   5: 3.849 us/op
+
+# Run progress: 46.25% complete, ETA 00:06:02
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+2.856 us/op
+# Warmup Iteration   2: 2.890 us/op
+# Warmup Iteration   3: 2.771 us/op
+Iteration   1: 2.658 us/op
+Iteration   2: 2.535 us/op
+Iteration   3: 2.467 us/op
+Iteration   4: 2.479 us/op
+Iteration   5: 2.369 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange":
+  2.796 ±(99.9%) 0.757 us/op [Average]
+  (min, avg, max) = (2.369, 2.796, 3.849), stdev = 0.501
+  CI (99.9%): [2.038, 3.553] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 47.50% complete, ETA 00:05:54
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.249 us/op
+# Warmup Iteration   2: 0.209 us/op
+# Warmup Iteration   3: 0.213 us/op
+Iteration   1: 0.211 us/op
+Iteration   2: 0.250 us/op
+Iteration   3: 0.220 us/op
+Iteration   4: 0.221 us/op
+Iteration   5: 0.260 us/op
+
+# Run progress: 48.75% complete, ETA 00:05:45
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.250 us/op
+# Warmup Iteration   2: 0.211 us/op
+# Warmup Iteration   3: 0.288 us/op
+Iteration   1: 0.327 us/op
+Iteration   2: 0.253 us/op
+Iteration   3: 0.235 us/op
+Iteration   4: 0.216 us/op
+Iteration   5: 0.213 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.d_forEachInRange":
+  0.240 ±(99.9%) 0.053 us/op [Average]
+  (min, avg, max) = (0.211, 0.240, 0.327), stdev = 0.035
+  CI (99.9%): [0.187, 0.294] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.e_batchIterator
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 50.00% complete, ETA 00:05:37
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.680 us/op
+# Warmup Iteration   2: 0.643 us/op
+# Warmup Iteration   3: 0.584 us/op
+Iteration   1: 0.605 us/op
+Iteration   2: 0.692 us/op
+Iteration   3: 0.753 us/op
+Iteration   4: 0.647 us/op
+Iteration   5: 0.627 us/op
+
+# Run progress: 51.25% complete, ETA 00:05:29
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.581 us/op
+# Warmup Iteration   2: 0.566 us/op
+# Warmup Iteration   3: 0.564 us/op
+Iteration   1: 0.608 us/op
+Iteration   2: 0.596 us/op
+Iteration   3: 0.584 us/op
+Iteration   4: 0.562 us/op
+Iteration   5: 0.598 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.e_batchIterator":
+  0.627 ±(99.9%) 0.086 us/op [Average]
+  (min, avg, max) = (0.562, 0.627, 0.753), stdev = 0.057
+  CI (99.9%): [0.541, 0.713] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.e_batchIterator
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 52.50% complete, ETA 00:05:21
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+3.026 us/op
+# Warmup Iteration   2: 3.035 us/op
+# Warmup Iteration   3: 3.942 us/op
+Iteration   1: 2.969 us/op
+Iteration   2: 2.815 us/op
+Iteration   3: 2.733 us/op
+Iteration   4: 2.742 us/op
+Iteration   5: 2.697 us/op
+
+# Run progress: 53.75% complete, ETA 00:05:12
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+2.779 us/op
+# Warmup Iteration   2: 2.731 us/op
+# Warmup Iteration   3: 2.806 us/op
+Iteration   1: 2.817 us/op
+Iteration   2: 2.813 us/op
+Iteration   3: 2.777 us/op
+Iteration   4: 2.767 us/op
+Iteration   5: 2.772 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.e_batchIterator":
+  2.790 ±(99.9%) 0.112 us/op [Average]
+  (min, avg, max) = (2.697, 2.790, 2.969), stdev = 0.074
+  CI (99.9%): [2.678, 2.902] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.e_batchIterator
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 55.00% complete, ETA 00:05:04
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+6.315 us/op
+# Warmup Iteration   2: 5.814 us/op
+# Warmup Iteration   3: 5.694 us/op
+Iteration   1: 5.890 us/op
+Iteration   2: 5.973 us/op
+Iteration   3: 6.009 us/op
+Iteration   4: 6.108 us/op
+Iteration   5: 6.095 us/op
+
+# Run progress: 56.25% complete, ETA 00:04:55
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+6.147 us/op
+# Warmup Iteration   2: 6.248 us/op
+# Warmup Iteration   3: 5.951 us/op
+Iteration   1: 5.692 us/op
+Iteration   2: 5.758 us/op
+Iteration   3: 6.144 us/op
+Iteration   4: 5.740 us/op
+Iteration   5: 5.743 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.e_batchIterator":
+  5.915 ±(99.9%) 0.262 us/op [Average]
+  (min, avg, max) = (5.692, 5.915, 6.144), stdev = 0.173
+  CI (99.9%): [5.654, 6.177] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.e_batchIterator
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 57.50% complete, ETA 00:04:47
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+3.871 us/op
+# Warmup Iteration   2: 3.717 us/op
+# Warmup Iteration   3: 3.620 us/op
+Iteration   1: 3.673 us/op
+Iteration   2: 3.666 us/op
+Iteration   3: 3.625 us/op
+Iteration   4: 3.697 us/op
+Iteration   5: 3.677 us/op
+
+# Run progress: 58.75% complete, ETA 00:04:38
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+3.824 us/op
+# Warmup Iteration   2: 3.705 us/op
+# Warmup Iteration   3: 3.766 us/op
+Iteration   1: 3.840 us/op
+Iteration   2: 3.679 us/op
+Iteration   3: 3.884 us/op
+Iteration   4: 3.697 us/op
+Iteration   5: 3.642 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.e_batchIterator":
+  3.708 ±(99.9%) 0.128 us/op [Average]
+  (min, avg, max) = (3.625, 3.708, 3.884), stdev = 0.085
+  CI (99.9%): [3.580, 3.836] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.e_batchIterator
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 60.00% complete, ETA 00:04:30
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.237 us/op
+# Warmup Iteration   2: 0.207 us/op
+# Warmup Iteration   3: 0.202 us/op
+Iteration   1: 0.210 us/op
+Iteration   2: 0.213 us/op
+Iteration   3: 0.211 us/op
+Iteration   4: 0.211 us/op
+Iteration   5: 0.198 us/op
+
+# Run progress: 61.25% complete, ETA 00:04:21
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.219 us/op
+# Warmup Iteration   2: 0.207 us/op
+# Warmup Iteration   3: 0.192 us/op
+Iteration   1: 0.200 us/op
+Iteration   2: 0.196 us/op
+Iteration   3: 0.204 us/op
+Iteration   4: 0.200 us/op
+Iteration   5: 0.195 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.e_batchIterator":
+  0.204 ±(99.9%) 0.011 us/op [Average]
+  (min, avg, max) = (0.195, 0.204, 0.213), stdev = 0.007
+  CI (99.9%): [0.193, 0.215] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 62.50% complete, ETA 00:04:13
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.493 us/op
+# Warmup Iteration   2: 0.497 us/op
+# Warmup Iteration   3: 0.518 us/op
+Iteration   1: 0.598 us/op
+Iteration   2: 0.604 us/op
+Iteration   3: 0.552 us/op
+Iteration   4: 0.638 us/op
+Iteration   5: 0.654 us/op
+
+# Run progress: 63.75% complete, ETA 00:04:04
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+0.528 us/op
+# Warmup Iteration   2: 0.517 us/op
+# Warmup Iteration   3: 0.595 us/op
+Iteration   1: 0.530 us/op
+Iteration   2: 0.526 us/op
+Iteration   3: 0.519 us/op
+Iteration   4: 0.550 us/op
+Iteration   5: 0.554 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath":
+  0.572 ±(99.9%) 0.073 us/op [Average]
+  (min, avg, max) = (0.519, 0.572, 0.654), stdev = 0.048
+  CI (99.9%): [0.500, 0.645] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 65.00% complete, ETA 00:03:56
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+2.674 us/op
+# Warmup Iteration   2: 2.245 us/op
+# Warmup Iteration   3: 1.994 us/op
+Iteration   1: 1.849 us/op
+Iteration   2: 1.871 us/op
+Iteration   3: 1.834 us/op
+Iteration   4: 1.861 us/op
+Iteration   5: 1.804 us/op
+
+# Run progress: 66.25% complete, ETA 00:03:48
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+1.900 us/op
+# Warmup Iteration   2: 1.887 us/op
+# Warmup Iteration   3: 1.939 us/op
+Iteration   1: 2.156 us/op
+Iteration   2: 2.066 us/op
+Iteration   3: 2.129 us/op
+Iteration   4: 1.953 us/op
+Iteration   5: 2.111 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath":
+  1.963 ±(99.9%) 0.209 us/op [Average]
+  (min, avg, max) = (1.804, 1.963, 2.156), stdev = 0.138
+  CI (99.9%): [1.755, 2.172] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 67.50% complete, ETA 00:03:39
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+3.410 us/op
+# Warmup Iteration   2: 3.274 us/op
+# Warmup Iteration   3: 3.243 us/op
+Iteration   1: 3.310 us/op
+Iteration   2: 3.206 us/op
+Iteration   3: 3.289 us/op
+Iteration   4: 3.219 us/op
+Iteration   5: 3.196 us/op
+
+# Run progress: 68.75% complete, ETA 00:03:31
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+3.499 us/op
+# Warmup Iteration   2: 3.521 us/op
+# Warmup Iteration   3: 3.712 us/op
+Iteration   1: 3.469 us/op
+Iteration   2: 4.579 us/op
+Iteration   3: 3.440 us/op
+Iteration   4: 3.358 us/op
+Iteration   5: 3.283 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath":
+  3.435 ±(99.9%) 0.624 us/op [Average]
+  (min, avg, max) = (3.196, 3.435, 4.579), stdev = 0.412
+  CI (99.9%): [2.811, 4.059] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 70.00% complete, ETA 00:03:22
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+0.011 us/op
+# Warmup Iteration   2: 0.010 us/op
+# Warmup Iteration   3: 0.010 us/op
+Iteration   1: 0.010 us/op
+Iteration   2: 0.010 us/op
+Iteration   3: 0.009 us/op
+Iteration   4: 0.010 us/op
+Iteration   5: 0.009 us/op
+
+# Run progress: 71.25% complete, ETA 00:03:14
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+0.010 us/op
+# Warmup Iteration   2: 0.010 us/op
+# Warmup Iteration   3: 0.010 us/op
+Iteration   1: 0.010 us/op
+Iteration   2: 0.010 us/op
+Iteration   3: 0.011 us/op
+Iteration   4: 0.010 us/op
+Iteration   5: 0.010 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath":
+  0.010 ±(99.9%) 0.001 us/op [Average]
+  (min, avg, max) = (0.009, 0.010, 0.011), stdev = 0.001
+  CI (99.9%): [0.009, 0.011] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 72.50% complete, ETA 00:03:05
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.241 us/op
+# Warmup Iteration   2: 0.345 us/op
+# Warmup Iteration   3: 0.238 us/op
+Iteration   1: 0.245 us/op
+Iteration   2: 0.244 us/op
+Iteration   3: 0.239 us/op
+Iteration   4: 0.247 us/op
+Iteration   5: 0.257 us/op
+
+# Run progress: 73.75% complete, ETA 00:02:57
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+0.279 us/op
+# Warmup Iteration   2: 0.250 us/op
+# Warmup Iteration   3: 0.241 us/op
+Iteration   1: 0.235 us/op
+Iteration   2: 0.234 us/op
+Iteration   3: 0.244 us/op
+Iteration   4: 0.243 us/op
+Iteration   5: 0.231 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.f_rangeCardFastPath":
+  0.242 ±(99.9%) 0.011 us/op [Average]
+  (min, avg, max) = (0.231, 0.242, 0.257), stdev = 0.008
+  CI (99.9%): [0.230, 0.253] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 75.00% complete, ETA 00:02:49
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+64.416 us/op
+# Warmup Iteration   2: 67.995 us/op
+# Warmup Iteration   3: 66.755 us/op
+Iteration   1: 64.972 us/op
+Iteration   2: 64.413 us/op
+Iteration   3: 64.158 us/op
+Iteration   4: 65.275 us/op
+Iteration   5: 77.410 us/op
+
+# Run progress: 76.25% complete, ETA 00:02:40
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+64.626 us/op
+# Warmup Iteration   2: 62.925 us/op
+# Warmup Iteration   3: 62.089 us/op
+Iteration   1: 61.551 us/op
+Iteration   2: 66.639 us/op
+Iteration   3: 71.500 us/op
+Iteration   4: 66.585 us/op
+Iteration   5: 78.843 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline":
+  68.134 ±(99.9%) 8.842 us/op [Average]
+  (min, avg, max) = (61.551, 68.134, 78.843), stdev = 5.848
+  CI (99.9%): [59.292, 76.976] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 77.50% complete, ETA 00:02:32
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+85.795 us/op
+# Warmup Iteration   2: 85.778 us/op
+# Warmup Iteration   3: 81.562 us/op
+Iteration   1: 87.898 us/op
+Iteration   2: 81.079 us/op
+Iteration   3: 83.458 us/op
+Iteration   4: 85.310 us/op
+Iteration   5: 103.347 us/op
+
+# Run progress: 78.75% complete, ETA 00:02:23
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+80.790 us/op
+# Warmup Iteration   2: 78.207 us/op
+# Warmup Iteration   3: 82.053 us/op
+Iteration   1: 79.337 us/op
+Iteration   2: 77.102 us/op
+Iteration   3: 80.642 us/op
+Iteration   4: 83.188 us/op
+Iteration   5: 82.415 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline":
+  84.378 ±(99.9%) 11.069 us/op [Average]
+  (min, avg, max) = (77.102, 84.378, 103.347), stdev = 7.321
+  CI (99.9%): [73.309, 95.446] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 80.00% complete, ETA 00:02:15
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+18.594 us/op
+# Warmup Iteration   2: 20.255 us/op
+# Warmup Iteration   3: 22.247 us/op
+Iteration   1: 22.951 us/op
+Iteration   2: 23.284 us/op
+Iteration   3: 23.219 us/op
+Iteration   4: 21.952 us/op
+Iteration   5: 21.694 us/op
+
+# Run progress: 81.25% complete, ETA 00:02:06
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+19.084 us/op
+# Warmup Iteration   2: 18.832 us/op
+# Warmup Iteration   3: 16.286 us/op
+Iteration   1: 24.309 us/op
+Iteration   2: 23.750 us/op
+Iteration   3: 25.109 us/op
+Iteration   4: 24.391 us/op
+Iteration   5: 23.867 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline":
+  23.453 ±(99.9%) 1.617 us/op [Average]
+  (min, avg, max) = (21.694, 23.453, 25.109), stdev = 1.070
+  CI (99.9%): [21.836, 25.070] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 82.50% complete, ETA 00:01:58
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+26.223 us/op
+# Warmup Iteration   2: 26.989 us/op
+# Warmup Iteration   3: 26.982 us/op
+Iteration   1: 29.774 us/op
+Iteration   2: 29.434 us/op
+Iteration   3: 28.334 us/op
+Iteration   4: 27.483 us/op
+Iteration   5: 28.871 us/op
+
+# Run progress: 83.75% complete, ETA 00:01:49
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+25.468 us/op
+# Warmup Iteration   2: 24.923 us/op
+# Warmup Iteration   3: 25.067 us/op
+Iteration   1: 27.731 us/op
+Iteration   2: 28.970 us/op
+Iteration   3: 28.578 us/op
+Iteration   4: 28.242 us/op
+Iteration   5: 28.848 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline":
+  28.626 ±(99.9%) 1.074 us/op [Average]
+  (min, avg, max) = (27.483, 28.626, 29.774), stdev = 0.710
+  CI (99.9%): [27.552, 29.700] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 85.00% complete, ETA 00:01:41
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+25.725 us/op
+# Warmup Iteration   2: 24.561 us/op
+# Warmup Iteration   3: 25.192 us/op
+Iteration   1: 26.770 us/op
+Iteration   2: 26.275 us/op
+Iteration   3: 27.925 us/op
+Iteration   4: 27.297 us/op
+Iteration   5: 26.252 us/op
+
+# Run progress: 86.25% complete, ETA 00:01:33
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+24.620 us/op
+# Warmup Iteration   2: 25.858 us/op
+# Warmup Iteration   3: 26.385 us/op
+Iteration   1: 27.573 us/op
+Iteration   2: 27.894 us/op
+Iteration   3: 28.817 us/op
+Iteration   4: 28.851 us/op
+Iteration   5: 28.144 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.g_isDeleted_baseline":
+  27.580 ±(99.9%) 1.415 us/op [Average]
+  (min, avg, max) = (26.252, 27.580, 28.851), stdev = 0.936
+  CI (99.9%): [26.165, 28.995] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 87.50% complete, ETA 00:01:24
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+1.096 us/op
+# Warmup Iteration   2: 0.793 us/op
+# Warmup Iteration   3: 0.785 us/op
+Iteration   1: 0.883 us/op
+Iteration   2: 0.823 us/op
+Iteration   3: 0.809 us/op
+Iteration   4: 0.782 us/op
+Iteration   5: 0.858 us/op
+
+# Run progress: 88.75% complete, ETA 00:01:16
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+1.268 us/op
+# Warmup Iteration   2: 1.492 us/op
+# Warmup Iteration   3: 1.103 us/op
+Iteration   1: 1.018 us/op
+Iteration   2: 0.916 us/op
+Iteration   3: 1.020 us/op
+Iteration   4: 1.612 us/op
+Iteration   5: 1.488 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange":
+  1.021 ±(99.9%) 0.441 us/op [Average]
+  (min, avg, max) = (0.782, 1.021, 1.612), stdev = 0.292
+  CI (99.9%): [0.580, 1.462] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 90.00% complete, ETA 00:01:07
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+3.360 us/op
+# Warmup Iteration   2: 1.707 us/op
+# Warmup Iteration   3: 1.638 us/op
+Iteration   1: 1.731 us/op
+Iteration   2: 1.576 us/op
+Iteration   3: 1.959 us/op
+Iteration   4: 1.458 us/op
+Iteration   5: 1.319 us/op
+
+# Run progress: 91.25% complete, ETA 00:00:59
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+1.940 us/op
+# Warmup Iteration   2: 1.404 us/op
+# Warmup Iteration   3: 1.477 us/op
+Iteration   1: 1.537 us/op
+Iteration   2: 1.428 us/op
+Iteration   3: 1.559 us/op
+Iteration   4: 1.592 us/op
+Iteration   5: 1.560 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange":
+  1.572 ±(99.9%) 0.264 us/op [Average]
+  (min, avg, max) = (1.319, 1.572, 1.959), stdev = 0.175
+  CI (99.9%): [1.308, 1.836] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 92.50% complete, ETA 00:00:50
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+2.740 us/op
+# Warmup Iteration   2: 1.821 us/op
+# Warmup Iteration   3: 1.823 us/op
+Iteration   1: 1.992 us/op
+Iteration   2: 2.000 us/op
+Iteration   3: 1.896 us/op
+Iteration   4: 1.717 us/op
+Iteration   5: 1.693 us/op
+
+# Run progress: 93.75% complete, ETA 00:00:42
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+2.711 us/op
+# Warmup Iteration   2: 2.290 us/op
+# Warmup Iteration   3: 1.881 us/op
+Iteration   1: 1.968 us/op
+Iteration   2: 1.598 us/op
+Iteration   3: 1.730 us/op
+Iteration   4: 1.888 us/op
+Iteration   5: 2.010 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange":
+  1.849 ±(99.9%) 0.228 us/op [Average]
+  (min, avg, max) = (1.598, 1.849, 2.010), stdev = 0.151
+  CI (99.9%): [1.621, 2.078] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange
+# Parameters: (batchSize = 5000, pattern = RUN_CONTIG)
+
+# Run progress: 95.00% complete, ETA 00:00:33
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+1.871 us/op
+# Warmup Iteration   2: 1.540 us/op
+# Warmup Iteration   3: 1.521 us/op
+Iteration   1: 1.464 us/op
+Iteration   2: 1.295 us/op
+Iteration   3: 1.351 us/op
+Iteration   4: 1.318 us/op
+Iteration   5: 1.570 us/op
+
+# Run progress: 96.25% complete, ETA 00:00:25
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_CONTIG  chunkCardinality= 19,661  batch[30268,35268)  live=0/5000  container=bitmap(추정)
+1.600 us/op
+# Warmup Iteration   2: 1.336 us/op
+# Warmup Iteration   3: 1.368 us/op
+Iteration   1: 1.447 us/op
+Iteration   2: 1.515 us/op
+Iteration   3: 1.454 us/op
+Iteration   4: 1.341 us/op
+Iteration   5: 1.160 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange":
+  1.391 ±(99.9%) 0.183 us/op [Average]
+  (min, avg, max) = (1.160, 1.391, 1.570), stdev = 0.121
+  CI (99.9%): [1.208, 1.574] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.10, OpenJDK 64-Bit Server VM, 21.0.10+7-LTS
+# VM invoker: C:\Program Files\Eclipse Adoptium\jdk-21.0.10.7-hotspot\bin\java.exe
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 3 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange
+# Parameters: (batchSize = 5000, pattern = EMPTY_BATCH)
+
+# Run progress: 97.50% complete, ETA 00:00:16
+# Fork: 1 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+2.030 us/op
+# Warmup Iteration   2: 1.225 us/op
+# Warmup Iteration   3: 1.454 us/op
+Iteration   1: 1.259 us/op
+Iteration   2: 1.352 us/op
+Iteration   3: 1.254 us/op
+Iteration   4: 1.198 us/op
+Iteration   5: 1.061 us/op
+
+# Run progress: 98.75% complete, ETA 00:00:08
+# Fork: 2 of 2
+# Warmup Iteration   1: 
+  [setup] pattern=EMPTY_BATCH chunkCardinality= 30,268  batch[30268,35268)  live=5000/5000  container=bitmap(추정)
+1.030 us/op
+# Warmup Iteration   2: 0.810 us/op
+# Warmup Iteration   3: 0.790 us/op
+Iteration   1: 0.778 us/op
+Iteration   2: 0.783 us/op
+Iteration   3: 0.930 us/op
+Iteration   4: 0.947 us/op
+Iteration   5: 0.986 us/op
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.h_isDeleted_forEachInRange":
+  1.055 ±(99.9%) 0.308 us/op [Average]
+  (min, avg, max) = (0.778, 1.055, 1.352), stdev = 0.204
+  CI (99.9%): [0.747, 1.362] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:11:19
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                             (batchSize)    (pattern)  Mode  Cnt   Score    Error  Units
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap         5000   SPARSE_0_5  avgt   10  64.992 ±  2.679  us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap         5000     MEDIUM_5  avgt   10  80.221 ±  3.222  us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap         5000     DENSE_12  avgt   10  19.758 ±  2.083  us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap         5000   RUN_CONTIG  avgt   10  23.148 ±  1.267  us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap         5000  EMPTY_BATCH  avgt   10  23.450 ±  0.509  us/op
+DvBatchBench.b_perRow_RoaringBitmap                          5000   SPARSE_0_5  avgt   10  57.473 ±  2.721  us/op
+DvBatchBench.b_perRow_RoaringBitmap                          5000     MEDIUM_5  avgt   10  72.436 ±  4.142  us/op
+DvBatchBench.b_perRow_RoaringBitmap                          5000     DENSE_12  avgt   10  10.585 ±  0.501  us/op
+DvBatchBench.b_perRow_RoaringBitmap                          5000   RUN_CONTIG  avgt   10   8.264 ±  0.229  us/op
+DvBatchBench.b_perRow_RoaringBitmap                          5000  EMPTY_BATCH  avgt   10   8.688 ±  0.699  us/op
+DvBatchBench.c_forAllInRange                                 5000   SPARSE_0_5  avgt   10   0.492 ±  0.036  us/op
+DvBatchBench.c_forAllInRange                                 5000     MEDIUM_5  avgt   10   1.909 ±  0.206  us/op
+DvBatchBench.c_forAllInRange                                 5000     DENSE_12  avgt   10   3.066 ±  0.310  us/op
+DvBatchBench.c_forAllInRange                                 5000   RUN_CONTIG  avgt   10   0.006 ±  0.001  us/op
+DvBatchBench.c_forAllInRange                                 5000  EMPTY_BATCH  avgt   10   0.257 ±  0.010  us/op
+DvBatchBench.d_forEachInRange                                5000   SPARSE_0_5  avgt   10   0.445 ±  0.044  us/op
+DvBatchBench.d_forEachInRange                                5000     MEDIUM_5  avgt   10   1.866 ±  0.257  us/op
+DvBatchBench.d_forEachInRange                                5000     DENSE_12  avgt   10   4.164 ±  1.698  us/op
+DvBatchBench.d_forEachInRange                                5000   RUN_CONTIG  avgt   10   2.796 ±  0.757  us/op
+DvBatchBench.d_forEachInRange                                5000  EMPTY_BATCH  avgt   10   0.240 ±  0.053  us/op
+DvBatchBench.e_batchIterator                                 5000   SPARSE_0_5  avgt   10   0.627 ±  0.086  us/op
+DvBatchBench.e_batchIterator                                 5000     MEDIUM_5  avgt   10   2.790 ±  0.112  us/op
+DvBatchBench.e_batchIterator                                 5000     DENSE_12  avgt   10   5.915 ±  0.262  us/op
+DvBatchBench.e_batchIterator                                 5000   RUN_CONTIG  avgt   10   3.708 ±  0.128  us/op
+DvBatchBench.e_batchIterator                                 5000  EMPTY_BATCH  avgt   10   0.204 ±  0.011  us/op
+DvBatchBench.f_rangeCardFastPath                             5000   SPARSE_0_5  avgt   10   0.572 ±  0.073  us/op
+DvBatchBench.f_rangeCardFastPath                             5000     MEDIUM_5  avgt   10   1.963 ±  0.209  us/op
+DvBatchBench.f_rangeCardFastPath                             5000     DENSE_12  avgt   10   3.435 ±  0.624  us/op
+DvBatchBench.f_rangeCardFastPath                             5000   RUN_CONTIG  avgt   10   0.010 ±  0.001  us/op
+DvBatchBench.f_rangeCardFastPath                             5000  EMPTY_BATCH  avgt   10   0.242 ±  0.011  us/op
+DvBatchBench.g_isDeleted_baseline                            5000   SPARSE_0_5  avgt   10  68.134 ±  8.842  us/op
+DvBatchBench.g_isDeleted_baseline                            5000     MEDIUM_5  avgt   10  84.378 ± 11.069  us/op
+DvBatchBench.g_isDeleted_baseline                            5000     DENSE_12  avgt   10  23.453 ±  1.617  us/op
+DvBatchBench.g_isDeleted_baseline                            5000   RUN_CONTIG  avgt   10  28.626 ±  1.074  us/op
+DvBatchBench.g_isDeleted_baseline                            5000  EMPTY_BATCH  avgt   10  27.580 ±  1.415  us/op
+DvBatchBench.h_isDeleted_forEachInRange                      5000   SPARSE_0_5  avgt   10   1.021 ±  0.441  us/op
+DvBatchBench.h_isDeleted_forEachInRange                      5000     MEDIUM_5  avgt   10   1.572 ±  0.264  us/op
+DvBatchBench.h_isDeleted_forEachInRange                      5000     DENSE_12  avgt   10   1.849 ±  0.228  us/op
+DvBatchBench.h_isDeleted_forEachInRange                      5000   RUN_CONTIG  avgt   10   1.391 ±  0.183  us/op
+DvBatchBench.h_isDeleted_forEachInRange                      5000  EMPTY_BATCH  avgt   10   1.055 ±  0.308  us/op
+
+Benchmark result is saved to .\results\jmh-phase3b.json

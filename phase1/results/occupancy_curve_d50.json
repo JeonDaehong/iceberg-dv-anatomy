@@ -1,0 +1,57 @@
+[
+  {
+    "tag": "d50p10000",
+    "containers": 124,
+    "type": "array",
+    "mean_cardinality": 323.8225806451613,
+    "deleted_rows": 40154,
+    "dv_bytes": 80308,
+    "dv_samples": 303,
+    "dv_pct_scan": 35.39719626168224,
+    "occupancy_bp": 10000
+  },
+  {
+    "tag": "d50p5000",
+    "containers": 52,
+    "type": "array",
+    "mean_cardinality": 329.9423076923077,
+    "deleted_rows": 17157,
+    "dv_bytes": 34314,
+    "dv_samples": 224,
+    "dv_pct_scan": 28.46251588310038,
+    "occupancy_bp": 5000
+  },
+  {
+    "tag": "d50p2500",
+    "containers": 36,
+    "type": "array",
+    "mean_cardinality": 328.72222222222223,
+    "deleted_rows": 11834,
+    "dv_bytes": 23668,
+    "dv_samples": 202,
+    "dv_pct_scan": 27.78541953232462,
+    "occupancy_bp": 2500
+  },
+  {
+    "tag": "d50p1000",
+    "containers": 16,
+    "type": "array",
+    "mean_cardinality": 333.125,
+    "deleted_rows": 5330,
+    "dv_bytes": 10660,
+    "dv_samples": 120,
+    "dv_pct_scan": 18.181818181818183,
+    "occupancy_bp": 1000
+  },
+  {
+    "tag": "d50p500",
+    "containers": 16,
+    "type": "array",
+    "mean_cardinality": 333.125,
+    "deleted_rows": 5330,
+    "dv_bytes": 10660,
+    "dv_samples": 169,
+    "dv_pct_scan": 25.148809523809526,
+    "occupancy_bp": 500
+  }
+]

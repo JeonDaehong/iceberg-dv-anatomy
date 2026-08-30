@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────────────────────
+# 측정 원본 (raw profiles) — 1 GB 에 육박한다.
+# 집계 결과(*.json / *.txt / *.csv)는 저장소에 남기고, 원본은 재현으로 다시 만든다.
+# 재생성: 각 phase 의 scripts/*-profile.sh
+# ─────────────────────────────────────────────────────────────
+**/results/profiles/
+*.collapsed
+
+# 빌드 산출물
+bench/build/
+**/eqbuild/
+*.class
+*.jar
+target/
+build/
+
+# 워크로드 데이터 (Linux 네이티브 fs 에 생성된다. 저장소에 들어올 일은 없지만 방어적으로)
+warehouse/
+warehouse-p1/
+dv-anatomy/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Spark / 실행 부산물
+spark-warehouse/
+metastore_db/
+derby.log
+*.crc
+
+# 에디터 / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

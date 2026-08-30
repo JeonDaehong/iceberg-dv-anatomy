@@ -1,0 +1,161 @@
+
+========================================================================
+none_c1.collapsed
+========================================================================
+  전체 샘플                               4,681
+  스캔 서브트리                               623    13.31%
+  DV 체크 (union)                           0     0.00%
+       └ 스캔 서브트리 대비:                      0.00%
+
+  [그룹별 inclusive — 서로 중첩되므로 합산 금지]
+    batch_util                            0     0.00%
+    iceberg_deletes                       0     0.00%
+    roaring                               0     0.00%
+
+  리더 경로: 벡터화(batch)   batch=450  row=0
+
+========================================================================
+none_c20.collapsed
+========================================================================
+  전체 샘플                              22,257
+  스캔 서브트리                            10,794    48.50%
+  DV 체크 (union)                           0     0.00%
+       └ 스캔 서브트리 대비:                      0.00%
+
+  [그룹별 inclusive — 서로 중첩되므로 합산 금지]
+    batch_util                            0     0.00%
+    iceberg_deletes                       0     0.00%
+    roaring                               0     0.00%
+
+  리더 경로: 벡터화(batch)   batch=7,958  row=0
+
+========================================================================
+run_c1.collapsed
+========================================================================
+  전체 샘플                               4,703
+  스캔 서브트리                               711    15.12%
+  DV 체크 (union)                         156     3.32%
+       └ 스캔 서브트리 대비:                     21.94%
+
+  [그룹별 inclusive — 서로 중첩되므로 합산 금지]
+    batch_util                          156     3.32%
+    iceberg_deletes                      27     0.57%
+    roaring                              19     0.40%
+
+  리더 경로: 벡터화(batch)   batch=568  row=0
+
+  [DV 스택의 hot frame]
+      2.70%  ...g.spark.data.vectorized.ColumnarBatchUtil.buildRowIdMapping
+      0.15%  org.apache.iceberg.deletes.RoaringPositionBitmap.contains
+      0.13%  ...rg.shaded.org.roaringbitmap.Util.hybridUnsignedBinarySearch
+      0.09%  ....iceberg.shaded.org.roaringbitmap.Util.unsignedBinarySearch
+      0.06%  ...ngbitmap.RunContainer.hybridUnsignedInterleavedBinarySearch
+      0.06%  ...che.iceberg.shaded.org.roaringbitmap.RoaringBitmap.contains
+      0.04%  ...e.iceberg.spark.data.vectorized.ColumnarBatchUtil.isDeleted
+      0.02%  ...ache.iceberg.deletes.RoaringPositionBitmap.validatePosition
+      0.02%  ...g.shaded.org.roaringbitmap.RoaringArray.getContainerAtIndex
+      0.02%  ...pache.iceberg.shaded.org.roaringbitmap.RoaringBitmap.<init>
+      0.02%  ...e.iceberg.shaded.org.roaringbitmap.RoaringArray.deserialize
+
+========================================================================
+run_c20.collapsed
+========================================================================
+  전체 샘플                              21,640
+  스캔 서브트리                            10,892    50.33%
+  DV 체크 (union)                         142     0.66%
+       └ 스캔 서브트리 대비:                      1.30%
+
+  [그룹별 inclusive — 서로 중첩되므로 합산 금지]
+    batch_util                          142     0.66%
+    iceberg_deletes                      21     0.10%
+    roaring                              14     0.06%
+
+  리더 경로: 벡터화(batch)   batch=8,294  row=0
+
+  [DV 스택의 hot frame]
+      0.56%  ...g.spark.data.vectorized.ColumnarBatchUtil.buildRowIdMapping
+      0.03%  ...rg.shaded.org.roaringbitmap.Util.hybridUnsignedBinarySearch
+      0.02%  ...che.iceberg.shaded.org.roaringbitmap.RoaringBitmap.contains
+      0.01%  org.apache.iceberg.deletes.RoaringPositionBitmap.contains
+      0.01%  org.apache.iceberg.deletes.RoaringPositionBitmap.key
+      0.01%  ...ngbitmap.RunContainer.hybridUnsignedInterleavedBinarySearch
+      0.00%  ...pache.iceberg.shaded.org.roaringbitmap.RoaringBitmap.<init>
+      0.00%  ...e.iceberg.shaded.org.roaringbitmap.RoaringArray.deserialize
+      0.00%  org.apache.iceberg.deletes.PositionDeleteIndex.deserialize
+      0.00%  org.apache.iceberg.deletes.BitmapPositionDeleteIndex.<init>
+
+========================================================================
+sparse_c1.collapsed
+========================================================================
+  전체 샘플                               4,903
+  스캔 서브트리                               971    19.80%
+  DV 체크 (union)                         392     8.00%
+       └ 스캔 서브트리 대비:                     40.37%
+
+  [그룹별 inclusive — 서로 중첩되므로 합산 금지]
+    batch_util                          392     8.00%
+    iceberg_deletes                     131     2.67%
+    roaring                             117     2.39%
+
+  리더 경로: 벡터화(batch)   batch=777  row=0
+
+  [DV 스택의 hot frame]
+      5.28%  ...g.spark.data.vectorized.ColumnarBatchUtil.buildRowIdMapping
+      1.94%  ...rg.shaded.org.roaringbitmap.Util.hybridUnsignedBinarySearch
+      0.33%  ...che.iceberg.shaded.org.roaringbitmap.RoaringBitmap.contains
+      0.24%  org.apache.iceberg.deletes.RoaringPositionBitmap.contains
+      0.06%  ...e.iceberg.shaded.org.roaringbitmap.RoaringArray.deserialize
+      0.04%  ...e.iceberg.spark.data.vectorized.ColumnarBatchUtil.isDeleted
+      0.02%  ....iceberg.shaded.org.roaringbitmap.Util.unsignedBinarySearch
+      0.02%  org.apache.iceberg.deletes.DeleteCounter.increment
+      0.02%  org.apache.iceberg.deletes.RoaringPositionBitmap.readBitmap
+      0.02%  ...pache.iceberg.shaded.org.roaringbitmap.RoaringBitmap.<init>
+      0.02%  ...he.iceberg.shaded.org.roaringbitmap.ArrayContainer.contains
+
+========================================================================
+sparse_c20.collapsed
+========================================================================
+  전체 샘플                              20,549
+  스캔 서브트리                            10,250    49.88%
+  DV 체크 (union)                         384     1.87%
+       └ 스캔 서브트리 대비:                      3.75%
+
+  [그룹별 inclusive — 서로 중첩되므로 합산 금지]
+    batch_util                          384     1.87%
+    iceberg_deletes                     124     0.60%
+    roaring                             116     0.56%
+
+  리더 경로: 벡터화(batch)   batch=7,504  row=0
+
+  [DV 스택의 hot frame]
+      1.27%  ...g.spark.data.vectorized.ColumnarBatchUtil.buildRowIdMapping
+      0.47%  ...rg.shaded.org.roaringbitmap.Util.hybridUnsignedBinarySearch
+      0.07%  ...che.iceberg.shaded.org.roaringbitmap.RoaringBitmap.contains
+      0.02%  org.apache.iceberg.deletes.RoaringPositionBitmap.contains
+      0.01%  org.apache.iceberg.deletes.RoaringPositionBitmap.readBitmap
+      0.01%  ...g.shaded.org.roaringbitmap.RoaringArray.getContainerAtIndex
+      0.01%  ....iceberg.shaded.org.roaringbitmap.Util.unsignedBinarySearch
+      0.00%  ...e.iceberg.shaded.org.roaringbitmap.RoaringArray.deserialize
+
+========================================================================
+요약
+========================================================================
+  프로파일                                       DV/전체     DV/스캔
+  none_c1.collapsed                          0.00%     0.00%
+  none_c20.collapsed                         0.00%     0.00%
+  run_c1.collapsed                           3.32%    21.94%
+  run_c20.collapsed                          0.66%     1.30%
+  sparse_c1.collapsed                        8.00%    40.37%
+  sparse_c20.collapsed                       1.87%     3.75%
+
+========================================================================
+  게이트 판정: [GO]   (기준: sparse_c1.collapsed, DV/전체 = 8.00%)
+  원안대로 전면 진행. 헤드라인 = '스캔 CPU의 X%를 차지하는 DV 체크'
+========================================================================
+
+  해석 주의:
+   - 분모 ALL 에는 JVM 기동/JIT/GC 가 섞여 있어 DV 비중을 과소평가한다.
+     게이트에서는 이 보수적 방향이 의도된 것이다.
+   - 이 수치는 '스캔 CPU 안에서의 비중'이지 '쿼리 시간 단축 가능폭'이 아니다.
+     DV 체크를 0으로 만들어도 절감폭은 이 비중을 넘지 못한다(암달의 법칙).
+

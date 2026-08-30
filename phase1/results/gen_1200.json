@@ -1,0 +1,14 @@
+{
+  "table": "dv.g.d1200",
+  "density_bp": 1200,
+  "target_density": 0.12,
+  "actual_density": 0.119960625,
+  "total_rows": 8000000,
+  "deleted_rows": 959685,
+  "dv_count": 4,
+  "dv_bytes": 1526870,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 7864.32
+}

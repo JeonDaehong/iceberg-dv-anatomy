@@ -1,0 +1,54 @@
+{
+  "label": "patched",
+  "tables": {
+    "dv.g.d0": {
+      "count": 8000000,
+      "sum_id": 31999996000000,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true
+    },
+    "dv.g.d50": {
+      "count": 7959846,
+      "sum_id": 31839504165994,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true
+    },
+    "dv.g.d610": {
+      "count": 7511839,
+      "sum_id": 30048598214693,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true
+    },
+    "dv.g.d700": {
+      "count": 7439554,
+      "sum_id": 29759667153169,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true
+    },
+    "dv.g.d5000": {
+      "count": 3997332,
+      "sum_id": 15986169276765,
+      "min_id": 2,
+      "max_id": 7999996,
+      "columnar": true
+    },
+    "dv.g.d50L1": {
+      "count": 7959846,
+      "sum_id": 31839504165994,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true
+    },
+    "dv.g.d50L4096": {
+      "count": 7950848,
+      "sum_id": 31805731591936,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true
+    }
+  }
+}

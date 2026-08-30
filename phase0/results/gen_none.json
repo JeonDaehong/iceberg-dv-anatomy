@@ -1,0 +1,10 @@
+{
+  "table": "dv.db.t_none",
+  "pattern": "none",
+  "total_rows": 8000000,
+  "live_rows": 8000000,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "deletion_vectors": []
+}

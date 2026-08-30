@@ -1,0 +1,93 @@
+[
+  {
+    "run_length": 1,
+    "density_bp": 50,
+    "array": 120,
+    "bitmap": 0,
+    "run": 0,
+    "mean_cardinality": 329.28333333333336,
+    "mean_runs": null,
+    "predicted_runs": 329.28333333333336,
+    "predicted_type": "array",
+    "container_bytes": 80308,
+    "bytes_vs_array": 1.0
+  },
+  {
+    "run_length": 2,
+    "density_bp": 50,
+    "array": 44,
+    "bitmap": 0,
+    "run": 76,
+    "mean_cardinality": 325.93333333333334,
+    "mean_runs": 161.78947368421052,
+    "predicted_runs": 162.96666666666667,
+    "predicted_type": "array",
+    "container_bytes": 79400,
+    "bytes_vs_array": 0.9968862997187625
+  },
+  {
+    "run_length": 4,
+    "density_bp": 50,
+    "array": 0,
+    "bitmap": 0,
+    "run": 120,
+    "mean_cardinality": 330.6666666666667,
+    "mean_runs": 82.13333333333334,
+    "predicted_runs": 82.66666666666667,
+    "predicted_type": "run",
+    "container_bytes": 40344,
+    "bytes_vs_array": 0.49990087232355274
+  },
+  {
+    "run_length": 8,
+    "density_bp": 50,
+    "array": 0,
+    "bitmap": 0,
+    "run": 120,
+    "mean_cardinality": 328.53333333333336,
+    "mean_runs": 40.833333333333336,
+    "predicted_runs": 41.06666666666667,
+    "predicted_type": "run",
+    "container_bytes": 20232,
+    "bytes_vs_array": 0.25169187898089174
+  },
+  {
+    "run_length": 64,
+    "density_bp": 50,
+    "array": 0,
+    "bitmap": 0,
+    "run": 116,
+    "mean_cardinality": 304.55172413793105,
+    "mean_runs": 4.758620689655173,
+    "predicted_runs": 4.758620689655173,
+    "predicted_type": "run",
+    "container_bytes": 2480,
+    "bytes_vs_array": 0.03459821428571429
+  },
+  {
+    "run_length": 512,
+    "density_bp": 50,
+    "array": 0,
+    "bitmap": 0,
+    "run": 68,
+    "mean_cardinality": 602.3529411764706,
+    "mean_runs": 1.1764705882352942,
+    "predicted_runs": 1.1764705882352942,
+    "predicted_type": "run",
+    "container_bytes": 456,
+    "bytes_vs_array": 0.00556640625
+  },
+  {
+    "run_length": 4096,
+    "density_bp": 50,
+    "array": 0,
+    "bitmap": 0,
+    "run": 12,
+    "mean_cardinality": 4096.0,
+    "mean_runs": 1.0,
+    "predicted_runs": 1.0,
+    "predicted_type": "run",
+    "container_bytes": 72,
+    "bytes_vs_array": 0.000732421875
+  }
+]

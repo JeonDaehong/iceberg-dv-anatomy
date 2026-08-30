@@ -1,0 +1,105 @@
+{
+  "results": [
+    {
+      "total_samples": 4681,
+      "scan_samples": 623,
+      "dv_union_samples": 0,
+      "dv_groups": {
+        "batch_util": 0,
+        "iceberg_deletes": 0,
+        "roaring": 0
+      },
+      "batch_reader_samples": 450,
+      "row_reader_samples": 0,
+      "dv_pct_of_all": 0.0,
+      "dv_pct_of_scan": 0.0,
+      "scan_pct_of_all": 13.309121982482376,
+      "file": "none_c1.collapsed"
+    },
+    {
+      "total_samples": 22257,
+      "scan_samples": 10794,
+      "dv_union_samples": 0,
+      "dv_groups": {
+        "batch_util": 0,
+        "iceberg_deletes": 0,
+        "roaring": 0
+      },
+      "batch_reader_samples": 7958,
+      "row_reader_samples": 0,
+      "dv_pct_of_all": 0.0,
+      "dv_pct_of_scan": 0.0,
+      "scan_pct_of_all": 48.49710203531473,
+      "file": "none_c20.collapsed"
+    },
+    {
+      "total_samples": 4703,
+      "scan_samples": 711,
+      "dv_union_samples": 156,
+      "dv_groups": {
+        "batch_util": 156,
+        "iceberg_deletes": 27,
+        "roaring": 19
+      },
+      "batch_reader_samples": 568,
+      "row_reader_samples": 0,
+      "dv_pct_of_all": 3.317031681905167,
+      "dv_pct_of_scan": 21.940928270042193,
+      "scan_pct_of_all": 15.118009780990857,
+      "file": "run_c1.collapsed"
+    },
+    {
+      "total_samples": 21640,
+      "scan_samples": 10892,
+      "dv_union_samples": 142,
+      "dv_groups": {
+        "batch_util": 142,
+        "iceberg_deletes": 21,
+        "roaring": 14
+      },
+      "batch_reader_samples": 8294,
+      "row_reader_samples": 0,
+      "dv_pct_of_all": 0.6561922365988909,
+      "dv_pct_of_scan": 1.3037091443261108,
+      "scan_pct_of_all": 50.33271719038817,
+      "file": "run_c20.collapsed"
+    },
+    {
+      "total_samples": 4903,
+      "scan_samples": 971,
+      "dv_union_samples": 392,
+      "dv_groups": {
+        "batch_util": 392,
+        "iceberg_deletes": 131,
+        "roaring": 117
+      },
+      "batch_reader_samples": 777,
+      "row_reader_samples": 0,
+      "dv_pct_of_all": 7.995105037732001,
+      "dv_pct_of_scan": 40.37075180226571,
+      "scan_pct_of_all": 19.804201509280034,
+      "file": "sparse_c1.collapsed"
+    },
+    {
+      "total_samples": 20549,
+      "scan_samples": 10250,
+      "dv_union_samples": 384,
+      "dv_groups": {
+        "batch_util": 384,
+        "iceberg_deletes": 124,
+        "roaring": 116
+      },
+      "batch_reader_samples": 7504,
+      "row_reader_samples": 0,
+      "dv_pct_of_all": 1.8687040731909095,
+      "dv_pct_of_scan": 3.7463414634146344,
+      "scan_pct_of_all": 49.880772786996936,
+      "file": "sparse_c20.collapsed"
+    }
+  ],
+  "gate": {
+    "verdict": "GO",
+    "basis": "sparse_c1.collapsed",
+    "dv_pct_of_all": 7.995105037732001
+  }
+}

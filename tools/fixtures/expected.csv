@@ -1,0 +1,12 @@
+case,chunk,container,cardinality,runs
+sparse_0_5,0,array,327,
+medium_5,0,array,3276,
+boundary_6,0,array,4096,
+boundary_6b,0,bitmap,4097,
+dense_12,0,bitmap,7864,
+run_contig,0,run,19661,1
+run_frag,0,run,24000,200
+multi_chunk,0,array,131,
+multi_chunk,1,bitmap,6553,
+multi_chunk,2,run,30000,1
+empty_ish,0,array,1,

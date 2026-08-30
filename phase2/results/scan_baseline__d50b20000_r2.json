@@ -1,0 +1,12 @@
+{
+  "label": "baseline_d50b20000_r2",
+  "table": "dv.g.d50",
+  "n_cols": 1,
+  "batch_size": 20000,
+  "iters": 30,
+  "min_s": 0.16211614299999155,
+  "median_s": 0.22259633700002723,
+  "max_s": 0.38287440999999944,
+  "mean_s": 0.22630158043333684,
+  "is_deleted": false
+}

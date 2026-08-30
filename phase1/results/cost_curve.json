@@ -1,0 +1,101 @@
+[
+  {
+    "density_bp": 0,
+    "density": 0.0,
+    "dv_samples": 0,
+    "total_samples": 3719,
+    "scan_samples": 421,
+    "dv_pct_all": 0.0,
+    "dv_pct_scan": 0.0,
+    "array_share": null,
+    "median_s": 0.24957567999999242
+  },
+  {
+    "density_bp": 50,
+    "density": 0.005,
+    "dv_samples": 250,
+    "total_samples": 3725,
+    "scan_samples": 656,
+    "dv_pct_all": 6.7114093959731544,
+    "dv_pct_scan": 38.109756097560975,
+    "array_share": 100.0,
+    "median_s": 0.2976758439999969
+  },
+  {
+    "density_bp": 500,
+    "density": 0.05,
+    "dv_samples": 315,
+    "total_samples": 3816,
+    "scan_samples": 706,
+    "dv_pct_all": 8.254716981132075,
+    "dv_pct_scan": 44.61756373937677,
+    "array_share": 100.0,
+    "median_s": 0.29343647199999623
+  },
+  {
+    "density_bp": 610,
+    "density": 0.061,
+    "dv_samples": 350,
+    "total_samples": 3747,
+    "scan_samples": 752,
+    "dv_pct_all": 9.340805978115826,
+    "dv_pct_scan": 46.54255319148936,
+    "array_share": 95.0,
+    "median_s": 0.30182022500000016
+  },
+  {
+    "density_bp": 625,
+    "density": 0.0625,
+    "dv_samples": 223,
+    "total_samples": 3580,
+    "scan_samples": 623,
+    "dv_pct_all": 6.229050279329609,
+    "dv_pct_scan": 35.79454253611557,
+    "array_share": 46.666666666666664,
+    "median_s": 0.26434085799999707
+  },
+  {
+    "density_bp": 640,
+    "density": 0.064,
+    "dv_samples": 162,
+    "total_samples": 3416,
+    "scan_samples": 528,
+    "dv_pct_all": 4.742388758782202,
+    "dv_pct_scan": 30.681818181818183,
+    "array_share": 5.833333333333333,
+    "median_s": 0.24688729299998613
+  },
+  {
+    "density_bp": 700,
+    "density": 0.07,
+    "dv_samples": 185,
+    "total_samples": 3489,
+    "scan_samples": 581,
+    "dv_pct_all": 5.30237890513041,
+    "dv_pct_scan": 31.841652323580035,
+    "array_share": 0.0,
+    "median_s": 0.2604701040000066
+  },
+  {
+    "density_bp": 1200,
+    "density": 0.12,
+    "dv_samples": 171,
+    "total_samples": 3425,
+    "scan_samples": 573,
+    "dv_pct_all": 4.992700729927007,
+    "dv_pct_scan": 29.842931937172775,
+    "array_share": 0.0,
+    "median_s": 0.2385545200000081
+  },
+  {
+    "density_bp": 5000,
+    "density": 0.5,
+    "dv_samples": 187,
+    "total_samples": 3339,
+    "scan_samples": 557,
+    "dv_pct_all": 5.600479185384846,
+    "dv_pct_scan": 33.572710951526034,
+    "array_share": 0.0,
+    "median_s": 0.23421184800000105
+  }
+]

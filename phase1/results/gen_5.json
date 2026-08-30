@@ -1,0 +1,14 @@
+{
+  "table": "dv.g.d5",
+  "density_bp": 5,
+  "target_density": 0.0005,
+  "actual_density": 0.0005195,
+  "total_rows": 8000000,
+  "deleted_rows": 4156,
+  "dv_count": 4,
+  "dv_bytes": 11071,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 32.768
+}

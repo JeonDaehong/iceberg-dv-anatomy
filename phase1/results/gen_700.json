@@ -1,0 +1,14 @@
+{
+  "table": "dv.g.d700",
+  "density_bp": 700,
+  "target_density": 0.07,
+  "actual_density": 0.07005575,
+  "total_rows": 8000000,
+  "deleted_rows": 560446,
+  "dv_count": 4,
+  "dv_bytes": 1004774,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 4587.52
+}

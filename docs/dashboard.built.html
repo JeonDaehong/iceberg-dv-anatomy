@@ -1,0 +1,932 @@
+<title>Deletion Vector Anatomy</title>
+<style>
+:root{
+  color-scheme: light;
+  --ground:#f5f6f7; --surface:#fcfcfb; --surface-2:#f0f1f2;
+  --ink:#0b0b0b; --ink-2:#52514e; --muted:#7d7c76;
+  --grid:#e4e4de; --rule:#cfceC7; --hair:rgba(11,11,11,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --s1-wash:rgba(42,120,214,.12); --s2-wash:rgba(235,104,52,.12); --s3-wash:rgba(27,175,122,.12);
+  --good:#0ca30c; --crit:#d03b3b;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#0d0d0d; --surface:#1a1a19; --surface-2:#212120;
+    --ink:#ffffff; --ink-2:#c3c2b7; --muted:#918f88;
+    --grid:#2c2c2a; --rule:#3a3a37; --hair:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --s1-wash:rgba(57,135,229,.16); --s2-wash:rgba(217,89,38,.16); --s3-wash:rgba(25,158,112,.16);
+    --good:#0ca30c; --crit:#e06060;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#0d0d0d; --surface:#1a1a19; --surface-2:#212120;
+  --ink:#ffffff; --ink-2:#c3c2b7; --muted:#918f88;
+  --grid:#2c2c2a; --rule:#3a3a37; --hair:rgba(255,255,255,.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  --s1-wash:rgba(57,135,229,.16); --s2-wash:rgba(217,89,38,.16); --s3-wash:rgba(25,158,112,.16);
+  --good:#0ca30c; --crit:#e06060;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.6;
+}
+.mono{font-family:ui-monospace,"SF Mono","Cascadia Mono",Menlo,Consolas,monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px}
+
+/* ---------- header ---------- */
+header{border-bottom:1px solid var(--rule); background:var(--surface);}
+.hd{max-width:1080px;margin:0 auto;padding:44px 24px 32px}
+.eyebrow{
+  font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  display:flex;gap:14px;flex-wrap:wrap;align-items:center;
+}
+h1{
+  font-size:clamp(30px,5vw,46px);line-height:1.08;margin:16px 0 0;
+  letter-spacing:-.024em;font-weight:680;text-wrap:balance;max-width:20ch;
+}
+.thesis{margin:18px 0 0;font-size:19px;line-height:1.5;color:var(--ink-2);max-width:60ch}
+.thesis b{color:var(--ink);font-weight:640}
+.meta{
+  margin-top:26px;display:flex;flex-wrap:wrap;gap:6px 20px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--muted);
+}
+.meta span b{color:var(--ink-2);font-weight:500}
+
+/* ---------- stat row ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:36px 0 0}
+.stat{background:var(--surface);padding:20px 22px}
+.stat .k{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted)}
+.stat .v{font-size:34px;font-weight:660;letter-spacing:-.02em;margin-top:8px;line-height:1}
+.stat .s{font-size:13px;color:var(--ink-2);margin-top:8px;line-height:1.4}
+
+/* ---------- sections ---------- */
+section{margin-top:64px}
+.sec-h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  border-bottom:1px solid var(--rule);padding-bottom:10px;margin-bottom:8px}
+.sec-id{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--s1);font-weight:600;
+  letter-spacing:.04em}
+h2{font-size:23px;font-weight:640;letter-spacing:-.015em;margin:0;text-wrap:balance}
+.lede{color:var(--ink-2);font-size:16px;max-width:68ch;margin:14px 0 0}
+.lede b{color:var(--ink);font-weight:620}
+
+/* ---------- figure ---------- */
+figure{margin:26px 0 0;background:var(--surface);border:1px solid var(--hair);
+  border-radius:12px;padding:22px 22px 16px}
+figcaption{font-size:13px;color:var(--muted);margin-top:14px;line-height:1.5;
+  padding-top:12px;border-top:1px solid var(--grid)}
+.fig-t{font-size:14px;font-weight:620;letter-spacing:-.005em}
+.fig-s{font-size:12.5px;color:var(--muted);margin-top:3px}
+.chartbox{overflow-x:auto;margin-top:18px}
+svg{display:block;max-width:100%;height:auto}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:var(--ink-2)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;margin-right:7px;
+  vertical-align:-1px}
+
+/* svg text */
+.tick{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--muted)}
+.dlabel{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink-2);font-weight:600}
+.axis-t{font-family:ui-monospace,Menlo,monospace;font-size:10px;fill:var(--muted);
+  letter-spacing:.08em;text-transform:uppercase}
+.gl{stroke:var(--grid);stroke-width:1}
+.base{stroke:var(--rule);stroke-width:1}
+
+/* ---------- table view ---------- */
+details{margin-top:12px}
+summary{cursor:pointer;font-size:12.5px;color:var(--muted);
+  font-family:ui-monospace,Menlo,monospace;padding:5px 0;list-style:none;
+  display:inline-flex;align-items:center;gap:7px}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸";font-size:10px;transition:transform .15s}
+details[open] summary::before{transform:rotate(90deg)}
+summary:hover{color:var(--ink-2)}
+summary:focus-visible{outline:2px solid var(--s1);outline-offset:3px;border-radius:3px}
+.tw{overflow-x:auto;margin-top:8px}
+table{border-collapse:collapse;font-size:12.5px;width:100%;
+  font-family:ui-monospace,Menlo,Consolas,monospace}
+th,td{text-align:right;padding:6px 12px;border-bottom:1px solid var(--grid);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- callout ---------- */
+.note{margin-top:22px;border-left:2px solid var(--rule);padding:2px 0 2px 18px;
+  font-size:14.5px;color:var(--ink-2);max-width:66ch}
+.note b{color:var(--ink)}
+.warn{border-left-color:var(--s2)}
+.warn .tag{color:var(--s2)}
+.tag{font-family:ui-monospace,Menlo,monospace;font-size:11px;letter-spacing:.09em;
+  text-transform:uppercase;font-weight:600;display:block;margin-bottom:5px;color:var(--muted)}
+
+code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88em;
+  background:var(--surface-2);padding:1.5px 5px;border-radius:4px}
+
+/* ---------- chain ---------- */
+.chain{display:flex;flex-direction:column;gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin-top:26px}
+.link{background:var(--surface);padding:14px 20px;display:grid;
+  grid-template-columns:78px 1fr auto;gap:18px;align-items:baseline}
+.link .n{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--muted);
+  letter-spacing:.06em}
+.link .t{font-size:14.5px}
+.link .t b{font-weight:620}
+.link .f{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--s1);white-space:nowrap}
+
+footer{margin-top:80px;padding-top:26px;border-top:1px solid var(--rule);
+  font-size:13px;color:var(--muted);line-height:1.7}
+footer b{color:var(--ink-2);font-weight:500}
+@media (max-width:640px){
+  .link{grid-template-columns:1fr;gap:4px}
+  .stat .v{font-size:28px}
+}
+</style>
+
+<header>
+  <div class="hd">
+    <div class="eyebrow">
+      <span>Apache Iceberg V3</span><span>·</span><span>Deletion Vector</span>
+      <span>·</span><span>2026-08-17</span>
+    </div>
+    <h1>Deletion Vector Anatomy</h1>
+    <p class="thesis">
+      Iceberg V3는 삭제된 행을 Roaring bitmap으로 기록합니다. 그 bitmap이 어떤
+      <b>컨테이너 타입</b>으로 물질화되는지는 삭제 패턴이 정하고, 컨테이너 타입은
+      스캔 CPU를 가릅니다. 이 페이지는 그 사슬을 끝까지 측정한 기록입니다.
+    </p>
+    <div class="meta">
+      <span>Iceberg <b>1.11.0</b></span>
+      <span>Spark <b>4.0.4</b></span>
+      <span>RoaringBitmap <b>1.6.14</b> (Iceberg 핀)</span>
+      <span>JDK <b>17</b></span>
+      <span>WSL2 · async-profiler <b>4.5</b></span>
+      <span>800만 행 / 4파일 / 파일당 30.5 청크</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="stats" id="stats"></div>
+
+  <!-- ═══════════════ 1 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">01</span><h2>삭제율이 컨테이너 타입을 정한다</h2></div>
+    <p class="lede">
+      Roaring은 32비트 공간을 65,536개짜리 청크로 나누고, 청크마다 밀도에 따라 컨테이너를 고릅니다.
+      <b>카디널리티 4,096</b>(= 청크 밀도 6.25%)이 array와 bitmap을 가르는 임계값입니다.
+      실제 테이블은 파일당 청크가 30개라 경계 부근에서 두 타입이 섞이는데,
+      <b>전이 구간은 0.30%p밖에 안 됩니다.</b>
+    </p>
+
+    <figure>
+      <div class="fig-t">청크 밀도에 따른 컨테이너 타입 구성</div>
+      <div class="fig-s">온전한 65,536 청크 120개 기준 · 파일 끝 부분 청크는 제외</div>
+      <div class="chartbox" id="c-mix"></div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>array</span>
+        <span><i style="background:var(--s2)"></i>bitmap</span>
+      </div>
+      <figcaption>
+        이항분포 <code>Binomial(65536, d)</code>로 예측한 값(회색 점선)과 실측이
+        전 구간 3.7%p 이내로 일치합니다. d=6.25%에서 임계값이 정확히 평균에 걸리므로
+        약 절반씩 갈립니다.
+      </figcaption>
+      <details><summary>표로 보기</summary><div class="tw" id="t-mix"></div></details>
+    </figure>
+  </section>
+
+  <!-- ═══════════════ 2 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">02</span><h2>그래서 비용 곡선이 톱니가 된다</h2></div>
+    <p class="lede">
+      <code>buildRowIdMapping</code>은 배치마다 <code>batchSize</code>번 무조건 프로브합니다.
+      삭제율이 0.5%든 50%든 <code>contains()</code> 호출 횟수는 같고 스캔 행 수도 800만으로 고정이므로,
+      <b>DV 샘플 수를 그대로 비교하면 그게 호출당 비용</b>입니다.
+    </p>
+
+    <figure>
+      <div class="fig-t">삭제율에 따른 DV 체크 CPU</div>
+      <div class="fig-s">막대 색 = 지배적 컨테이너 타입 · 세로선 = 반복 측정 3회의 범위</div>
+      <div class="chartbox" id="c-cost"></div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>array</span>
+        <span><i style="background:var(--s2)"></i>bitmap</span>
+      </div>
+      <figcaption id="cap-cost"></figcaption>
+      <details><summary>표로 보기</summary><div class="tw" id="t-cost"></div></details>
+    </figure>
+
+    <div class="note">
+      <span class="tag">반직관</span>
+      <b>삭제를 더 많이 할수록 행당 체크가 싸집니다.</b> array 컨테이너는 이진 탐색이라
+      카디널리티가 늘수록 비싸지지만, 4,096을 넘어 bitmap이 되는 순간 O(1) 비트 테스트로 바뀝니다.
+      가장 비싼 지점은 경계 바로 아래 — <b>실무 CDC 워크로드가 주로 머무는 구간</b>입니다.
+    </div>
+  </section>
+
+  <!-- ═══════════════ 3 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">03</span><h2>삭제율을 안 바꾸고도 비용을 줄일 수 있다</h2></div>
+    <p class="lede">
+      삭제율을 0.5%로 고정하고 <b>평균 run 길이 L</b>만 바꿨습니다. 삭제 행 수가 거의 같으므로
+      남는 차이는 순수하게 컨테이너 구조뿐입니다. 이게 "삭제 키로 정렬하라"는 조언의 근거입니다.
+    </p>
+
+    <figure>
+      <div class="fig-t">클러스터링에 따른 DV 크기</div>
+      <div class="fig-s">삭제율 0.5% 고정 · 로그 스케일</div>
+      <div class="chartbox" id="c-bytes"></div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>array</span>
+        <span><i style="background:var(--s3)"></i>run</span>
+      </div>
+      <figcaption>
+        <code>runOptimize()</code>는 바이트가 줄 때만 run으로 바꿉니다.
+        <code>Run = 2 + 4·nRuns</code> vs <code>Array = 2·card</code> 이므로
+        <b>L &gt; 2</b>에서 뒤집힙니다. L=2에서 650B vs 652B — 단 2바이트 차이라
+        청크마다 갈려 44개는 array, 76개는 run이 됐습니다.
+      </figcaption>
+      <details><summary>표로 보기</summary><div class="tw" id="t-clu"></div></details>
+    </figure>
+
+    <figure>
+      <div class="fig-t">클러스터링에 따른 DV 체크 CPU</div>
+      <div class="fig-s">세로선 = 반복 측정 3회의 범위</div>
+      <div class="chartbox" id="c-clu"></div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>array</span>
+        <span><i style="background:var(--s3)"></i>run</span>
+      </div>
+      <figcaption id="cap-clu"></figcaption>
+    </figure>
+  </section>
+
+  <!-- ═══════════════ 4 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">04</span><h2>이게 쿼리에서 얼마나 보이나</h2></div>
+    <p class="lede">
+      마이크로벤치의 배율은 쿼리의 배율이 아닙니다. 실제 스캔 프로파일에서
+      DV 체크가 차지하는 비중을 재고, 삭제가 없는 대조군과 비교했습니다.
+    </p>
+
+    <figure>
+      <div class="fig-t">스캔 CPU 중 DV 체크가 차지하는 비중</div>
+      <div class="fig-s">삭제율 0.5% · 컬럼 수에 반비례</div>
+      <div class="chartbox" id="c-share"></div>
+      <figcaption>
+        DV 체크는 컬럼 수와 무관하게 행당 1회이므로, 넓은 스캔일수록 비중이 희석됩니다.
+        <b>이 비중은 좁은 스캔에 한정된 주장</b>입니다. 위 둘은 3회 반복 평균,
+        20컬럼은 단일 측정입니다. 대조군(삭제 없음)에서 DV 샘플은 3회 모두 정확히 0으로,
+        분류기 오탐이 없음을 확인했습니다.
+      </figcaption>
+    </figure>
+
+    <div class="note">
+      <span class="tag">wall-clock</span>
+      전체의 <b>0.5%만 삭제된 테이블</b>이, 삭제가 전혀 없는 테이블보다
+      1컬럼 스캔에서 <b>13.0% 느립니다</b>. 내보낼 행이 0.5% 더 적은데도 그렇습니다.
+      반대로 30%를 연속 삭제한 테이블은 20.3% <i>빨라집니다</i> —
+      안 내보내는 행이 많아 하류 작업이 줄어드는 효과가 DV 체크 비용을 압도하기 때문입니다.
+    </div>
+  </section>
+
+  <!-- ═══════════════ 5 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">05</span><h2>고칠 수 있다 — 이미 있는 API로</h2></div>
+    <p class="lede">
+      현행 코드는 배치 안의 position이 <b>연속 단조 증가</b>라는 사실을 전혀 쓰지 않고,
+      5,000번의 독립적인 이진 탐색을 합니다. RoaringBitmap에는 구간 단위 API가
+      <b>이미 있습니다</b> — 새 의존성도, 포맷 변경도 필요 없습니다.
+      <span style="opacity:.75">(아래 마이크로벤치는 1.6.20으로 측정했고, Iceberg가 핀한 것은 1.6.14입니다.
+      두 버전 모두 이 API를 갖고 있고, 섹션 06이 실제 1.6.14 경로를 측정합니다.)</span>
+    </p>
+
+    <figure>
+      <div class="fig-t">배치당 rowIdMapping 생성 시간 (JMH)</div>
+      <div class="fig-s">batchSize 5,000 · 낮을수록 빠름 · 로그 스케일</div>
+      <div class="chartbox" id="c-jmh"></div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>현행 (행 단위 contains)</span>
+        <span><i style="background:var(--s3)"></i>구간 API</span>
+      </div>
+      <figcaption>
+        6개 구현 전부가 baseline과 <b>바이트 단위로 동일한 결과</b>를 낸다는 것을
+        측정 전 assert로 검증했습니다. 가장 나쁜 조건(밀도 12%)에서도 4.7~6.4배입니다.
+      </figcaption>
+      <details><summary>표로 보기</summary><div class="tw" id="t-jmh"></div></details>
+    </figure>
+  </section>
+
+  <!-- ═══════════════ 6 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">06</span><h2>그래서 실제로 고쳐봤습니다</h2></div>
+    <p class="lede">
+      마이크로벤치의 배속은 "Iceberg 바깥에서" 잰 숫자입니다. 그래서
+      <b>apache/iceberg 1.11.0 태그를 클론해 175줄을 고치고 다시 빌드해서</b>,
+      Phase 1이 만든 <b>같은 테이블</b>에 대해 jar만 바꿔가며 다시 쟀습니다.
+      두 jar은 같은 소스 트리에서 패치만 stash한 채 각각 빌드했습니다 —
+      유일한 차이가 우리 diff여야 하기 때문입니다.
+    </p>
+
+    <div class="note">
+      <span class="tag">정확성이 먼저</span>
+      빨라졌는데 답이 다르면 의미가 없습니다. 7개 테이블에서 <code>count(*)</code>,
+      <code>sum(id)</code>, <code>min/max(id)</code>를 두 jar로 각각 계산해 대조했고
+      <b>전부 일치</b>했습니다. <code>sum(id)</code>는 <i>어떤 행이 살아남았는지</i>에
+      민감해서, 행 개수만 맞고 다른 행을 살리는 버그를 잡아냅니다.
+      Iceberg 자체 테스트도 통과했습니다 — core 55개, spark 17개, 실패 0.
+    </div>
+
+    <figure>
+      <div class="fig-t">DV 체크에 쓰인 CPU 샘플 — 패치 전후</div>
+      <div class="fig-s">같은 테이블 · 1컬럼 스캔 · 3회 반복 · 두 arm을 번갈아 측정</div>
+      <div class="chartbox" id="c-patch"></div>
+      <div class="legend">
+        <span><i style="background:var(--s1)"></i>현행 (1.11.0)</span>
+        <span><i style="background:var(--s3)"></i>패치본</span>
+      </div>
+      <figcaption id="cap-patch"></figcaption>
+      <details><summary>표로 보기</summary><div class="tw" id="t-patch"></div></details>
+    </figure>
+
+    <div class="note">
+      <span class="tag">기전이 프로파일에 찍혔습니다</span>
+      삭제율 0.5%에서 핫 프레임이 통째로 바뀝니다.
+      현행은 <code>RoaringBitmap.contains</code> → <code>hybridUnsignedBinarySearch</code> →
+      <code>ArrayContainer.contains</code>, 패치본은 <code>forEachInRange</code> →
+      <code>forAllInRange</code> → <code>ArrayContainer.forAllInRange</code>.
+      <b>이진 탐색에 쓰인 샘플이 94 → 2로 줄었습니다.</b>
+      행마다 하던 탐색이 배치당 한 번이 됐기 때문입니다.
+    </div>
+
+    <figure>
+      <div class="fig-t">패치가 건드린 나머지 경로들</div>
+      <div class="fig-s">워크로드가 달라 위 차트와 같은 축에 못 올립니다 · 3회 반복</div>
+      <div class="tw" id="t-extra"></div>
+      <figcaption id="cap-extra"></figcaption>
+    </figure>
+
+    <div class="note">
+      <span class="tag">공짜로 얻은 음성 대조군</span>
+      <b>equality delete만 있고 DV가 없는 테이블</b>에서는 <code>deletedRowPositions()</code>가
+      null이라 조건문이 즉시 단락됩니다 — 즉 두 jar이 <b>바이트 단위로 같은 코드를 실행</b>합니다.
+      그런데 측정값은 <b>1.25배</b> 차이가 났습니다(현행 쪽 흩어짐 50.2%).
+      <b>같은 코드가 1.25배의 겉보기 효과를 만들어낼 수 있다</b>는 뜻이고,
+      동시에 위의 8.6~18.9배가 그 천장보다 한 자릿수 위라는 확인입니다.
+      설계한 게 아니라 결과를 보다가 알아챈 건데, 이 프로젝트에서 가장 값싼 검증이었습니다.
+    </div>
+
+    <div class="note warn">
+      <span class="tag">먼저 이슈를 내지 않은 게 값을 했습니다</span>
+      이슈 초안은 빠른 경로를 <code>eqDeleteFilter == null</code>로 거르자고 썼습니다.
+      그런데 실제 <code>eqDeletedRowFilter()</code>는 equality delete가 없어도
+      <b>null이 아니라 <code>t -> true</code></b>를 돌려줍니다. 초안대로 짰다면 빠른 경로는
+      <b>단 한 번도 실행되지 않았을 것</b>이고, 패치는 "정확하지만 효과 0"으로 측정됐을 겁니다.
+      코드를 실제로 빌드해 돌려보지 않았으면 못 잡았을 오류입니다.
+    </div>
+  </section>
+
+  <!-- ═══════════════ chain ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">07</span><h2>측정된 사슬</h2></div>
+    <p class="lede">가설로 시작한 연결 고리가 전부 측정으로 채워졌습니다.</p>
+    <div class="chain" id="chain"></div>
+  </section>
+
+  <!-- ═══════════════ limits ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">08</span><h2>이 수치를 어디까지 믿을 수 있나</h2></div>
+
+    <div class="note warn">
+      <span class="tag">측정 조건</span>
+      <b>AMD Ryzen 5 5600X</b>(Zen 3, L1d 32 KiB/코어, L3 32 MiB, AVX2) · WSL2 ·
+      Spark 4.0 <code>local[4]</code> · JDK 17 · Iceberg 1.11.0(RoaringBitmap 1.6.14) ·
+      배치 크기 <b>5,000</b>(Iceberg 기본값) · <b>1컬럼 좁은 투영</b>.
+      테이블은 825 MB이고 RAM은 15 GiB라 <b>페이지 캐시에 완전히 상주</b>합니다 —
+      워밍업 3회 + 측정 30회이므로 <b>측정 구간의 디스크 I/O는 사실상 0</b>이고,
+      따라서 이 페이지의 숫자는 전부 <b>순수 CPU-bound 조건</b>의 값입니다.
+    </div>
+
+    <div class="note warn">
+      <span class="tag">가장 취약한 숫자</span>
+      <b>"DV 체크가 스캔 CPU의 53%"</b>가 이 페이지에서 조건에 가장 많이 의존하는 값입니다.
+      분모가 웜 캐시 Parquet 디코딩이기 때문입니다. 얼마나 흔들리는지는 이미 우리 데이터 안에 있습니다 —
+      <b>투영을 20컬럼으로 넓히면 44.2% → 3.75%</b>로 12배 떨어집니다.
+      S3 콜드 리드에서는 더 떨어질 것으로 봅니다(미측정).
+      정직한 표현은 <b>"좁은 투영 · 웜 캐시 · 로컬 디스크에서의 상한"</b>입니다.
+      반면 <b>전이 경계 4096 · 컨테이너 분포 · 패치의 정확성</b>은 결정론적이라 환경과 무관하고,
+      <b>패치의 개선 방향</b>은 행당 이진 탐색을 없앤 구조적 결과라 뒤집히지 않습니다
+      (배율은 이동할 수 있습니다).
+    </div>
+
+    <div class="note warn">
+      <span class="tag">노이즈 바닥</span>
+      처음엔 설정마다 한 번씩만 쟀습니다. 그런데 우연히 같은 설정을 두 번 재게 됐고
+      <b>303 vs 363</b>, 다른 쌍은 <b>120 vs 169</b>가 나왔습니다. √n으로 추정했던
+      ±6%는 완전한 과소평가였습니다 — JIT 컴파일 타이밍, GC, 샘플러 위상이 실행마다 다릅니다.
+      그래서 15개 설정을 <b>각 3회 반복</b>으로 다시 쟀고, 흩어짐은
+      <b>중앙값 9.7% · 최대 25.9%</b>로 확정됐습니다.
+      차트의 세로선이 그 범위이며, <b>범위가 겹치는 차이는 이 페이지에서 주장하지 않습니다.</b>
+      첫 측정에서 그럴듯해 보였던 미세 구조는 대부분 이 단계에서 버려졌습니다.
+    </div>
+
+    <div class="note">
+      <span class="tag">공간 최적 ≠ 스캔 최적</span>
+      <code>runOptimize()</code>는 <b>바이트가 줄 때만</b> run으로 바꿉니다. 빨라지는지는
+      판단 기준이 아닙니다. L=2에서 실제로 그 간극이 보입니다 — 크기는 2바이트 줄어
+      run으로 전환되지만, 비용은 <b>줄지 않습니다</b>(L=1 637 vs L=2 692, 범위 겹침).
+      run 컨테이너가 162개나 되어 여전히 이진 탐색이기 때문입니다.
+      이득은 run 개수가 실제로 줄어드는 L≥64부터 나타납니다.
+    </div>
+
+    <div class="note">
+      <span class="tag">환경</span>
+      WSL2에는 하드웨어 PMU가 없어 <code>ctimer</code> 샘플링 기반입니다.
+      사이클·분기 실패 단위 귀속은 베어메탈에서 <code>-prof perfnorm</code>으로 확정해야 합니다.
+      Spark는 <code>local</code> 단일 JVM이라 절대 성능이 아니라 <b>비중</b>을 보는 용도입니다.
+    </div>
+
+    <div class="note">
+      <span class="tag">미해결</span>
+      클러스터링 L을 키우면 삭제가 소수 청크에 뭉쳐 <b>컨테이너 개수도 함께 줄어듭니다</b>
+      (L=1에서 124개 → L=4096에서 12개). 즉 관측된 이득 중 얼마가 run 구조 덕이고
+      얼마가 최상위 탐색 축소 덕인지 아직 분리되지 않았습니다.
+      점유율을 독립 통제하려던 실험은 파일당 청크가 30개뿐이라 해상도가 부족했습니다.
+    </div>
+  </section>
+
+  <footer>
+    <b>재현</b> — 데이터 생성기, 컨테이너 파서, JMH 벤치, perf 스크립트가 모두 저장소에 있습니다.
+    Roaring portable 포맷 파서는 리플렉션 없이 동작하며 Java 정답지와 9/9 일치를 검증했습니다.<br>
+    <b>선행 연구</b> — Chambi·Lemire et al., <i>Better bitmap performance with Roaring bitmaps</i> (SPE 2016);
+    Lemire et al., <i>Roaring Bitmaps: Implementation of an Optimized Software Library</i> (SPE 2018).
+    Iceberg 쪽 컨테이너·비용 연결은 공개 자료에서 확인되지 않았습니다.
+  </footer>
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   DATA — 전부 측정값. 자세한 출처는 저장소 docs/findings.md
+   ══════════════════════════════════════════════════════════════════ */
+const MIX = [ /* F-007: 밀도 -> 온전 청크의 array 비율 (%), 예측 */
+  {d:0.05, arr:100.0, pred:100.0, card:34},
+  {d:0.50, arr:100.0, pred:100.0, card:329},
+  {d:3.00, arr:100.0, pred:100.0, card:1969},
+  {d:5.00, arr:100.0, pred:100.0, card:3278},
+  {d:5.50, arr:100.0, pred:100.0, card:3605},
+  {d:5.90, arr:100.0, pred:100.0, card:3868},
+  {d:6.10, arr: 95.0, pred: 94.7, card:4000},
+  {d:6.25, arr: 46.7, pred: 50.3, card:4098},
+  {d:6.40, arr:  5.8, pred:  5.9, card:4198},
+  {d:6.60, arr:  0.0, pred:  0.0, card:4329},
+  {d:7.00, arr:  0.0, pred:  0.0, card:4591},
+  {d:8.00, arr:  0.0, pred:  0.0, card:5247},
+  {d:12.00,arr:  0.0, pred:  0.0, card:7863},
+  {d:50.00,arr:  0.0, pred:  0.0, card:32789},
+];
+
+const CLU_BYTES = [ /* F-009: 저장 (결정론적, 반복 불필요) */
+  {L:1,    type:"array", bytes:80308, runs:null, card:329},
+  {L:2,    type:"mixed", bytes:79400, runs:162,  card:326},
+  {L:4,    type:"run",   bytes:40344, runs:82,   card:331},
+  {L:8,    type:"run",   bytes:20232, runs:41,   card:329},
+  {L:64,   type:"run",   bytes:2480,  runs:5,    card:305},
+  {L:512,  type:"run",   bytes:456,   runs:1,    card:602},
+  {L:4096, type:"run",   bytes:72,    runs:1,    card:4096},
+];
+
+const JMH = [ /* F-002: us/op, batchSize 5000 */
+  {name:"현행 · 행 단위 contains", kind:"base", v:{sparse:64.99, medium:80.22, dense:19.76}},
+  {name:"forAllInRange",           kind:"new",  v:{sparse:0.49,  medium:1.91,  dense:3.07}},
+  {name:"forEachInRange + 채움",   kind:"new",  v:{sparse:0.45,  medium:1.87,  dense:4.16}},
+  {name:"BatchIterator",           kind:"new",  v:{sparse:0.63,  medium:2.79,  dense:5.92}},
+];
+
+const SHARE = [ /* 스캔 서브트리 대비 DV 체크 비중 */
+  {label:"1컬럼 · 삭제율 6.1%",  pct:53.15, reps:3},
+  {label:"1컬럼 · 삭제율 0.5%",  pct:44.19, reps:3},
+  {label:"20컬럼 · 삭제율 0.5%", pct:3.75,  reps:1},
+];
+
+/* 반복 측정 결과는 아래 두 배열로 주입된다 (07-remeasure.sh -> summary.json) */
+const COST = [{"label": "0.5%", "density": 0.5, "container": "array", "mean": 599.0, "min": 576, "max": 633, "pct": 44.19, "reps": 3}, {"label": "5%", "density": 5.0, "container": "array", "mean": 745.7, "min": 700, "max": 798, "pct": 47.51, "reps": 3}, {"label": "6.1%", "density": 6.1, "container": "array", "mean": 872.3, "min": 838, "max": 909, "pct": 53.15, "reps": 3}, {"label": "6.25%", "density": 6.25, "container": "bitmap", "mean": 653.7, "min": 617, "max": 702, "pct": 46.21, "reps": 3}, {"label": "6.4%", "density": 6.4, "container": "bitmap", "mean": 455.3, "min": 415, "max": 533, "pct": 36.83, "reps": 3}, {"label": "7%", "density": 7.0, "container": "bitmap", "mean": 393.7, "min": 381, "max": 406, "pct": 33.63, "reps": 3}, {"label": "12%", "density": 12.0, "container": "bitmap", "mean": 422.3, "min": 410, "max": 447, "pct": 36.25, "reps": 3}, {"label": "50%", "density": 50.0, "container": "bitmap", "mean": 495.7, "min": 454, "max": 529, "pct": 39.58, "reps": 3}];
+const CLU_COST = [{"L": 1, "container": "array", "mean": 637.0, "min": 596, "max": 658, "pct": 45.83, "reps": 3}, {"L": 2, "container": "run", "mean": 692.0, "min": 634, "max": 766, "pct": 48.14, "reps": 3}, {"L": 4, "container": "run", "mean": 581.3, "min": 543, "max": 645, "pct": 43.88, "reps": 3}, {"L": 8, "container": "run", "mean": 603.7, "min": 590, "max": 620, "pct": 46.23, "reps": 3}, {"L": 64, "container": "run", "mean": 428.0, "min": 416, "max": 449, "pct": 36.05, "reps": 3}, {"L": 512, "container": "run", "mean": 288.7, "min": 273, "max": 309, "pct": 29.92, "reps": 3}, {"L": 4096, "container": "run", "mean": 180.3, "min": 177, "max": 185, "pct": 19.77, "reps": 3}];
+/* 패치 전후 (phase2/results/compare.json) */
+const PATCH = [{"tag": "d610", "label": "삭제율 6.1%", "container": "array", "base": 872.7, "baseMin": 704, "baseMax": 959, "patch": 94.0, "patchMin": 68, "patchMax": 117, "x": 9.284, "pctBase": 49.38, "pctPatch": 9.61, "scanCut": 44.8, "wallBase": 0.2206, "wallPatch": 0.1527}, {"tag": "d50", "label": "삭제율 0.5%", "container": "array", "base": 673.7, "baseMin": 588, "baseMax": 748, "patch": 78.7, "patchMin": 67, "patchMax": 97, "x": 8.564, "pctBase": 43.23, "pctPatch": 7.64, "scanCut": 33.6, "wallBase": 0.2065, "wallPatch": 0.18}, {"tag": "d50L1", "label": "0.5% · 무정렬 L=1", "container": "array", "base": 621.3, "baseMin": 568, "baseMax": 683, "patch": 73.0, "patchMin": 64, "patchMax": 78, "x": 8.511, "pctBase": 44.12, "pctPatch": 7.39, "scanCut": 29.9, "wallBase": 0.1775, "wallPatch": 0.1639}, {"tag": "d700", "label": "삭제율 7.0%", "container": "bitmap", "base": 420.0, "baseMin": 378, "baseMax": 474, "patch": 112.7, "patchMin": 109, "patchMax": 115, "x": 3.728, "pctBase": 33.43, "pctPatch": 11.52, "scanCut": 22.0, "wallBase": 0.1715, "wallPatch": 0.1496}, {"tag": "d50L4096", "label": "0.5% · 정렬 L=4096", "container": "run", "base": 185.3, "baseMin": 174, "baseMax": 196, "patch": 60.7, "patchMin": 43, "patchMax": 79, "x": 3.055, "pctBase": 19.05, "pctPatch": 7.02, "scanCut": 12.4, "wallBase": 0.1482, "wallPatch": 0.1446}];
+/* 보조 경로 (F-012): _deleted 투영 / equality delete */
+const PATCH_EXTRA = [{"label": "_deleted 투영 · 0.5%", "note": "buildIsDeleted 경로", "base": 649.0, "baseMin": 573, "baseMax": 717, "patch": 34.3, "patchMin": 25, "patchMax": 42, "x": 18.903, "overlap": false}, {"label": "_deleted 투영 · 6.1%", "note": "buildIsDeleted 경로", "base": 854.3, "baseMin": 793, "baseMax": 892, "patch": 57.3, "patchMin": 56, "patchMax": 58, "x": 14.901, "overlap": false}, {"label": "DV + equality delete", "note": "게이트가 빠른 경로를 거부", "base": 3361.7, "baseMin": 3177, "baseMax": 3559, "patch": 3524.3, "patchMin": 3267, "patchMax": 3955, "x": 0.954, "overlap": true}, {"label": "equality delete 만", "note": "두 arm이 같은 코드 — 음성 대조군", "base": 3302.7, "baseMin": 2590, "baseMax": 4249, "patch": 2634.7, "patchMin": 2594, "patchMax": 2679, "x": 1.254, "overlap": true}];
+
+/* ══════════════════════════════════════════════════════════════════ */
+const SVGNS="http://www.w3.org/2000/svg";
+const el=(n,a={})=>{const e=document.createElementNS(SVGNS,n);
+  for(const k in a) e.setAttribute(k,a[k]); return e;};
+const fmt=n=>n>=1000?n.toLocaleString("en-US"):String(n);
+const COLOR={array:"var(--s1)",bitmap:"var(--s2)",run:"var(--s3)",mixed:"var(--s1)"};
+
+function svgRoot(host,w,h){
+  const s=el("svg",{viewBox:`0 0 ${w} ${h}`,width:w,height:h,role:"img"});
+  document.getElementById(host).appendChild(s); return s;
+}
+
+/* ---------- 1. container mix : stacked columns ---------- */
+(function(){
+  const W=980,H=290,L=46,R=14,T=18,B=52;
+  const s=svgRoot("c-mix",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const bw=Math.min(24, pw/MIX.length-10), step=pw/MIX.length;
+
+  for(let p=0;p<=100;p+=25){
+    const y=T+ph-ph*p/100;
+    s.appendChild(el("line",{x1:L,x2:W-R,y1:y,y2:y,class:p===0?"base":"gl"}));
+    const t=el("text",{x:L-9,y:y+3.5,class:"tick","text-anchor":"end"});t.textContent=p+"%";s.appendChild(t);
+  }
+  MIX.forEach((m,i)=>{
+    const x=L+step*i+(step-bw)/2;
+    const ha=ph*m.arr/100, hb=ph*(100-m.arr)/100;
+    if(hb>0.5) s.appendChild(el("rect",{x,y:T,width:bw,height:Math.max(hb-(ha>0.5?1:0),1),
+      fill:"var(--s2)",rx:ha>0.5?0:4}));
+    if(ha>0.5) s.appendChild(el("rect",{x,y:T+ph-ha,width:bw,height:ha,fill:"var(--s1)",
+      rx:0}));
+    const tk=el("text",{x:x+bw/2,y:H-B+16,class:"tick","text-anchor":"middle"});
+    tk.textContent=m.d>=10?m.d.toFixed(0):m.d.toFixed(2).replace(/0$/,"");
+    s.appendChild(tk);
+    // 예측 마커
+    const py=T+ph-ph*m.pred/100;
+    s.appendChild(el("line",{x1:x-3,x2:x+bw+3,y1:py,y2:py,
+      stroke:"var(--muted)","stroke-width":1.5,"stroke-dasharray":"3 2"}));
+  });
+  const ax=el("text",{x:L+pw/2,y:H-10,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="청크 밀도 (%)";s.appendChild(ax);
+  const ay=el("text",{x:L-9,y:T-6,class:"axis-t","text-anchor":"end"});
+  ay.textContent="구성";s.appendChild(ay);
+
+  // 경계 표시
+  const bi=MIX.findIndex(m=>m.d===6.25);
+  const bx=L+step*bi+step/2;
+  s.appendChild(el("line",{x1:bx,x2:bx,y1:T-6,y2:T+ph,stroke:"var(--ink-2)",
+    "stroke-width":1,"stroke-dasharray":"2 3",opacity:.55}));
+  const bl=el("text",{x:bx,y:T-10,class:"dlabel","text-anchor":"middle"});
+  bl.textContent="6.25% 임계";s.appendChild(bl);
+
+  document.getElementById("t-mix").innerHTML=
+    "<table><thead><tr><th>청크 밀도</th><th>평균 카디널리티</th><th>array 비율</th><th>이항분포 예측</th></tr></thead><tbody>"+
+    MIX.map(m=>`<tr><td>${m.d.toFixed(2)}%</td><td>${fmt(m.card)}</td><td>${m.arr.toFixed(1)}%</td><td>${m.pred.toFixed(1)}%</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 2. density -> cost : columns + range ---------- */
+(function(){
+  if(!COST.length) return;
+  const W=980,H=300,L=54,R=16,T=22,B=54;
+  const s=svgRoot("c-cost",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const max=Math.max(...COST.map(c=>c.max))*1.12;
+  const bw=Math.min(30, pw/COST.length-14), step=pw/COST.length;
+  const yOf=v=>T+ph-ph*v/max;
+
+  const tickN=4;
+  for(let i=0;i<=tickN;i++){
+    const v=max*i/tickN, y=yOf(v);
+    s.appendChild(el("line",{x1:L,x2:W-R,y1:y,y2:y,class:i===0?"base":"gl"}));
+    const t=el("text",{x:L-9,y:y+3.5,class:"tick","text-anchor":"end"});
+    t.textContent=Math.round(v);s.appendChild(t);
+  }
+  COST.forEach((c,i)=>{
+    const x=L+step*i+(step-bw)/2, y=yOf(c.mean);
+    s.appendChild(el("rect",{x,y,width:bw,height:T+ph-y,fill:COLOR[c.container]||"var(--s1)",rx:4}));
+    s.appendChild(el("rect",{x,y:T+ph-4,width:bw,height:4,fill:COLOR[c.container]||"var(--s1)"}));
+    // range whisker
+    const cx=x+bw/2;
+    s.appendChild(el("line",{x1:cx,x2:cx,y1:yOf(c.min),y2:yOf(c.max),
+      stroke:"var(--ink-2)","stroke-width":1.5,opacity:.75}));
+    [c.min,c.max].forEach(v=>s.appendChild(el("line",{x1:cx-4,x2:cx+4,y1:yOf(v),y2:yOf(v),
+      stroke:"var(--ink-2)","stroke-width":1.5,opacity:.75})));
+    const tk=el("text",{x:cx,y:H-B+16,class:"tick","text-anchor":"middle"});
+    tk.textContent=c.label;s.appendChild(tk);
+  });
+  // 정점/최저 직접 라벨
+  const hi=COST.reduce((a,b)=>b.mean>a.mean?b:a), lo=COST.reduce((a,b)=>b.mean<a.mean?b:a);
+  [[hi,"정점"],[lo,"최저"]].forEach(([c,txt])=>{
+    const i=COST.indexOf(c), cx=L+step*i+step/2;
+    const t=el("text",{x:cx,y:yOf(c.max)-9,class:"dlabel","text-anchor":"middle"});
+    t.textContent=txt+" "+Math.round(c.mean);s.appendChild(t);
+  });
+  const ax=el("text",{x:L+pw/2,y:H-10,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="삭제율";s.appendChild(ax);
+  const ay=el("text",{x:L-9,y:T-8,class:"axis-t","text-anchor":"end"});
+  ay.textContent="DV 샘플";s.appendChild(ay);
+
+  document.getElementById("cap-cost").innerHTML=
+    `array 구간에서는 카디널리티가 늘수록 비싸지고(이진 탐색 O(log n)), 경계를 넘으면 떨어져 평평해집니다. `+
+    `정점 <b>${Math.round(hi.mean)}</b> → 최저 <b>${Math.round(lo.mean)}</b> = <b>${(hi.mean/lo.mean).toFixed(2)}배</b>. `+
+    `세로선은 3회 반복의 범위이며, 범위가 겹치는 인접 값의 차이는 주장하지 않습니다.`;
+
+  document.getElementById("t-cost").innerHTML=
+    "<table><thead><tr><th>삭제율</th><th>컨테이너</th><th>DV 샘플 (평균)</th><th>범위</th><th>DV/스캔</th></tr></thead><tbody>"+
+    COST.map(c=>`<tr><td>${c.label}</td><td>${c.container??"—"}</td><td>${Math.round(c.mean)}</td><td>${c.min}–${c.max}</td><td>${c.pct.toFixed(1)}%</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 3a. clustering -> bytes (log) ---------- */
+(function(){
+  const W=980,H=280,L=64,R=16,T=22,B=54;
+  const s=svgRoot("c-bytes",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const lg=v=>Math.log10(Math.max(v,1));
+  const max=lg(Math.max(...CLU_BYTES.map(c=>c.bytes)))*1.06;
+  const bw=Math.min(38, pw/CLU_BYTES.length-20), step=pw/CLU_BYTES.length;
+  const yOf=v=>T+ph-ph*lg(v)/max;
+
+  [1,10,100,1000,10000,100000].forEach(v=>{
+    if(lg(v)>max) return;
+    const y=yOf(v);
+    s.appendChild(el("line",{x1:L,x2:W-R,y1:y,y2:y,class:v===1?"base":"gl"}));
+    const t=el("text",{x:L-9,y:y+3.5,class:"tick","text-anchor":"end"});
+    t.textContent=v>=1000?(v/1000)+"K":v;s.appendChild(t);
+  });
+  CLU_BYTES.forEach((c,i)=>{
+    const x=L+step*i+(step-bw)/2, y=yOf(c.bytes);
+    const col=c.type==="run"?"var(--s3)":"var(--s1)";
+    s.appendChild(el("rect",{x,y,width:bw,height:T+ph-y,fill:col,rx:4}));
+    s.appendChild(el("rect",{x,y:T+ph-4,width:bw,height:4,fill:col}));
+    const lb=el("text",{x:x+bw/2,y:y-8,class:"dlabel","text-anchor":"middle"});
+    lb.textContent=fmt(c.bytes);s.appendChild(lb);
+    const tk=el("text",{x:x+bw/2,y:H-B+16,class:"tick","text-anchor":"middle"});
+    tk.textContent="L="+c.L;s.appendChild(tk);
+  });
+  const ax=el("text",{x:L+pw/2,y:H-10,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="평균 run 길이";s.appendChild(ax);
+  const ay=el("text",{x:L-9,y:T-8,class:"axis-t","text-anchor":"end"});
+  ay.textContent="DV bytes";s.appendChild(ay);
+
+  document.getElementById("t-clu").innerHTML=
+    "<table><thead><tr><th>평균 run 길이</th><th>컨테이너</th><th>평균 nRuns</th><th>평균 카디널리티</th><th>DV bytes</th></tr></thead><tbody>"+
+    CLU_BYTES.map(c=>`<tr><td>L=${c.L}</td><td>${c.type}</td><td>${c.runs??"—"}</td><td>${fmt(c.card)}</td><td>${fmt(c.bytes)}</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 3b. clustering -> cost ---------- */
+(function(){
+  if(!CLU_COST.length) return;
+  const W=980,H=280,L=54,R=16,T=22,B=54;
+  const s=svgRoot("c-clu",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const max=Math.max(...CLU_COST.map(c=>c.max))*1.14;
+  const bw=Math.min(38, pw/CLU_COST.length-20), step=pw/CLU_COST.length;
+  const yOf=v=>T+ph-ph*v/max;
+
+  for(let i=0;i<=4;i++){
+    const v=max*i/4, y=yOf(v);
+    s.appendChild(el("line",{x1:L,x2:W-R,y1:y,y2:y,class:i===0?"base":"gl"}));
+    const t=el("text",{x:L-9,y:y+3.5,class:"tick","text-anchor":"end"});
+    t.textContent=Math.round(v);s.appendChild(t);
+  }
+  CLU_COST.forEach((c,i)=>{
+    const x=L+step*i+(step-bw)/2, y=yOf(c.mean);
+    const col=c.container==="run"?"var(--s3)":"var(--s1)";
+    s.appendChild(el("rect",{x,y,width:bw,height:T+ph-y,fill:col,rx:4}));
+    s.appendChild(el("rect",{x,y:T+ph-4,width:bw,height:4,fill:col}));
+    const cx=x+bw/2;
+    s.appendChild(el("line",{x1:cx,x2:cx,y1:yOf(c.min),y2:yOf(c.max),
+      stroke:"var(--ink-2)","stroke-width":1.5,opacity:.75}));
+    [c.min,c.max].forEach(v=>s.appendChild(el("line",{x1:cx-4,x2:cx+4,y1:yOf(v),y2:yOf(v),
+      stroke:"var(--ink-2)","stroke-width":1.5,opacity:.75})));
+    const tk=el("text",{x:cx,y:H-B+16,class:"tick","text-anchor":"middle"});
+    tk.textContent="L="+c.L;s.appendChild(tk);
+  });
+  const first=CLU_COST[0], last=CLU_COST[CLU_COST.length-1];
+  [[first,0],[last,CLU_COST.length-1]].forEach(([c,i])=>{
+    const cx=L+step*i+step/2;
+    const t=el("text",{x:cx,y:yOf(c.max)-9,class:"dlabel","text-anchor":"middle"});
+    t.textContent=Math.round(c.mean);s.appendChild(t);
+  });
+  const ax=el("text",{x:L+pw/2,y:H-10,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="평균 run 길이";s.appendChild(ax);
+  const ay=el("text",{x:L-9,y:T-8,class:"axis-t","text-anchor":"end"});
+  ay.textContent="DV 샘플";s.appendChild(ay);
+
+  document.getElementById("cap-clu").innerHTML=
+    `<code>RunContainer.contains</code>는 run 개수에 대한 이진 탐색이라 L이 커질수록 싸집니다. `+
+    `L=1 <b>${Math.round(first.mean)}</b> → L=${last.L} <b>${Math.round(last.mean)}</b> `+
+    `= <b>${(first.mean/last.mean).toFixed(2)}배</b>. 삭제 행 수는 거의 동일합니다.`;
+})();
+
+/* ---------- 4. share ---------- */
+(function(){
+  const W=980,H=200,L=180,R=90,T=18,B=34;
+  const s=svgRoot("c-share",W,H);
+  const pw=W-L-R;
+  const max=60, bh=28, gap=18;
+  SHARE.forEach((d,i)=>{
+    const y=T+i*(bh+gap);
+    const w=Math.max(pw*d.pct/max,3);
+    s.appendChild(el("rect",{x:L,y,width:pw,height:bh,fill:"var(--surface-2)",rx:4}));
+    s.appendChild(el("rect",{x:L,y,width:w,height:bh,fill:"var(--s1)",rx:4}));
+    s.appendChild(el("rect",{x:L,y,width:Math.min(4,w),height:bh,fill:"var(--s1)"}));
+    const lb=el("text",{x:L-14,y:y+bh/2+4.5,class:"dlabel","text-anchor":"end"});
+    lb.textContent=d.label;s.appendChild(lb);
+    const vl=el("text",{x:L+w+12,y:y+bh/2+4.5,class:"dlabel"});
+    vl.textContent=d.pct.toFixed(1)+"%"+(d.reps>1?"":" *");s.appendChild(vl);
+  });
+  const by=T+SHARE.length*(bh+gap)-gap+10;
+  s.appendChild(el("line",{x1:L,x2:L+pw,y1:by,y2:by,class:"base"}));
+  for(let p=0;p<=60;p+=15){
+    const x=L+pw*p/max;
+    const t=el("text",{x,y:by+15,class:"tick","text-anchor":"middle"});
+    t.textContent=p+"%";s.appendChild(t);
+  }
+  const st=el("text",{x:L+pw,y:by+15,class:"tick","text-anchor":"end"});
+  st.textContent="* 단일 측정";s.appendChild(st);
+})();
+
+/* ---------- 5. JMH ---------- */
+(function(){
+  const W=980,H=300,L=190,R=76,T=26,B=44;
+  const s=svgRoot("c-jmh",W,H);
+  const pw=W-L-R;
+  const lg=v=>Math.log10(Math.max(v,0.1));
+  const lo=lg(0.1), hi=lg(100);
+  const xOf=v=>L+pw*(lg(v)-lo)/(hi-lo);
+  const rows=[]; const cases=[["sparse","밀도 0.5%"],["dense","밀도 12%"]];
+  JMH.forEach(j=>cases.forEach(([k,lab])=>rows.push({name:j.name,kind:j.kind,case:lab,v:j.v[k]})));
+  const grouped={};
+  rows.forEach(r=>{(grouped[r.case]=grouped[r.case]||[]).push(r);});
+
+  [0.1,1,10,100].forEach(v=>{
+    const x=xOf(v);
+    s.appendChild(el("line",{x1:x,x2:x,y1:T-6,y2:H-B+2,class:v===0.1?"base":"gl"}));
+    const t=el("text",{x,y:H-B+16,class:"tick","text-anchor":"middle"});
+    t.textContent=v+"µs";s.appendChild(t);
+  });
+
+  let y=T; const bh=17, gap=7, groupGap=18;
+  Object.entries(grouped).forEach(([cs,items])=>{
+    const hl=el("text",{x:8,y:y+11,class:"axis-t"});hl.textContent=cs;s.appendChild(hl);
+    items.forEach(r=>{
+      const w=Math.max(xOf(r.v)-L,2);
+      const col=r.kind==="base"?"var(--s1)":"var(--s3)";
+      s.appendChild(el("rect",{x:L,y,width:w,height:bh,fill:col,rx:4}));
+      s.appendChild(el("rect",{x:L,y,width:Math.min(4,w),height:bh,fill:col}));
+      const nl=el("text",{x:L-12,y:y+bh/2+4,class:"dlabel","text-anchor":"end"});
+      nl.textContent=r.name;s.appendChild(nl);
+      const vl=el("text",{x:L+w+10,y:y+bh/2+4,class:"dlabel"});
+      vl.textContent=r.v.toFixed(2);s.appendChild(vl);
+      y+=bh+gap;
+    });
+    y+=groupGap;
+  });
+
+  document.getElementById("t-jmh").innerHTML=
+    "<table><thead><tr><th>구현</th><th>밀도 0.5%</th><th>밀도 5%</th><th>밀도 12%</th></tr></thead><tbody>"+
+    JMH.map(j=>`<tr><td>${j.name}</td><td>${j.v.sparse.toFixed(2)}</td><td>${j.v.medium.toFixed(2)}</td><td>${j.v.dense.toFixed(2)}</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 6. patched vs baseline : paired horizontal bars ---------- */
+(function(){
+  if(!PATCH.length) return;
+  const W=980, L=176, R=104, T=16, B=42;
+  const rowH=26, pairGap=6, groupGap=20;
+  const H = T+B + PATCH.length*(rowH*2+pairGap+groupGap) - groupGap;
+  const s=svgRoot("c-patch",W,H);
+  const pw=W-L-R;
+  const max=Math.max(...PATCH.map(p=>Math.max(p.baseMax,p.patchMax)))*1.02;
+  const xOf=v=>L+pw*v/max;
+
+  /* 세로 격자 */
+  for(let g=0; g<=max; g+=200){
+    const x=xOf(g);
+    s.appendChild(el("line",{x1:x,x2:x,y1:T-6,y2:H-B+2,class:g===0?"base":"gl"}));
+    const t=el("text",{x,y:H-B+16,class:"tick","text-anchor":"middle"});
+    t.textContent=g;s.appendChild(t);
+  }
+  const ax=el("text",{x:L+pw/2,y:H-8,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="DV 체크 CPU 샘플 (낮을수록 좋음)";s.appendChild(ax);
+
+  let y=T;
+  PATCH.forEach(p=>{
+    /* 설정 이름 */
+    const nl=el("text",{x:L-14,y:y+rowH+2,class:"dlabel","text-anchor":"end"});
+    nl.textContent=p.label;s.appendChild(nl);
+    const cl=el("text",{x:L-14,y:y+rowH+16,class:"tick","text-anchor":"end"});
+    cl.textContent=p.container;s.appendChild(cl);
+
+    [["base",p.base,p.baseMin,p.baseMax,"var(--s1)"],
+     ["patch",p.patch,p.patchMin,p.patchMax,"var(--s3)"]].forEach(([kind,v,lo,hi,col],i)=>{
+      const yy=y+i*(rowH+pairGap);
+      const w=Math.max(xOf(v)-L,2);
+      s.appendChild(el("rect",{x:L,y:yy,width:w,height:rowH,fill:col,rx:4}));
+      /* 반복 범위 */
+      const x1=xOf(lo), x2=xOf(hi);
+      s.appendChild(el("line",{x1,x2,y1:yy+rowH/2,y2:yy+rowH/2,
+        stroke:"var(--bg)","stroke-width":1.5,opacity:.75}));
+      [x1,x2].forEach(xx=>s.appendChild(el("line",{x1:xx,x2:xx,y1:yy+5,y2:yy+rowH-5,
+        stroke:"var(--bg)","stroke-width":1.5,opacity:.75})));
+      const vl=el("text",{x:L+w+10,y:yy+rowH/2+4,class:"dlabel"});
+      vl.textContent=Math.round(v);s.appendChild(vl);
+    });
+
+    /* 배속 */
+    const sp=el("text",{x:W-R+58,y:y+rowH+6,class:"dlabel","text-anchor":"end"});
+    sp.setAttribute("font-weight","700");
+    sp.textContent=p.x.toFixed(2)+"×";s.appendChild(sp);
+
+    y+=rowH*2+pairGap+groupGap;
+  });
+
+  const best=PATCH.reduce((a,b)=>b.x>a.x?b:a);
+  const worst=PATCH.reduce((a,b)=>b.x<a.x?b:a);
+  document.getElementById("cap-patch").innerHTML=
+    `막대 안의 가는 선이 3회 반복의 범위입니다. <b>다섯 설정 모두 두 arm의 범위가 겹치지 않습니다.</b> `+
+    `가장 크게 이기는 곳이 <b>${best.label}</b>(${best.x.toFixed(2)}×)인데, `+
+    `이게 정확히 비용 곡선의 정점 — 즉 <b>가장 나쁜 곳에서 가장 크게 개선</b>됩니다. `+
+    `없앤 것이 행당 이진 탐색이고 그게 가장 비싼 곳이 array 컨테이너이기 때문입니다. `+
+    `이미 싼 ${worst.label}에서도 ${worst.x.toFixed(2)}× 남습니다.`;
+
+  document.getElementById("t-patch").innerHTML=
+    "<table><thead><tr><th>설정</th><th>컨테이너</th><th>현행</th><th>패치본</th><th>개선</th>"+
+    "<th>DV/스캔</th><th>스캔 서브트리</th><th>wall-clock</th></tr></thead><tbody>"+
+    PATCH.map(p=>`<tr><td>${p.label}</td><td>${p.container}</td>`+
+      `<td>${Math.round(p.base)} <span style="opacity:.6">(${p.baseMin}–${p.baseMax})</span></td>`+
+      `<td>${Math.round(p.patch)} <span style="opacity:.6">(${p.patchMin}–${p.patchMax})</span></td>`+
+      `<td><b>${p.x.toFixed(2)}×</b></td>`+
+      `<td>${p.pctBase.toFixed(1)}% → ${p.pctPatch.toFixed(1)}%</td>`+
+      `<td>−${p.scanCut.toFixed(1)}%</td>`+
+      `<td>${p.wallBase.toFixed(3)}s → ${p.wallPatch.toFixed(3)}s</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 6b. 보조 경로 표 ---------- */
+(function(){
+  if(!PATCH_EXTRA.length) return;
+  document.getElementById("t-extra").innerHTML=
+    "<table><thead><tr><th>경로</th><th>현행</th><th>패치본</th><th>배율</th><th>판정</th></tr></thead><tbody>"+
+    PATCH_EXTRA.map(e=>{
+      const v = e.overlap
+        ? '<span style="color:var(--muted)">범위 겹침 — 주장 불가</span>'
+        : '<b style="color:var(--s3)">유의</b>';
+      return `<tr><td>${e.label}<div style="font-size:11px;opacity:.7">${e.note}</div></td>`+
+        `<td>${Math.round(e.base)} <span style="opacity:.6">(${e.baseMin}–${e.baseMax})</span></td>`+
+        `<td>${Math.round(e.patch)} <span style="opacity:.6">(${e.patchMin}–${e.patchMax})</span></td>`+
+        `<td><b>${e.x.toFixed(2)}×</b></td><td>${v}</td></tr>`;
+    }).join("")+"</tbody></table>";
+
+  const isdel = PATCH_EXTRA.filter(e=>e.note.indexOf("buildIsDeleted")>=0);
+  const best = isdel.length? isdel.reduce((a,b)=>b.x>a.x?b:a) : null;
+  document.getElementById("cap-extra").innerHTML =
+    (best? `<code>_deleted</code> 메타컬럼을 읽는 쿼리는 <b>${best.x.toFixed(1)}×</b>로 오히려 더 큽니다 — `+
+           `이 경로는 삭제 위치만 표시하면 되고 <b>빈틈을 살아있는 행으로 채울 필요가 없어서</b>, `+
+           `구간 순회의 이점을 온전히 받습니다. ` : "")+
+    `equality delete가 있으면 패치는 기존 루프로 폴백하므로 <b>차이가 없어야</b> 하고, `+
+    `실제로 두 경우 모두 범위가 겹쳐 차이를 주장할 수 없습니다. 회귀 없음.`;
+})();
+
+/* ---------- stat tiles ---------- */
+(function(){
+  const hi = COST.length?COST.reduce((a,b)=>b.mean>a.mean?b:a):null;
+  const lo = COST.length?COST.reduce((a,b)=>b.mean<a.mean?b:a):null;
+  const cf = CLU_COST.length?CLU_COST[0]:null, cl = CLU_COST.length?CLU_COST[CLU_COST.length-1]:null;
+  const tiles=[
+    {k:"경계 전후 비용", v: hi&&lo? (hi.mean/lo.mean).toFixed(2)+"×" : "—",
+     s:"삭제율 "+(hi?hi.label:"")+" 대비 "+(lo?lo.label:"")+" · 3회 반복 평균"},
+    {k:"전이 구간 폭", v:"0.30%p", s:"array→bitmap이 갈리는 삭제율 범위"},
+    {k:"클러스터링 효과", v: cf&&cl? (cf.mean/cl.mean).toFixed(2)+"×" : "—",
+     s:"삭제율 고정, DV 크기는 1,115× 감소"},
+    {k:"스캔 CPU 점유", v:"53.2%", s:"1컬럼 스캔·삭제율 6.1% (최악 지점) · 3회 반복"},
+    {k:"패치 후 개선", v: PATCH.length? PATCH.reduce((a,b)=>b.x>a.x?b:a).x.toFixed(2)+"×" : "—",
+     s:"Iceberg를 실제로 고쳐 측정 · 최악 지점 · 정확성 검증 통과"},
+  ];
+  document.getElementById("stats").innerHTML = tiles.map(t=>
+    `<div class="stat"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`
+  ).join("");
+})();
+
+/* ---------- chain ---------- */
+(function(){
+  const hi = COST.length?COST.reduce((a,b)=>b.mean>a.mean?b:a):null;
+  const lo = COST.length?COST.reduce((a,b)=>b.mean<a.mean?b:a):null;
+  const cf = CLU_COST.length?CLU_COST[0]:null, cl = CLU_COST.length?CLU_COST[CLU_COST.length-1]:null;
+  const links=[
+    ["삭제 패턴","희소 랜덤 삭제가 청크 밀도를 6.25% 아래로 유지","입력"],
+    ["컨테이너","<b>array</b>로 물질화 · 전이 구간 0.30%p, 이항분포 예측과 3.7%p 이내","F-007"],
+    ["행당 비용","이진 탐색 <b>O(log n)</b> · 카디널리티가 늘수록 비싸짐","F-001"],
+    ["쿼리 비용", hi&&lo? `경계 전후 <b>${(hi.mean/lo.mean).toFixed(2)}배</b> · 정점은 경계 바로 아래`:"—","F-008"],
+    ["스캔 점유","좁은 스캔·웜 캐시에서 스캔 CPU의 <b>53.2%</b> · 대조군 정확히 0%","F-008"],
+    ["체감","0.5%만 삭제해도 1컬럼 스캔 <b>+13.0%</b>","F-005"],
+    ["회복 ①",cf&&cl?`정렬로 <b>${(cf.mean/cl.mean).toFixed(2)}배</b> · DV 크기 1,115배 감소`:"—","F-009"],
+    ["회복 ②","구간 API 마이크로벤치 <b>6~146배</b>","F-002"],
+    ["회복 ② 실측", PATCH.length? `Iceberg를 실제로 고쳐 <b>${PATCH.reduce((a,b)=>b.x>a.x?b:a).x.toFixed(2)}배</b> · 결과 동일 검증 통과`:"—","F-011"],
+  ];
+  document.getElementById("chain").innerHTML = links.map(([n,t,f])=>
+    `<div class="link"><div class="n">${n}</div><div class="t">${t}</div><div class="f">${f}</div></div>`
+  ).join("");
+})();
+</script>

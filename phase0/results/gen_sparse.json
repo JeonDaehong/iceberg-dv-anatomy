@@ -1,0 +1,35 @@
+{
+  "table": "dv.db.t_sparse",
+  "pattern": "sparse",
+  "total_rows": 8000000,
+  "live_rows": 7959828,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "deletion_vectors": [
+    {
+      "referenced_data_file": "/root/dv-anatomy/warehouse/db/t_sparse/data/00001-1-dd7a81f9-1885-4fe0-8fba-1693ee464b63-0-00001.parquet",
+      "deleted_rows": 10162,
+      "dv_bytes": 21020,
+      "delete_density": 0.005081
+    },
+    {
+      "referenced_data_file": "/root/dv-anatomy/warehouse/db/t_sparse/data/00002-2-dd7a81f9-1885-4fe0-8fba-1693ee464b63-0-00001.parquet",
+      "deleted_rows": 9950,
+      "dv_bytes": 20595,
+      "delete_density": 0.004975
+    },
+    {
+      "referenced_data_file": "/root/dv-anatomy/warehouse/db/t_sparse/data/00000-0-dd7a81f9-1885-4fe0-8fba-1693ee464b63-0-00001.parquet",
+      "deleted_rows": 10000,
+      "dv_bytes": 20696,
+      "delete_density": 0.005
+    },
+    {
+      "referenced_data_file": "/root/dv-anatomy/warehouse/db/t_sparse/data/00003-3-dd7a81f9-1885-4fe0-8fba-1693ee464b63-0-00001.parquet",
+      "deleted_rows": 10060,
+      "dv_bytes": 20816,
+      "delete_density": 0.00503
+    }
+  ]
+}

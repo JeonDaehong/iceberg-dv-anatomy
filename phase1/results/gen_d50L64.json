@@ -1,0 +1,15 @@
+{
+  "table": "dv.g.d50L64",
+  "density_bp": 50,
+  "run_length": 64,
+  "target_density": 0.005,
+  "actual_density": 0.00448,
+  "total_rows": 8000000,
+  "deleted_rows": 35840,
+  "dv_count": 4,
+  "dv_bytes": 5220,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 327.68
+}
