@@ -1,0 +1,13 @@
+{
+  "label": "baseline_d700w20_r6",
+  "table": "dv.g.d700",
+  "n_cols": 20,
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 2.0606348000001162,
+  "median_s": 2.4042364619999717,
+  "max_s": 2.6915348940001422,
+  "mean_s": 2.3685298757000357,
+  "is_deleted": false
+}

@@ -13,3 +13,152 @@
 
 ### 라운드 2 / 3
   d610
+
+=== 재개: 2026-08-30 22:41 (라운드 1 완료 상태에서 이어서) ===
+bash: line 1: C:/Program: No such file or directory
+  [config] 프로젝트가 /mnt 아래 있어 warehouse 를 Linux fs 로 돌립니다: /root/dv-anatomy/warehouse
+설정 3개 × 2 arm × 3회 = 18 프로파일 (20컬럼)
+
+### 라운드 1 / 3
+  d610
+      skip baseline r1
+      skip patched r1
+  d50
+      skip baseline r1
+      skip patched r1
+  d700
+      skip baseline r1
+      skip patched r1
+
+### 라운드 2 / 3
+  d610
+      baseline r2: [baseline_d610w20_r2] median=2.259s  min=2.070s  max=2.649s
+      patched r2: [patched_d610w20_r2] median=2.446s  min=2.039s  max=2.877s
+  d50
+      baseline r2: [baseline_d50w20_r2] median=2.406s  min=1.981s  max=3.217s
+      patched r2: [patched_d50w20_r2] median=2.527s  min=2.098s  max=3.104s
+  d700
+      baseline r2: [baseline_d700w20_r2] median=2.543s  min=2.020s  max=3.702s
+      patched r2: [patched_d700w20_r2] median=2.682s  min=2.138s  max=3.838s
+
+### 라운드 3 / 3
+  d610
+      baseline r3: [baseline_d610w20_r3] median=2.393s  min=2.111s  max=2.978s
+      patched r3: [patched_d610w20_r3] median=2.494s  min=2.251s  max=2.892s
+  d50
+      baseline r3: [baseline_d50w20_r3] median=2.467s  min=2.015s  max=3.683s
+      patched r3: [patched_d50w20_r3] median=2.205s  min=2.030s  max=2.615s
+  d700
+      baseline r3: [baseline_d700w20_r3] median=2.342s  min=2.028s  max=2.823s
+      patched r3: [patched_d700w20_r3] median=2.445s  min=2.061s  max=3.017s
+
+✅ 완료 — 18회, 1168초
+
+=== 라운드 4~6: arm 순서 뒤집음 (patched 먼저) — 2026-08-30 23:06 ===
+  [config] 프로젝트가 /mnt 아래 있어 warehouse 를 Linux fs 로 돌립니다: /root/dv-anatomy/warehouse
+설정 3개 × 2 arm × 3회 = 18 프로파일 (20컬럼)
+
+### 라운드 1 / 3
+  d610  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  d50  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  d700  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+
+### 라운드 2 / 3
+  d610  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  d50  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  d700  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+
+### 라운드 3 / 3
+  d610  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  d50  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  d700  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+
+✅ 완료 — 18회, 0초
+  [config] 프로젝트가 /mnt 아래 있어 warehouse 를 Linux fs 로 돌립니다: /root/dv-anatomy/warehouse
+설정 3개 × 2 arm × 6회 = 36 프로파일 (20컬럼)
+
+### 라운드 1 / 6
+  d610  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  d50  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  d700  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+
+### 라운드 2 / 6
+  d610  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  d50  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  d700  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+
+### 라운드 3 / 6
+  d610  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  d50  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  d700  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+
+### 라운드 4 / 6
+  d610  [순서: patched baseline]
+      patched r4: [patched_d610w20_r4] median=2.377s  min=2.011s  max=2.814s
+      baseline r4: [baseline_d610w20_r4] median=2.338s  min=2.060s  max=2.657s
+  d50  [순서: patched baseline]
+      patched r4: [patched_d50w20_r4] median=2.289s  min=2.062s  max=3.056s
+      baseline r4: [baseline_d50w20_r4] median=2.554s  min=2.126s  max=3.170s
+  d700  [순서: patched baseline]
+      patched r4: [patched_d700w20_r4] median=2.454s  min=2.108s  max=3.223s
+      baseline r4: [baseline_d700w20_r4] median=2.285s  min=2.054s  max=5.866s
+
+### 라운드 5 / 6
+  d610  [순서: patched baseline]
+      patched r5: [patched_d610w20_r5] median=2.316s  min=2.040s  max=2.662s
+      baseline r5: [baseline_d610w20_r5] median=2.231s  min=2.037s  max=2.531s
+  d50  [순서: patched baseline]
+      patched r5: [patched_d50w20_r5] median=2.142s  min=2.033s  max=2.505s
+      baseline r5: [baseline_d50w20_r5] median=2.586s  min=2.127s  max=3.465s
+  d700  [순서: patched baseline]
+      patched r5: [patched_d700w20_r5] median=2.261s  min=2.066s  max=2.904s
+      baseline r5: [baseline_d700w20_r5] median=2.201s  min=1.960s  max=2.433s
+
+### 라운드 6 / 6
+  d610  [순서: patched baseline]
+      patched r6: [patched_d610w20_r6] median=2.415s  min=2.170s  max=3.116s
+      baseline r6: [baseline_d610w20_r6] median=2.340s  min=2.063s  max=2.852s
+  d50  [순서: patched baseline]
+      patched r6: [patched_d50w20_r6] median=2.294s  min=2.048s  max=3.095s
+      baseline r6: [baseline_d50w20_r6] median=2.452s  min=2.147s  max=3.272s
+  d700  [순서: patched baseline]
+      patched r6: [patched_d700w20_r6] median=2.138s  min=1.990s  max=2.707s
+      baseline r6: [baseline_d700w20_r6] median=2.404s  min=2.061s  max=2.692s
+
+✅ 완료 — 36회, 1688초

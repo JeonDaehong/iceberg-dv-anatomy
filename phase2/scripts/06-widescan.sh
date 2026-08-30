@@ -26,6 +26,23 @@ source ./config.env
 WIDE_COLS="${WIDE_COLS:-20}"
 WIDE_TABLES="${WIDE_TABLES:-dv.g.d610:d610 dv.g.d50:d50 dv.g.d700:d700}"
 
+# arm 실행 순서 — 라운드마다 뒤집는다.
+#
+# 왜 필요한가:
+#   r1~r3 는 전부 baseline -> patched 순으로 돌았다. 그 9쌍 중 8쌍에서 patched 의
+#   wall-clock 이 더 느렸다(부호검정 p≈0.02). 이 순서 고정에서는
+#   "패치가 느리다" 와 "두 번째로 도는 쪽이 느리다"(캐시/열/JIT 상태 드리프트)를
+#   분리할 수 없다. 순서를 뒤집은 라운드가 있어야 답이 나온다.
+#
+# 반증 가능한 예측 (측정 전에 적는다):
+#   Q4. patched 를 먼저 돌리면 이번엔 baseline 이 느려진다 = 순서 효과다.
+#       이 경우 "패치가 wall-clock 을 악화시킨다" 는 주장은 폐기된다.
+#   Q4 가 깨지고 patched 가 순서와 무관하게 계속 느리면, 20컬럼에서 패치가
+#   실제로 작은 회귀를 낳는다는 뜻이고 그 기전을 따로 설명해야 한다.
+#
+# r1~r3 의 순서는 보존한다 — 이미 측정된 데이터의 조건을 사후에 바꾸지 않는다.
+FLIP_FROM="${FLIP_FROM:-4}"
+
 mkdir -p "$RESULTS/profiles"
 [[ -f "$AP_LIB" ]] || { echo "async-profiler 없음: $AP_LIB" >&2; exit 1; }
 [[ -f "$PATCHED_JAR"  ]] || { echo "패치 jar 없음"  >&2; exit 1; }
@@ -62,9 +79,11 @@ for R in $(seq 1 "$REPS"); do
   echo "### 라운드 $R / $REPS"
   for C in "${CFG[@]}"; do
     TABLE="${C%%:*}"; TAG="${C##*:}"
-    echo "  ${TAG}"
-    run_one "$TABLE" "$TAG" baseline "$R"; N=$((N+1))
-    run_one "$TABLE" "$TAG" patched  "$R"; N=$((N+1))
+    if (( R >= FLIP_FROM )); then ARMS=(patched baseline); else ARMS=(baseline patched); fi
+    echo "  ${TAG}  [순서: ${ARMS[*]}]"
+    for A in "${ARMS[@]}"; do
+      run_one "$TABLE" "$TAG" "$A" "$R"; N=$((N+1))
+    done
   done
   echo
 done

@@ -117,7 +117,11 @@ if ($wslStore) {
 # 'wsl --status' reports "kernel file not found" and every distro fails to boot.
 Say "  updating WSL kernel..."
 $upd = WslOut @('--update')
-if ($upd -match 'error|failed|오류') { Warn "wsl --update reported: $($upd.Trim())" }
+# Korean "error" (U+C624 U+B958) built from char codes, NOT typed literally:
+# this file must stay pure ASCII (see NOTE at the top) or PS 5.1 mangles it
+# reading BOM-less UTF-8 as ANSI -- which would silently break this match.
+$errWords = 'error|failed|' + [char]0xC624 + [char]0xB958
+if ($upd -match $errWords) { Warn "wsl --update reported: $($upd.Trim())" }
 else { Ok "WSL kernel up to date" }
 
 & wsl.exe --set-default-version 2 2>&1 | Out-Null
