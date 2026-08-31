@@ -8,6 +8,8 @@ Spark: vectorized reads probe the position delete index once per row, ignoring t
 
 On a V3 table read with a narrow projection, this loop accounts for **43–53% of scan CPU**, depending on delete density. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
 
+How much of that reaches end-to-end query time depends on how many columns the query reads. With 20 columns projected, the same delete check is only **2.7–4.8% of scan CPU**, the reduction is still 3.5x–6.8x, but the wall-clock difference is below my measurement noise in both directions. The change removes the same absolute CPU either way; it is only visible as query latency on narrow projections.
+
 `RoaringBitmap` already provides the range APIs needed (`forEachInRange`, `forAllInRange`, `rangeCardinality`), and they are present in the version Iceberg pins (`1.6.14`), including the shaded copy in `iceberg-spark-runtime`.
 
 I have a working branch with the change, updated tests, and the measurements below. Happy to open a PR if the direction sounds reasonable.
@@ -75,7 +77,7 @@ The control table with no deletes shows exactly zero samples attributed to the d
 Two things worth noting:
 
 - The worst case is **just below the array→bitmap boundary** (~6.1% deletes per chunk), not at high delete rates. Deleting *more* rows can make the per-row check cheaper.
-- With a wide projection (20 columns) the same table shows 3.75%, because the check is per row regardless of how many columns are read. **The 40–53% figures are specific to narrow projections.**
+- With a wide projection (20 columns) the same table shows 3.75%, because the check is per row regardless of how many columns are read. **The 40–53% figures are specific to narrow projections.** See *Evidence — projection width* below for the patched numbers at 20 columns.
 
 Wall clock, 1 column, median of 12 iterations: a table with 0.5% deletes reads **13.0% slower** than the same table with no deletes at all — despite having 0.5% fewer rows to emit.
 
@@ -120,6 +122,22 @@ Wall clock, 1 column, median over 30 iterations × 3 runs:
 | 7.0% deletes | 0.171 s | 0.150 s (−12.8%) |
 
 These scans are short (0.15–0.22 s) so wall clock is noisier than the sample counts; I treat it as a direction check rather than the primary number.
+
+### Evidence — projection width
+
+The numbers above are all `select` of a single column. Because the delete check runs once per row regardless of projection width, widening the projection leaves the delete-check cost alone and inflates everything around it. I re-ran the same three tables projecting 20 columns, 6 repetitions per arm, with the arm order flipped halfway (rounds 1–3 baseline first, rounds 4–6 patched first):
+
+| configuration | delete-check share, 1 col | delete-check share, 20 cols | reduction, 1 col | reduction, 20 cols |
+|---|---|---|---|---|
+| 0.5% deletes | 43.2% | **3.2%** | 8.6x | **6.8x** |
+| **6.1% deletes** | 49.4% | **4.8%** | 9.3x | **6.3x** |
+| 7.0% deletes | 33.4% | 2.7% | 3.7x | 3.5x |
+
+The arm ranges are disjoint in all three configurations, so the reduction itself still holds at 20 columns. The mechanism shows up directly in the absolute sample counts: widening the projection 20x leaves the baseline delete-check samples essentially unchanged (674→625, 873→902, 420→516) while the scan subtree grows 1,558→19,332 — the share falls because the denominator grew, not because the check got cheaper.
+
+**Wall clock at 20 columns is not interpretable, in either direction.** The three configurations came out +8.7% / −3.9% / −3.2% (patched vs current), all inside the 9.7% run-to-run band and not even agreeing on sign. Pairing runs within a round, the patched arm was slower in 13 of 18 pairs (sign test p ≈ 0.10, not significant); before flipping the arm order it was 8 of 9, so part of that was an order effect rather than the jar. I make no wall-clock claim at this projection width.
+
+So the honest end-to-end statement is: **the change reduces delete-check CPU by 3.5x–9.3x across projection widths, but whether that is visible in query latency depends on how much of the scan the delete check was.** At 1 column it is roughly half; at 20 columns it is a few percent and disappears into noise. I have not measured where in between the crossover is.
 
 ### Evidence — microbenchmark
 
@@ -255,6 +273,7 @@ New coverage on the branch:
 - Measured on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode. These are relative comparisons; cycle- and branch-level attribution would need a bare-metal run.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
+- Projection width was measured at two points only, 1 column and 20 columns. The intermediate widths where the wall-clock effect fades out were not measured.
 - The `_deleted` projection emits every row rather than filtering, so its wall clock is not comparable to the plain scans above.
 - The microbenchmark reuses the output buffer to isolate the algorithm. The real code allocates `new int[batchSize]` per batch.
 
