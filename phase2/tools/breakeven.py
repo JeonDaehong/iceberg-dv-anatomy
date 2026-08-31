@@ -26,6 +26,13 @@ DENSITIES = [("d50", "0.5%"), ("d610", "6.1%"), ("d700", "7.0%")]
 WIDTHS = [1, 3, 5, 10, 20]
 NOISE_FLOOR = 9.7   # F-010
 
+# 라운드 이상치 판정 배수.
+# F-015 의 라운드 1(계통적 +30%), 그리고 d610w3 의 baseline r5(0.726s, 다른 라운드는
+# 0.24~0.30s) 처럼 한 라운드만 머신 간섭으로 튀는 일이 반복됐다. 눈으로 찾지 말고
+# 도구가 표시하게 한다. 제외하지는 않는다 — 표시만 하고 둘 다 보여준다.
+# 데이터를 버리는 판단은 사람이 근거를 보고 해야 한다.
+OUTLIER_FACTOR = 2.0
+
 # 06-widescan.sh Q5/Q6 의 예측값 (d=6.1% 기준, 모델 scan(c) ≈ 870 + 933c)
 PRED_SHARE = {3: 24.0, 5: 16.0, 10: 8.5}
 PRED_CUT = {3: 21.0, 5: 14.0, 10: 7.0}
@@ -65,6 +72,17 @@ def walls(results, arm, tag):
         if v:
             out[int(m.group(1))] = float(v)
     return out
+
+
+def outliers(vals):
+    """{rep: 값} 에서 arm 중앙값 대비 OUTLIER_FACTOR 배 밖인 라운드."""
+    if len(vals) < 3:
+        return set()
+    med = st.median(vals.values())
+    if med <= 0:
+        return set()
+    return {r for r, v in vals.items()
+            if v > med * OUTLIER_FACTOR or v < med / OUTLIER_FACTOR}
 
 
 def sign_test_p(k, n):
@@ -108,12 +126,17 @@ def main():
             wb, wq = walls(results, "baseline", tag), walls(results, "patched", tag)
             reps = sorted(set(wb) & set(wq))
             deltas = [(wq[r] / wb[r] - 1) * 100 for r in reps]
+            bad = outliers(wb) | outliers(wq)
+            clean = [r for r in reps if r not in bad]
+            deltas_clean = [(wq[r] / wb[r] - 1) * 100 for r in clean]
 
             rows.append({"dens": dens, "label": label, "c": c,
                          "dv_base": st.mean(bd), "dv_patch": st.mean(qd),
                          "speedup": speedup, "overlap": overlap,
                          "share": bp, "scan_cut": scan_cut,
-                         "n": len(bd), "deltas": deltas, "reps": reps})
+                         "n": len(bd), "deltas": deltas, "reps": reps,
+                         "outlier_reps": sorted(bad),
+                         "deltas_clean": deltas_clean})
             print("  %3d %10.0f %10.0f %7.2f배 %8.2f%% %9.1f%%  %s"
                   % (c, st.mean(bd), st.mean(qd), speedup, bp, scan_cut,
                      "범위 겹침 — 주장 불가" if overlap
@@ -141,6 +164,12 @@ def main():
         print("  %8s %3d  %-42s %+7.1f%% %4d/%-3d  %s (부호 p=%.2f)"
               % (r["label"], r["c"], " ".join("%+.1f" % x for x in d)[:42],
                  med, slower, len(d), verdict, p))
+        if r["outlier_reps"]:
+            dc = r["deltas_clean"]
+            print("  %8s %3s  ⚠️  라운드 %s 는 arm 중앙값의 %.0f배 밖 — 이상치. "
+                  "제외 시 중앙값 %+.1f%% (n=%d)"
+                  % ("", "", ",".join("r%d" % x for x in r["outlier_reps"]),
+                     OUTLIER_FACTOR, st.median(dc) if dc else float("nan"), len(dc)))
 
     # ---------- Q5 / Q6 채점 ----------
     print("\n" + "=" * 96)
@@ -159,11 +188,12 @@ def main():
 
     # ---------- 손익분기 ----------
     print("\n" + "=" * 96)
-    print(" 손익분기 — wall-clock 중앙값이 노이즈 바닥 %.1f%% 를 넘는 가장 넓은 c" % NOISE_FLOOR)
+    print(" 손익분기 — wall-clock 중앙값(이상치 제외)이 노이즈 바닥 %.1f%% 를 넘는 가장 넓은 c"
+          % NOISE_FLOOR)
     print("=" * 96)
     for dens, label in DENSITIES:
-        hits = [r["c"] for r in rows if r["dens"] == dens and r["deltas"]
-                and st.median(r["deltas"]) < -NOISE_FLOOR]
+        hits = [r["c"] for r in rows if r["dens"] == dens and r["deltas_clean"]
+                and st.median(r["deltas_clean"]) < -NOISE_FLOOR]
         print("  d=%-6s  %s" % (label,
               "c ≤ %d 에서 단축이 노이즈 위" % max(hits) if hits
               else "어느 폭에서도 노이즈를 넘지 못함"))
