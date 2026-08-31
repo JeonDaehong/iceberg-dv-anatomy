@@ -8,7 +8,7 @@ Spark: vectorized reads probe the position delete index once per row, ignoring t
 
 On a V3 table read with a narrow projection, this loop accounts for **43–53% of scan CPU**, depending on delete density. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
 
-How much of that reaches end-to-end query time depends on how many columns the query reads. With 20 columns projected, the same delete check is only **2.7–4.8% of scan CPU**, the reduction is still 3.5x–6.8x, but the wall-clock difference is below my measurement noise in both directions. The change removes the same absolute CPU either way; it is only visible as query latency on narrow projections.
+How much of that reaches end-to-end query time depends on how much work the rest of the scan does. On the schema I measured, queries projecting up to 5 columns run **13–19% faster** end to end; once the projection reaches 10 columns the difference is inside my measurement noise, even though the delete-check CPU is still reduced 3.0x–6.7x there. The change removes the same absolute CPU either way — it is visible as query latency only while the delete check is a large fraction of the scan.
 
 `RoaringBitmap` already provides the range APIs needed (`forEachInRange`, `forAllInRange`, `rangeCardinality`), and they are present in the version Iceberg pins (`1.6.14`), including the shaded copy in `iceberg-spark-runtime`.
 
@@ -134,6 +134,29 @@ The numbers above are all `select` of a single column. Because the delete check 
 | 7.0% deletes | 33.4% | 2.7% | 3.7x | 3.5x |
 
 The arm ranges are disjoint in all three configurations, so the reduction itself still holds at 20 columns. The mechanism shows up directly in the absolute sample counts: widening the projection 20x leaves the baseline delete-check samples essentially unchanged (674→625, 873→902, 420→516) while the scan subtree grows 1,558→19,332 — the share falls because the denominator grew, not because the check got cheaper.
+
+I then filled in the widths between, 6 repetitions per arm at each (108 profiles). End-to-end wall clock, paired within each round (negative = patched faster; **bold** = outside the 9.7% noise band with all 6 pairs agreeing in sign, sign test p = 0.03):
+
+| projected columns | 0.5% deletes | 6.1% deletes | 7.0% deletes |
+|---|---|---|---|
+| 1 | **−19.5%** | **−18.8%** | **−12.8%** |
+| 3 | **−18.5%** | **−13.5%** | −15.6% (5/6, p=0.22) |
+| 5 | **−13.2%** | **−15.2%** | −6.7% |
+| 10 | −2.3% | −6.7% | +4.7% |
+| 20 | −8.4% | +3.5% | +4.9% |
+
+So the crossover is between 5 and 10 columns on this table. But the useful statement is not a column count — it is what those columns cost to decode. Scan samples added per extra column, at 6.1% deletes:
+
+| range | columns added | scan samples per column |
+|---|---|---|
+| 1 → 3 | 2 ints | 280 |
+| 3 → 5 | 2 ints | 100 |
+| **5 → 10** | 2 doubles + **3 md5 strings** | **1,958** |
+| 10 → 20 | mixed | 660 |
+
+The first five columns of this table are integers; the first string column is the eighth. The crossover lands where it does because that is where string decoding enters the projection, so a query reading five strings would cross over earlier than one reading five ints. I would not read "five columns" as a portable threshold.
+
+One caution on reading the sample counts as latency. Dividing the sample-based scan-subtree reduction by the measured wall-clock reduction gives 1.72/1.72/1.74 at 0.5% deletes and 2.38/2.79/1.89 at 6.1% deletes (c = 1/3/5). Six points is not a law, but the direction is consistent: **taking a profiler share as a latency saving overstates it by roughly 2x.** The scan-subtree percentages elsewhere in this issue are subject to the same correction.
 
 **Wall clock at 20 columns is not interpretable, in either direction.** The three configurations came out +8.7% / −3.9% / −3.2% (patched vs current), all inside the 9.7% run-to-run band and not even agreeing on sign. Pairing runs within a round, the patched arm was slower in 13 of 18 pairs (sign test p ≈ 0.10, not significant); before flipping the arm order it was 8 of 9, so part of that was an order effect rather than the jar. I make no wall-clock claim at this projection width.
 
@@ -273,7 +296,8 @@ New coverage on the branch:
 - Measured on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode. These are relative comparisons; cycle- and branch-level attribution would need a bare-metal run.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
-- Projection width was measured at two points only, 1 column and 20 columns. The intermediate widths where the wall-clock effect fades out were not measured.
+- Projection width and column type are confounded in this schema: the first five columns are integers and the strings start at the eighth, so "5 columns" and "before the strings" are the same cut here. A type-controlled axis (10 ints vs 3 strings) would separate them; I have not run it.
+- The 1-column wall-clock rows come from 3 repetitions; the 3/5/10/20-column rows from 6.
 - The `_deleted` projection emits every row rather than filtering, so its wall clock is not comparable to the plain scans above.
 - The microbenchmark reuses the output buffer to isolate the algorithm. The real code allocates `new int[batchSize]` per batch.
 
