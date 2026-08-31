@@ -19,6 +19,37 @@
 #
 # 태그에 w20 을 붙이는 이유: compare.py 의 태그 정규식이 _c<컬럼수>_ 를 버리므로,
 # 접미사를 안 붙이면 1컬럼 프로파일과 같은 태그로 합쳐져 버린다.
+#
+# ---------------------------------------------------------------------------
+# 2026-08-31 추가 — 손익분기 컬럼 수 (WIDE_COLS=3, 5, 10)
+#
+# 왜 필요한가:
+#   F-015 는 1컬럼과 20컬럼 두 점만 쟀다. 초안의 마지막 문장이
+#   "I have not measured where in between the crossover is" 인데,
+#   리뷰어가 정확히 그걸 묻는다. 사이를 채워야 "몇 컬럼부터 실효가 있나" 에 답한다.
+#
+# 모델 (F-015 의 절대 샘플 수에서 유도, d=6.1% 기준):
+#   scan(c) ≈ DV + fixed + per_col·c
+#   c=1  -> 1,558 샘플,  c=20 -> 19,332 샘플,  DV ≈ 870 (두 폭에서 거의 불변)
+#   => per_col ≈ (18,430-688)/19 ≈ 933,  fixed ≈ 0
+#   => DV 비중 = 870 / (870 + 933c)
+#
+# 반증 가능한 예측 (측정 전에 적는다):
+#   Q5. DV 비중은 c=3 에서 약 24%, c=5 에서 약 16%, c=10 에서 약 8.5%.
+#       (모델이 맞다면 실측이 이 값의 ±5%p 안에 든다. 벗어나면 선형 모델이 틀렸고,
+#        컬럼 수에 따라 per-column 비용이 일정하다는 가정부터 다시 봐야 한다.)
+#   Q6. 패치는 DV 의 약 87% 를 없애므로(6.3~9.3배), 전체 스캔 감소는
+#       c=3 -> ~21%, c=5 -> ~14%, c=10 -> ~7%.
+#       노이즈 바닥 9.7%(F-010) 를 넘는 **손익분기는 c=5 와 c=10 사이, 대략 7컬럼**.
+#       => c=3 과 c=5 에서는 wall-clock 개선이 보여야 하고, c=10 에서는 안 보여야 한다.
+#   Q7. DV 샘플 자체의 개선 배율은 세 폭 모두 6~9배로 컬럼 수와 무관하다.
+#       (F-015 Q1 이 20컬럼에서 점추정 3/3 하락을 보였으므로, 그 하락이 실재라면
+#        c 가 커질수록 단조 감소해야 한다. 그렇지 않으면 그건 흩어짐이었다.)
+#
+#   Q6 이 깨지는 방향이 둘 다 의미가 있다:
+#     - 손익분기가 c=3 보다 아래면 -> 이 패치는 좁은 투영 전용이고 초안을 더 좁혀야 한다.
+#     - c=10 에서도 보이면 -> 모델이 틀렸고 실용 범위가 예상보다 넓다. 좋은 소식.
+# ---------------------------------------------------------------------------
 set -euo pipefail
 cd "$(dirname "$0")/.."
 source ./config.env
@@ -42,6 +73,15 @@ WIDE_TABLES="${WIDE_TABLES:-dv.g.d610:d610 dv.g.d50:d50 dv.g.d700:d700}"
 #
 # r1~r3 의 순서는 보존한다 — 이미 측정된 데이터의 조건을 사후에 바꾸지 않는다.
 FLIP_FROM="${FLIP_FROM:-4}"
+
+# FLIP_MODE — 순서를 어떻게 뒤집을 것인가.
+#   block     : 라운드 FLIP_FROM 부터 뒤집는다. w20 이 이렇게 돌았다(전반 3 / 후반 3).
+#               블록으로 나뉘므로 '순서' 와 '측정 시각' 이 부분적으로 얽힌다.
+#   alternate : 라운드마다 뒤집는다(홀수=baseline 먼저, 짝수=patched 먼저).
+#               순서 효과가 시간 표류와 얽히지 않으므로 **신규 축은 이걸 쓴다.**
+# 기본값을 block 으로 두는 이유는 오직 하나 — w20 을 FORCE=1 로 다시 돌렸을 때
+# 이미 기록된 F-015 와 같은 조건이 재현되어야 하기 때문이다.
+FLIP_MODE="${FLIP_MODE:-block}"
 
 mkdir -p "$RESULTS/profiles"
 [[ -f "$AP_LIB" ]] || { echo "async-profiler 없음: $AP_LIB" >&2; exit 1; }
@@ -79,7 +119,11 @@ for R in $(seq 1 "$REPS"); do
   echo "### 라운드 $R / $REPS"
   for C in "${CFG[@]}"; do
     TABLE="${C%%:*}"; TAG="${C##*:}"
-    if (( R >= FLIP_FROM )); then ARMS=(patched baseline); else ARMS=(baseline patched); fi
+    case "$FLIP_MODE" in
+      alternate) if (( R % 2 == 0 )); then ARMS=(patched baseline); else ARMS=(baseline patched); fi ;;
+      block)     if (( R >= FLIP_FROM )); then ARMS=(patched baseline); else ARMS=(baseline patched); fi ;;
+      *) echo "unknown FLIP_MODE=$FLIP_MODE (block|alternate)" >&2; exit 1 ;;
+    esac
     echo "  ${TAG}  [순서: ${ARMS[*]}]"
     for A in "${ARMS[@]}"; do
       run_one "$TABLE" "$TAG" "$A" "$R"; N=$((N+1))
