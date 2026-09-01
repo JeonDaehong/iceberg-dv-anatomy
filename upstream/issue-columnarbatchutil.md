@@ -8,7 +8,9 @@ Spark: vectorized reads probe the position delete index once per row, ignoring t
 
 On a V3 table read with a narrow projection, this loop accounts for **43–53% of scan CPU**, depending on delete density. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
 
-How much of that reaches end-to-end query time depends on how much work the rest of the scan does. On the schema I measured, queries projecting up to 5 columns run **13–19% faster** end to end; once the projection reaches 10 columns the difference is inside my measurement noise, even though the delete-check CPU is still reduced 3.0x–6.7x there. The change removes the same absolute CPU either way — it is visible as query latency only while the delete check is a large fraction of the scan.
+How much of that reaches end-to-end query time depends on how much work the rest of the scan does. The threshold is not a column count — it is the share the delete check holds in scan CPU. Above roughly 20% the change is worth **13–19% of end-to-end query time**; below it the difference falls inside my measurement noise, even though the delete-check CPU is still reduced 3.0x–6.7x there. The change removes the same absolute CPU either way.
+
+As a unit that transfers to other schemas: **one delete check costs about as much as decoding 1.6–3.2 fixed-width integer columns**, while a single 32-char string column costs 8–10 integer columns. On my table a projection of ten integer columns still shows the effect and a projection of three md5 strings does not — so a column count is the wrong thing to quote. One caveat on reading any CPU figure below as latency: across 24 configurations only about half of a profiler-measured CPU saving arrives as wall clock (regression slope 0.53).
 
 `RoaringBitmap` already provides the range APIs needed (`forEachInRange`, `forAllInRange`, `rangeCardinality`), and they are present in the version Iceberg pins (`1.6.14`), including the shaded copy in `iceberg-spark-runtime`.
 
@@ -154,13 +156,30 @@ So the crossover is between 5 and 10 columns on this table. But the useful state
 | **5 → 10** | 2 doubles + **3 md5 strings** | **1,958** |
 | 10 → 20 | mixed | 660 |
 
-The first five columns of this table are integers; the first string column is the eighth. The crossover lands where it does because that is where string decoding enters the projection, so a query reading five strings would cross over earlier than one reading five ints. I would not read "five columns" as a portable threshold.
+The first five columns of this table are integers; the first string column is the eighth — so column count and decoding cost are completely confounded in the table above.
 
-One caution on reading the sample counts as latency. Dividing the sample-based scan-subtree reduction by the measured wall-clock reduction gives 1.72/1.72/1.74 at 0.5% deletes and 2.38/2.79/1.89 at 6.1% deletes (c = 1/3/5). Six points is not a law, but the direction is consistent: **taking a profiler share as a latency saving overstates it by roughly 2x.** The scan-subtree percentages elsewhere in this issue are subject to the same correction.
+To separate them I ran a third experiment that puts the two in opposition: ten integer columns (many columns, cheap) against one and three md5 string columns (few columns, expensive), 6 repetitions per arm across the same three densities (108 profiles). Delete-check share of scan CPU:
+
+| projection | columns | 0.5% deletes | 6.1% deletes | 7.0% deletes |
+|---|---|---|---|---|
+| 1 int (`id`) | 1 | 43.2% | 49.4% | 33.4% |
+| 1 md5 string | 1 | 17.4% | 22.2% | 12.1% |
+| 3 ints | 3 | 35.5% | 42.8% | 27.6% |
+| 3 md5 strings | 3 | 7.5% | 10.6% | 5.5% |
+| **10 ints** | 10 | **15.9%** | **21.6%** | **12.8%** |
+| 10 mixed (3 strings) | 10 | 5.9% | 7.7% | 4.3% |
+
+Ten integer columns hold a **larger** share than three string columns in all three densities — the opposite of what a column-count model predicts, and a single integer column holds twice the share of a single string column. Solving for per-column decode cost across these configurations gives 288–299 samples for an integer column against 2,395–2,966 for a 32-char md5 column (8–10x); the integer cost and the fixed overhead come out stable across delete densities (288–299 and 537–598), which is what they should do, since decoding does not depend on how much is deleted.
+
+So the portable form of the threshold is **one delete check ≈ decoding 1.6–3.2 integer columns ≈ 0.16–0.39 of one md5 string column**, and "five columns" is an artifact of this table's column order.
+
+One caution on reading the sample counts as latency. Across all 24 configurations measured here, regressing the measured wall-clock reduction on the sample-based scan reduction through the origin gives a slope of 0.53 (R² = 0.72): **only about half of a profiler-measured CPU saving arrives as wall clock.** (Taking the ratio only where wall clock clears the noise band gives 1.73x, but that selects for large effects; the regression is the honest summary. I have not established the mechanism — tail-task effects under `local[4]` and fixed cost outside the scan subtree are both candidates.)
+
+Combining the two — the change removes ~87% of the delete check, and about half of that reaches latency — predicts that the effect clears my 9.7% noise band once the delete check is above **~21% of scan CPU**. The ten-integer projection sits at 21.5% share and measured −9.1%, right on the boundary. Every scan-subtree percentage quoted in this issue is subject to this correction.
 
 **Wall clock at 20 columns is not interpretable, in either direction.** The three configurations came out +8.7% / −3.9% / −3.2% (patched vs current), all inside the 9.7% run-to-run band and not even agreeing on sign. Pairing runs within a round, the patched arm was slower in 13 of 18 pairs (sign test p ≈ 0.10, not significant); before flipping the arm order it was 8 of 9, so part of that was an order effect rather than the jar. I make no wall-clock claim at this projection width.
 
-So the honest end-to-end statement is: **the change reduces delete-check CPU by 3.5x–9.3x across projection widths, but whether that is visible in query latency depends on how much of the scan the delete check was.** At 1 column it is roughly half; at 20 columns it is a few percent and disappears into noise. I have not measured where in between the crossover is.
+So the honest end-to-end statement is: **the change reduces delete-check CPU by 3.0x–9.3x across every projection I measured, and that turns into a visible query-latency win while the delete check is above roughly a fifth of scan CPU.** On this schema that means projections of up to about ten fixed-width columns, or fewer than one md5 string column. Below that threshold the CPU saving is real but I cannot measure it in query time.
 
 ### Evidence — microbenchmark
 
@@ -296,8 +315,9 @@ New coverage on the branch:
 - Measured on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode. These are relative comparisons; cycle- and branch-level attribution would need a bare-metal run.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
-- Projection width and column type are confounded in this schema: the first five columns are integers and the strings start at the eighth, so "5 columns" and "before the strings" are the same cut here. A type-controlled axis (10 ints vs 3 strings) would separate them; I have not run it.
-- The 1-column wall-clock rows come from 3 repetitions; the 3/5/10/20-column rows from 6.
+- The type-controlled experiment separates column count from decode cost, but not decode cost from column width: `s07` is a 32-character string and `k01` is a 4-byte int, so "expensive because it is a string" and "expensive because it is wide" are still the same cut. A length-controlled axis (32-char vs 8-char md5) would separate those; I have not run it.
+- The 0.53 sample-to-wall-clock slope is a fit to data I had already collected, not a prediction I tested. It is measured on one machine at `local[4]` with a warm page cache; I would expect a different slope at other parallelism or on other storage.
+- The 1-column wall-clock rows come from 3 repetitions; every other row from 6.
 - The `_deleted` projection emits every row rather than filtering, so its wall clock is not comparable to the plain scans above.
 - The microbenchmark reuses the output buffer to isolate the algorithm. The real code allocates `new int[batchSize]` per batch.
 
