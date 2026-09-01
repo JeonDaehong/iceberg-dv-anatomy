@@ -78,8 +78,11 @@ def drop_caches():
 
 
 def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=None,
-        cold=False):
-    cols = ALL_COLS[:ncols]
+        cold=False, col_list=None):
+    # 기본은 앞에서부터 ncols 개. 그런데 ALL_COLS 는 타입이 섞여 있고 순서가 고정이라
+    # "컬럼 수" 를 늘리면 "디코딩 비용" 도 같이 늘어난다 — 앞 5개는 전부 정수이고
+    # 첫 문자열은 8번째다 (F-016). 두 축을 분리하려면 컬럼을 이름으로 골라야 한다.
+    cols = list(col_list) if col_list else ALL_COLS[:ncols]
     # _deleted 메타데이터 컬럼을 투영하면 리더가 다른 분기를 탄다:
     #   BaseBatchReader.filterBatch -> hasIsDeletedColumn -> buildIsDeleted
     # (평소에는 buildRowIdMapping). 삭제 행을 지우는 대신 표시만 하므로
@@ -118,7 +121,8 @@ def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=
     stats = {
         "label": label,
         "table": table,
-        "n_cols": ncols,
+        "n_cols": len(cols),
+        "cols": cols,
         "batch_size": batch_size,
         "cold": cold,
         "iters": iters,
@@ -146,6 +150,12 @@ def main():
         help="선택할 컬럼 수. 프로파일 귀속을 깨끗하게 하려고 폭마다 별도 JVM 으로 실행한다.",
     )
     p.add_argument(
+        "--col-list",
+        default=None,
+        help="투영할 컬럼을 이름으로 직접 지정 (쉼표 구분). 주면 --cols 를 무시한다. "
+             "컬럼 수와 컬럼 타입을 분리해 재기 위한 것이다 (F-016).",
+    )
+    p.add_argument(
         "--is-deleted",
         action="store_true",
         help="_deleted 메타데이터 컬럼을 함께 투영해 buildIsDeleted 경로를 태운다.",
@@ -168,16 +178,25 @@ def main():
     p.add_argument("--out-json", default=None)
     args = p.parse_args()
 
+    col_list = None
+    if args.col_list:
+        col_list = [c.strip() for c in args.col_list.split(",") if c.strip()]
+        unknown = [c for c in col_list if c not in ALL_COLS]
+        if unknown:
+            raise SystemExit("알 수 없는 컬럼: %s\n사용 가능: %s"
+                             % (", ".join(unknown), ", ".join(ALL_COLS)))
+
     spark = build_spark(args.warehouse, args)
     spark.sparkContext.setLogLevel("WARN")
 
     mode = " + _deleted" if args.is_deleted else ""
     bs = f", 배치 {args.batch_size}" if args.batch_size else ", 배치 기본(5000)"
     bs += " · 콜드 캐시" if args.cold else " · 웜 캐시"
-    print(f"\n=== 스캔: {args.table}  ({args.cols} 컬럼{mode}{bs}) ===")
+    shown = ",".join(col_list) if col_list else f"{args.cols} 컬럼"
+    print(f"\n=== 스캔: {args.table}  ({shown}{mode}{bs}) ===")
     stats = run(spark, args.table, args.cols, args.warmup, args.iters, args.label,
                 is_deleted=args.is_deleted, batch_size=args.batch_size,
-                cold=args.cold)
+                cold=args.cold, col_list=col_list)
     stats["is_deleted"] = args.is_deleted
 
     if args.out_json:
