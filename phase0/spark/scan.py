@@ -78,7 +78,7 @@ def drop_caches():
 
 
 def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=None,
-        cold=False, col_list=None):
+        cold=False, col_list=None, split_size=None):
     # 기본은 앞에서부터 ncols 개. 그런데 ALL_COLS 는 타입이 섞여 있고 순서가 고정이라
     # "컬럼 수" 를 늘리면 "디코딩 비용" 도 같이 늘어난다 — 앞 5개는 전부 정수이고
     # 첫 문자열은 8번째다 (F-016). 두 축을 분리하려면 컬럼을 이름으로 골라야 한다.
@@ -93,10 +93,16 @@ def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=
     #   .option("batch-size") -> 테이블 속성 read.parquet.vectorization.batch-size -> 기본 5000
     # 순으로만 본다. 그래서 DataFrameReader 옵션으로 넣는다.
     # (테이블 속성을 쓰면 다른 실험에 영향이 남는다.)
+    # split-size 는 태스크 하나가 읽는 바이트 수다. 기본(128MB)에서는 이 테이블
+    # (4파일 × ~200MB)이 스플릿 8개밖에 안 나와서, local[16] 을 줘도 코어 절반이 논다.
+    # 병렬도를 진짜로 바꾸려면 태스크가 코어보다 넉넉해야 하므로 이 값을 낮춘다.
+    # 병렬도 축에서는 **모든 N 에 같은 값**을 써야 N 이 유일한 변수가 된다.
+    reader = spark.read
     if batch_size:
-        df = spark.read.option("batch-size", str(batch_size)).table(table).select(*cols)
-    else:
-        df = spark.table(table).select(*cols)
+        reader = reader.option("batch-size", str(batch_size))
+    if split_size:
+        reader = reader.option("split-size", str(split_size))
+    df = reader.table(table).select(*cols)
     check_vectorized(df, label)
 
     def once():
@@ -124,6 +130,7 @@ def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=
         "n_cols": len(cols),
         "cols": cols,
         "batch_size": batch_size,
+        "split_size": split_size,
         "cold": cold,
         "iters": iters,
         "min_s": times[0],
@@ -167,6 +174,12 @@ def main():
         help="벡터화 배치 크기. 생략하면 Iceberg 기본값 5000 을 그대로 쓴다.",
     )
     p.add_argument(
+        "--split-size",
+        type=int,
+        default=None,
+        help="태스크당 읽기 바이트(Iceberg split-size). 병렬도 축에서 태스크 수를 통제한다.",
+    )
+    p.add_argument(
         "--cold",
         action="store_true",
         help="매 반복 전에 페이지 캐시를 비운다 (root 필요). I/O 가 분모에 들어온 경우를 본다.",
@@ -191,12 +204,13 @@ def main():
 
     mode = " + _deleted" if args.is_deleted else ""
     bs = f", 배치 {args.batch_size}" if args.batch_size else ", 배치 기본(5000)"
+    bs += f", split {args.split_size}" if args.split_size else ""
     bs += " · 콜드 캐시" if args.cold else " · 웜 캐시"
     shown = ",".join(col_list) if col_list else f"{args.cols} 컬럼"
     print(f"\n=== 스캔: {args.table}  ({shown}{mode}{bs}) ===")
     stats = run(spark, args.table, args.cols, args.warmup, args.iters, args.label,
                 is_deleted=args.is_deleted, batch_size=args.batch_size,
-                cold=args.cold, col_list=col_list)
+                cold=args.cold, col_list=col_list, split_size=args.split_size)
     stats["is_deleted"] = args.is_deleted
 
     if args.out_json:
