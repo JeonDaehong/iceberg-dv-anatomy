@@ -74,8 +74,10 @@ gen_one() {   # $1=table $2=sort컬럼(빈문자열이면 무정렬)
   if [[ -f "${RESULTS}/gen_${TAG}.json" && -d "${WAREHOUSE}/g/${TAG}" && "${FORCE:-0}" != "1" ]]; then
     echo "  skip ${TAB} (테이블·결과 모두 있음)"; return
   fi
-  local EXTRA=()
-  [[ -n "$SORT" ]] && EXTRA=(--sort-by "$SORT")
+  # 삭제 술어는 두 테이블에 **동일**하게 건다. 정렬 여부와 독립이어야
+  # 삭제되는 행이 같아진다 (안 그러면 삭제 행 수가 어긋난다 — 실제로 한 번 어긋났다).
+  local EXTRA=(--delete-key "$LAY_SORT_COL")
+  [[ -n "$SORT" ]] && EXTRA+=(--sort-by "$SORT")
   spark-submit \
     --master "local[${LOCAL_CORES}]" --driver-memory "${DRIVER_MEM}" \
     "${SPARK_ICEBERG_ARGS[@]}" \

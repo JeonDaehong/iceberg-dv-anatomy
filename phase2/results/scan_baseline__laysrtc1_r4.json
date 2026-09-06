@@ -1,0 +1,17 @@
+{
+  "label": "baseline_laysrtc1_r4",
+  "table": "dv.g.lay_srt",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.12878292199997077,
+  "median_s": 0.16448937699999533,
+  "max_s": 0.24509065400002328,
+  "mean_s": 0.17274087213333283,
+  "is_deleted": false
+}

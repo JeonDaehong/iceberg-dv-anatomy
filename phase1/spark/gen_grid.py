@@ -77,6 +77,9 @@ def main():
                    help="청크 점유율 p, basis point of 10000. 10000 이면 모든 청크. "
                         "낮추면 일부 청크에만 삭제가 생겨 컨테이너 개수가 줄어든다. "
                         "청크 '안'의 밀도는 --density-bp 로 유지되므로 컨테이너 타입은 안 바뀐다.")
+    p.add_argument("--delete-key", default=None,
+                   help="삭제 술어를 이 컬럼에 건다. 정렬/무정렬 두 테이블에 **같은 값**을 줘야 "
+                        "같은 행이 삭제된다 (Phase 3-A 의 통제). 생략하면 기존대로 id 다.")
     p.add_argument("--sort-by", default=None,
                    help="테이블을 이 컬럼으로 전역 정렬해서 쓴다 (Phase 3-A). "
                         "주면 L/p 축은 쓰지 않고, 삭제 술어도 이 컬럼으로 건다. "
@@ -142,11 +145,12 @@ def main():
     #
     # position = id % ROWS_PER_FILE (레이아웃 불변량, 위에서 검증됨)
     L = args.run_length
-    if args.sort_by:
-        # Phase 3-A: 술어를 **정렬 컬럼**에 건다. 정렬/무정렬 두 테이블에 같은 술어를
-        # 쓰므로 삭제되는 '행 자체' 가 같고, 달라지는 건 그 행들이 파일 안 어디에
-        # 놓여 있느냐(= position 분포)뿐이다. 그게 이 실험이 분리하려는 것이다.
-        key = args.sort_by
+    if args.delete_key:
+        # Phase 3-A: 술어를 지정한 컬럼에 건다. **정렬 여부와 독립**이어야 한다 —
+        # 두 테이블에 같은 술어를 줘야 삭제되는 '행 자체' 가 같고, 달라지는 건
+        # 그 행들이 파일 안 어디에 놓이는가(= position 분포)뿐이다.
+        # (처음엔 --sort-by 가 술어까지 바꾸게 만들었다가 삭제 행이 11.8% 어긋났다.)
+        key = args.delete_key
         L = 1
     elif L <= 1:
         key = f"id"
@@ -186,6 +190,7 @@ def main():
                 "density_bp": args.density_bp,
                 "run_length": L,
                 "sort_by": args.sort_by,
+                "delete_key": args.delete_key,
                 "occupancy_bp": args.occupancy_bp,
                 "target_density": density,
                 "actual_density": actual,
