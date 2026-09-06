@@ -6,7 +6,7 @@ Spark: vectorized reads probe the position delete index once per row, ignoring t
 
 `ColumnarBatchUtil.buildRowIdMapping` and `buildIsDeleted` call `PositionDeleteIndex.isDeleted(pos)` once for every row in a batch. Positions within a batch are a contiguous ascending range and the DV-backed index is a Roaring bitmap, so the same information can be obtained with a single range traversal instead of `batchSize` independent probes.
 
-On a V3 table read with a narrow projection, this loop accounts for **43–53% of scan CPU**, depending on delete density. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
+On a V3 table read with a narrow projection, this loop accounts for **43–58% of scan CPU**, depending on delete density — a figure I have since reproduced on three CPU microarchitectures (Zen 3, Sapphire Rapids, Graviton3), on local disk and on S3, with a warm and a dropped page cache, and at task parallelism 1 through 16. It moves by at most a few points across all of those. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
 
 How much of that reaches end-to-end query time depends on how much work the rest of the scan does. The threshold is not a column count — it is the share the delete check holds in scan CPU. Above roughly 20% the change is worth **13–19% of end-to-end query time**; below it the difference falls inside my measurement noise, even though the delete-check CPU is still reduced 3.0x–6.7x there. The change removes the same absolute CPU either way.
 
@@ -175,11 +175,46 @@ So the portable form of the threshold is **one delete check ≈ decoding 1.6–3
 
 One caution on reading the sample counts as latency. Across all 24 configurations measured here, regressing the measured wall-clock reduction on the sample-based scan reduction through the origin gives a slope of 0.53 (R² = 0.72): **only about half of a profiler-measured CPU saving arrives as wall clock.** (Taking the ratio only where wall clock clears the noise band gives 1.73x, but that selects for large effects; the regression is the honest summary. I have not established the mechanism — tail-task effects under `local[4]` and fixed cost outside the scan subtree are both candidates.)
 
-Combining the two — the change removes ~87% of the delete check, and about half of that reaches latency — predicts that the effect clears my 9.7% noise band once the delete check is above **~21% of scan CPU**. The ten-integer projection sits at 21.5% share and measured −9.1%, right on the boundary. Every scan-subtree percentage quoted in this issue is subject to this correction.
+Combining the two — the change removes ~87% of the delete check, and about half of that reaches latency — predicts that the effect clears my 9.7% noise band once the delete check is above **~20% of scan CPU**. The ten-integer projection sits at 21.5% share and measured −9.1%, right on the boundary. Every scan-subtree percentage quoted in this issue is subject to this correction.
+
+I also swept task parallelism to check how much that 0.53 depends on it, since the threshold is derived from it. Fitting the correction factor against `local[N]` for N = 1, 2, 4, 16 (96 profiles, one 16-vCPU instance, split size pinned so task count scales) gives **1.30 × N^0.14** (R² = 0.95): 1.29x at N=1, 1.63x at N=4, 1.90x at N=16. So the factor does grow with parallelism — the tail-task explanation is directionally supported — but only by 1.5x across a 16x range, which moves the threshold from about 18% to about 21%. The break-even is **around a fifth of scan CPU** and does not change order of magnitude with scale. Note that `local[N]` is a thread pool in one JVM; this says nothing about shuffle or executor scheduling in a real cluster.
 
 **Wall clock at 20 columns is not interpretable, in either direction.** The three configurations came out +8.7% / −3.9% / −3.2% (patched vs current), all inside the 9.7% run-to-run band and not even agreeing on sign. Pairing runs within a round, the patched arm was slower in 13 of 18 pairs (sign test p ≈ 0.10, not significant); before flipping the arm order it was 8 of 9, so part of that was an order effect rather than the jar. I make no wall-clock claim at this projection width.
 
 So the honest end-to-end statement is: **the change reduces delete-check CPU by 3.0x–9.3x across every projection I measured, and that turns into a visible query-latency win while the delete check is above roughly a fifth of scan CPU.** On this schema that means projections of up to about ten fixed-width columns, or fewer than one md5 string column. Below that threshold the CPU saving is real but I cannot measure it in query time.
+
+### Evidence — does this hold outside my machine?
+
+Everything above was measured on one developer machine. Since the delete-check share is the number
+the rest of the argument rests on, I re-ran the same two jars (byte-identical, verified by md5) on
+the same table bytes in three more environments. Delete-check share of scan CPU, narrow projection:
+
+| delete density | Zen 3 / WSL2 | Sapphire Rapids | Graviton3 | S3 instead of local disk | page cache dropped |
+|---|---|---|---|---|---|
+| 0.5% | 43.2% | 49.3% | 48.4% | — | — |
+| **6.1%** | **49.4%** | **56.2%** | **54.3%** | **58.0%** (vs 56.2% on EBS) | **52.0%** (vs 51.0% warm) |
+| 7.0% | 33.4% | 39.3% | 35.6% | — | — |
+
+The share moves by at most a few points, and where it moves it moves *up* off my machine, so the
+numbers quoted above are the conservative end.
+
+Two of those results were surprises worth stating, because both were predictions I wrote down
+first and got wrong:
+
+- **Dropping the page cache does not lower the share, and neither does reading from S3.**
+  `ctimer` samples CPU time, so I/O *wait* never enters the denominator; and the S3 client's own
+  CPU (HTTP, TLS, checksums) turns out to be only ~1.4 percentage points of total CPU here, far
+  too small to move it. Storage changes what fraction of wall clock is CPU, not what fraction of
+  CPU is the delete check.
+- **The patch helps *more* on newer cores**, not less: 11.3x–17.9x on the cloud instances against
+  8.6x–9.3x on mine, because the per-row probe gets relatively more expensive while the bulk range
+  traversal gets cheaper. That is consistent with a branch-prediction explanation but I have no PMU
+  data, so I state it as an observation, not a mechanism.
+
+One methodological note that cuts against my own earlier numbers: the run-to-run spread on the
+dedicated instances was **7–13%**, against **27% median** on my WSL2 box. The 9.7% noise floor I
+use throughout this issue is a property of my development environment more than of the workload.
+Anything I mark "inside the noise" might be resolvable on quieter hardware.
 
 ### Evidence — microbenchmark
 
@@ -312,7 +347,9 @@ New coverage on the branch:
 
 ### Caveats on the numbers
 
-- Measured on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode. These are relative comparisons; cycle- and branch-level attribution would need a bare-metal run.
+- The primary measurements are on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode; the portability checks above are on dedicated EC2 instances. No hardware PMU anywhere, so cycle- and branch-level attribution would still need a bare-metal run.
+- Everything is single-JVM `local[N]`. I have not measured a distributed cluster, so shuffle, network and executor scheduling are absent from all of it.
+- One table shape throughout: 8M rows, 4 files, 20 columns. File-skipping predicates, nested types and many-file tables are unmeasured.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
 - The type-controlled experiment separates column count from decode cost, but not decode cost from column width: `s07` is a 32-character string and `k01` is a 4-byte int, so "expensive because it is a string" and "expensive because it is wide" are still the same cut. A length-controlled axis (32-char vs 8-char md5) would separate those; I have not run it.
