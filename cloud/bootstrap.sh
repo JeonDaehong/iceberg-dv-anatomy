@@ -47,6 +47,14 @@
 #    세션이 끊기든 4시간 뒤 스스로 사라진다.
 set -uo pipefail
 
+# cloud-init 의 user-data 환경에는 HOME/USER/LANG 이 없다. config.env 는 $HOME 으로
+# 도구와 warehouse 경로를 잡고 스크립트들은 set -u 라, 그대로 두면
+# "HOME: unbound variable" 로 죽는다 — 실제로 두 번째 인스턴스가 여기서 죽었다.
+export HOME=/root
+export USER=root
+export LANG=C.UTF-8
+cd /root
+
 BUCKET="${BUCKET:-dv-anatomy-394686422456-apne2}"
 TAG="${DV_TAG:-unknown}"
 LOG=/var/log/dv-bootstrap.log
@@ -56,7 +64,20 @@ exec > >(tee -a "$LOG") 2>&1
 
 say() { echo ""; echo "########## [$(date -u +%H:%M:%S)] $* ##########"; echo "$*" > "$MARK"; push; }
 push() { aws s3 cp "$LOG" "s3://$BUCKET/logs/${TAG}.log" --only-show-errors 2>/dev/null || true; }
-die() { echo "!!!!! 실패: $* !!!!!"; echo "FAILED: $*" > "$MARK"; push; exit 1; }
+# 실패 시 바로 종료하면 로그 밖의 상태를 볼 수 없다. KEEP_ALIVE_MIN 만큼 살려두고
+# 그 사이에 SSM 으로 들어가 확인한다. 어차피 user-data 가 건 shutdown -h +240 이
+# 최종 안전망이므로 방치될 위험은 없다.
+KEEP_ALIVE_MIN="${KEEP_ALIVE_MIN:-30}"
+die() {
+  echo "!!!!! 실패: $* !!!!!"
+  echo "FAILED: $*" > "$MARK"
+  echo "--- 진단용 환경 ---"; env | sort | head -30; echo "--- df ---"; df -h /
+  push
+  echo "인스턴스를 ${KEEP_ALIVE_MIN}분간 살려둔다 (SSM 조사용). 그 뒤 종료."
+  sleep $(( KEEP_ALIVE_MIN * 60 ))
+  push
+  exit 1
+}
 
 ARCH="$(uname -m)"
 case "$ARCH" in
@@ -66,7 +87,7 @@ case "$ARCH" in
 esac
 
 say "0. 환경 — arch=$ARCH tag=$TAG"
-nproc; free -g | head -2; lscpu | grep -E "Model name|Vendor ID|BogoMIPS|Flags" | head -3
+echo "HOME=$HOME USER=$USER PWD=$PWD"; nproc; free -g | head -2; lscpu | grep -E "Model name|Vendor ID|BogoMIPS|Flags" | head -3
 df -h / | tail -1
 
 say "1. 패키지"
