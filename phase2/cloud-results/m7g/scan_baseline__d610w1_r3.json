@@ -1,0 +1,16 @@
+{
+  "label": "baseline_d610w1_r3",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.21137304799998446,
+  "median_s": 0.2645344160000036,
+  "max_s": 0.34416805400002204,
+  "mean_s": 0.26979636489999925,
+  "is_deleted": false
+}
