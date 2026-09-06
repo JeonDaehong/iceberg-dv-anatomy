@@ -1,0 +1,21 @@
+{
+  "label": "baseline_d610p1c5_r6",
+  "table": "dv.g.d610",
+  "n_cols": 5,
+  "cols": [
+    "id",
+    "k01",
+    "k02",
+    "k03",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": 33554432,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.6424851980000312,
+  "median_s": 0.6587814430001799,
+  "max_s": 0.7557762300000377,
+  "mean_s": 0.6652979501999956,
+  "is_deleted": false
+}
