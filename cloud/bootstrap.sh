@@ -112,6 +112,10 @@ sysctl -w kernel.kptr_restrict=0 >/dev/null 2>&1 || true
 say "5. 저장소 + jar (로컬에서 빌드한 바이너리를 그대로 받는다)"
 cd /root
 [[ -d iceberg-dv-anatomy ]] || git clone -q https://github.com/JeonDaehong/iceberg-dv-anatomy.git || die "clone"
+# 실행 비트 방어. 저장소는 Windows 에서 작성돼 한때 전부 100644 였고, 로컬 WSL 은
+# /mnt/d(DrvFs)가 모든 파일을 0777 로 보고해서 이 문제가 안 보였다. 리눅스에서
+# 클론하면 'Permission denied' 로 죽는다 — 실제로 첫 인스턴스가 여기서 죽었다.
+find /root/iceberg-dv-anatomy -name '*.sh' -exec chmod +x {} +
 mkdir -p /root/opt/jars-baseline /root/opt/jars-patched
 JARNAME="iceberg-spark-runtime-4.0_2.13-1.11.0.jar"
 aws s3 cp "s3://$BUCKET/jars/baseline.jar" "/root/opt/jars-baseline/$JARNAME" --only-show-errors || die "baseline jar"

@@ -1,0 +1,124 @@
+콜드/웜 × 1 20 컬럼 × 2 arm × 12회
+FLIP_MODE=block  FLIP_FROM=7  SCAN_ITERS=30
+
+### 라운드 1 / 12
+  1컬럼 warm  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  1컬럼 cold  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  20컬럼 warm  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  20컬럼 cold  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+
+### 라운드 2 / 12
+  1컬럼 warm  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  1컬럼 cold  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  20컬럼 warm  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+  20컬럼 cold  [순서: baseline patched]
+      skip baseline r2
+      skip patched r2
+
+### 라운드 3 / 12
+  1컬럼 warm  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  1컬럼 cold  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  20컬럼 warm  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  20컬럼 cold  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+
+### 라운드 4 / 12
+  1컬럼 warm  [순서: baseline patched]
+      skip baseline r4
+      skip patched r4
+  1컬럼 cold  [순서: baseline patched]
+      skip baseline r4
+      skip patched r4
+  20컬럼 warm  [순서: baseline patched]
+      skip baseline r4
+      skip patched r4
+  20컬럼 cold  [순서: baseline patched]
+      skip baseline r4
+      skip patched r4
+
+### 라운드 5 / 12
+  1컬럼 warm  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  1컬럼 cold  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  20컬럼 warm  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  20컬럼 cold  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+
+### 라운드 6 / 12
+  1컬럼 warm  [순서: baseline patched]
+      skip baseline r6
+      skip patched r6
+  1컬럼 cold  [순서: baseline patched]
+      skip baseline r6
+      skip patched r6
+  20컬럼 warm  [순서: baseline patched]
+      skip baseline r6
+      skip patched r6
+  20컬럼 cold  [순서: baseline patched]
+      skip baseline r6
+      skip patched r6
+
+### 라운드 7 / 12
+  1컬럼 warm  [순서: patched baseline]
+      patched r7 (warm): [patched_d610warmc1_r7] median=0.189s  min=0.134s  max=0.296s
+      baseline r7 (warm): [baseline_d610warmc1_r7] median=0.268s  min=0.166s  max=0.468s
+  1컬럼 cold  [순서: patched baseline]
+      patched r7 (cold): [patched_d610coldc1_r7] median=0.200s  min=0.147s  max=0.350s
+      baseline r7 (cold): [baseline_d610coldc1_r7] median=0.231s  min=0.201s  max=0.393s
+  20컬럼 warm  [순서: patched baseline]
+      patched r7 (warm): [patched_d610warmc20_r7] median=2.457s  min=2.182s  max=3.380s
+      baseline r7 (warm): [baseline_d610warmc20_r7] median=2.877s  min=2.476s  max=3.800s
+  20컬럼 cold  [순서: patched baseline]
+      patched r7 (cold): [patched_d610coldc20_r7] median=2.611s  min=2.397s  max=3.430s
+      baseline r7 (cold): [baseline_d610coldc20_r7] median=3.027s  min=2.582s  max=4.038s
+
+### 라운드 8 / 12
+  1컬럼 warm  [순서: patched baseline]
+      patched r8 (warm): [patched_d610warmc1_r8] median=0.207s  min=0.136s  max=0.363s
+      baseline r8 (warm): [baseline_d610warmc1_r8] median=0.237s  min=0.179s  max=0.371s
+  1컬럼 cold  [순서: patched baseline]
+      patched r8 (cold): [patched_d610coldc1_r8] median=0.232s  min=0.147s  max=0.383s
+      baseline r8 (cold): [baseline_d610coldc1_r8] median=0.270s  min=0.213s  max=0.389s
+  20컬럼 warm  [순서: patched baseline]
+      patched r8 (warm): [patched_d610warmc20_r8] median=2.724s  min=2.149s  max=7.067s
+      baseline r8 (warm): [baseline_d610warmc20_r8] median=2.563s  min=2.272s  max=4.900s
+  20컬럼 cold  [순서: patched baseline]
+      patched r8 (cold): [patched_d610coldc20_r8] median=2.718s  min=2.350s  max=3.562s
+      baseline r8 (cold): [baseline_d610coldc20_r8] median=2.979s  min=2.595s  max=4.270s
+
+### 라운드 9 / 12
+  1컬럼 warm  [순서: patched baseline]
+      patched r9 (warm): [patched_d610warmc1_r9] median=0.214s  min=0.170s  max=0.393s
+      baseline r9 (warm): [baseline_d610warmc1_r9] median=0.265s  min=0.197s  max=0.509s
+  1컬럼 cold  [순서: patched baseline]
+      patched r9 (cold): [patched_d610coldc1_r9] median=0.232s  min=0.164s  max=0.329s
+      baseline r9 (cold): [baseline_d610coldc1_r9] median=0.235s  min=0.186s  max=0.316s
+  20컬럼 warm  [순서: patched baseline]
+      patched r9 (warm): [patched_d610warmc20_r9] median=2.603s  min=2.269s  max=3.341s
