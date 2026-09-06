@@ -122,3 +122,51 @@ FLIP_MODE=block  FLIP_FROM=7  SCAN_ITERS=30
       baseline r9 (cold): [baseline_d610coldc1_r9] median=0.235s  min=0.186s  max=0.316s
   20컬럼 warm  [순서: patched baseline]
       patched r9 (warm): [patched_d610warmc20_r9] median=2.603s  min=2.269s  max=3.341s
+      baseline r9 (warm): [baseline_d610warmc20_r9] median=3.323s  min=2.612s  max=4.515s
+  20컬럼 cold  [순서: patched baseline]
+      patched r9 (cold): [patched_d610coldc20_r9] median=3.136s  min=2.563s  max=7.552s
+      baseline r9 (cold): [baseline_d610coldc20_r9] median=2.371s  min=2.270s  max=3.053s
+
+### 라운드 10 / 12
+  1컬럼 warm  [순서: patched baseline]
+      patched r10 (warm): [patched_d610warmc1_r10] median=0.152s  min=0.112s  max=0.219s
+      baseline r10 (warm): [baseline_d610warmc1_r10] median=0.194s  min=0.151s  max=0.285s
+  1컬럼 cold  [순서: patched baseline]
+      patched r10 (cold): [patched_d610coldc1_r10] median=0.179s  min=0.136s  max=0.291s
+      baseline r10 (cold): [baseline_d610coldc1_r10] median=0.235s  min=0.172s  max=0.353s
+  20컬럼 warm  [순서: patched baseline]
+      patched r10 (warm): [patched_d610warmc20_r10] median=2.992s  min=2.675s  max=4.552s
+      baseline r10 (warm): [baseline_d610warmc20_r10] median=2.836s  min=2.419s  max=3.544s
+  20컬럼 cold  [순서: patched baseline]
+      patched r10 (cold): [patched_d610coldc20_r10] median=3.202s  min=2.723s  max=3.996s
+      baseline r10 (cold): [baseline_d610coldc20_r10] median=3.471s  min=2.845s  max=5.633s
+
+### 라운드 11 / 12
+  1컬럼 warm  [순서: patched baseline]
+      patched r11 (warm): [patched_d610warmc1_r11] median=0.243s  min=0.160s  max=0.393s
+      baseline r11 (warm): [baseline_d610warmc1_r11] median=0.237s  min=0.189s  max=0.318s
+  1컬럼 cold  [순서: patched baseline]
+      patched r11 (cold): [patched_d610coldc1_r11] median=0.257s  min=0.184s  max=0.389s
+      baseline r11 (cold): [baseline_d610coldc1_r11] median=0.249s  min=0.204s  max=0.323s
+  20컬럼 warm  [순서: patched baseline]
+      patched r11 (warm): [patched_d610warmc20_r11] median=2.828s  min=2.408s  max=4.276s
+      baseline r11 (warm): [baseline_d610warmc20_r11] median=3.009s  min=2.705s  max=3.613s
+  20컬럼 cold  [순서: patched baseline]
+      patched r11 (cold): [patched_d610coldc20_r11] median=3.743s  min=3.201s  max=4.792s
+      baseline r11 (cold): [baseline_d610coldc20_r11] median=3.765s  min=3.084s  max=5.292s
+
+### 라운드 12 / 12
+  1컬럼 warm  [순서: patched baseline]
+      patched r12 (warm): [patched_d610warmc1_r12] median=0.248s  min=0.176s  max=0.430s
+      baseline r12 (warm): [baseline_d610warmc1_r12] median=0.278s  min=0.208s  max=0.384s
+  1컬럼 cold  [순서: patched baseline]
+      patched r12 (cold): [patched_d610coldc1_r12] median=0.264s  min=0.197s  max=0.419s
+      baseline r12 (cold): [baseline_d610coldc1_r12] median=0.237s  min=0.204s  max=0.416s
+  20컬럼 warm  [순서: patched baseline]
+      patched r12 (warm): [patched_d610warmc20_r12] median=3.115s  min=2.612s  max=3.966s
+      baseline r12 (warm): [baseline_d610warmc20_r12] median=3.360s  min=2.917s  max=4.115s
+  20컬럼 cold  [순서: patched baseline]
+      patched r12 (cold): [patched_d610coldc20_r12] median=3.498s  min=2.829s  max=5.502s
+      baseline r12 (cold): [baseline_d610coldc20_r12] median=4.891s  min=3.475s  max=11.788s
+
+✅ 완료 — 3647초
