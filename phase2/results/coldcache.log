@@ -1,0 +1,83 @@
+콜드/웜 × 1 20 컬럼 × 2 arm × 6회
+
+### 라운드 1 / 6
+  1컬럼 warm
+      baseline r1 (warm): [baseline_d610warmc1_r1] median=0.225s  min=0.177s  max=0.366s
+      patched r1 (warm): [patched_d610warmc1_r1] median=0.210s  min=0.148s  max=0.399s
+  1컬럼 cold
+      baseline r1 (cold): [baseline_d610coldc1_r1] median=0.306s  min=0.231s  max=0.506s
+      patched r1 (cold): [patched_d610coldc1_r1] median=0.200s  min=0.153s  max=0.331s
+  20컬럼 warm
+      baseline r1 (warm): [baseline_d610warmc20_r1] median=3.871s  min=3.001s  max=5.774s
+      patched r1 (warm): [patched_d610warmc20_r1] median=4.618s  min=3.233s  max=5.839s
+  20컬럼 cold
+      baseline r1 (cold): [baseline_d610coldc20_r1] median=4.369s  min=3.265s  max=6.780s
+      patched r1 (cold): [patched_d610coldc20_r1] median=4.714s  min=3.943s  max=7.107s
+
+### 라운드 2 / 6
+  1컬럼 warm
+      baseline r2 (warm): [baseline_d610warmc1_r2] median=0.330s  min=0.230s  max=0.534s
+      patched r2 (warm): [patched_d610warmc1_r2] median=0.264s  min=0.183s  max=0.717s
+  1컬럼 cold
+      baseline r2 (cold): [baseline_d610coldc1_r2] median=0.349s  min=0.245s  max=0.838s
+      patched r2 (cold): [patched_d610coldc1_r2] median=0.290s  min=0.185s  max=0.539s
+  20컬럼 warm
+      baseline r2 (warm): [baseline_d610warmc20_r2] median=3.534s  min=3.146s  max=3.995s
+      patched r2 (warm): [patched_d610warmc20_r2] median=3.203s  min=3.046s  max=3.785s
+  20컬럼 cold
+      baseline r2 (cold): [baseline_d610coldc20_r2] median=3.976s  min=3.456s  max=4.816s
+      patched r2 (cold): [patched_d610coldc20_r2] median=3.797s  min=3.309s  max=4.446s
+
+### 라운드 3 / 6
+  1컬럼 warm
+      baseline r3 (warm): [baseline_d610warmc1_r3] median=0.279s  min=0.246s  max=0.475s
+      patched r3 (warm): [patched_d610warmc1_r3] median=0.219s  min=0.157s  max=0.443s
+  1컬럼 cold
+      baseline r3 (cold): [baseline_d610coldc1_r3] median=0.305s  min=0.226s  max=0.577s
+      patched r3 (cold): [patched_d610coldc1_r3] median=0.266s  min=0.179s  max=0.412s
+  20컬럼 warm
+      baseline r3 (warm): [baseline_d610warmc20_r3] median=3.455s  min=2.537s  max=4.645s
+      patched r3 (warm): [patched_d610warmc20_r3] median=2.511s  min=2.217s  max=3.154s
+  20컬럼 cold
+      baseline r3 (cold): [baseline_d610coldc20_r3] median=2.884s  min=2.378s  max=4.038s
+      patched r3 (cold): [patched_d610coldc20_r3] median=2.432s  min=2.258s  max=2.813s
+
+### 라운드 4 / 6
+  1컬럼 warm
+      baseline r4 (warm): [baseline_d610warmc1_r4] median=0.192s  min=0.148s  max=0.265s
+      patched r4 (warm): [patched_d610warmc1_r4] median=0.148s  min=0.114s  max=0.228s
+  1컬럼 cold
+      baseline r4 (cold): [baseline_d610coldc1_r4] median=0.239s  min=0.177s  max=0.406s
+      patched r4 (cold): [patched_d610coldc1_r4] median=0.163s  min=0.136s  max=0.250s
+  20컬럼 warm
+      baseline r4 (warm): [baseline_d610warmc20_r4] median=2.542s  min=2.117s  max=3.406s
+      patched r4 (warm): [patched_d610warmc20_r4] median=2.196s  min=1.972s  max=2.678s
+  20컬럼 cold
+      baseline r4 (cold): [baseline_d610coldc20_r4] median=2.844s  min=2.472s  max=3.506s
+      patched r4 (cold): [patched_d610coldc20_r4] median=2.586s  min=2.243s  max=3.281s
+
+### 라운드 5 / 6
+  1컬럼 warm
+      baseline r5 (warm): [baseline_d610warmc1_r5] median=0.187s  min=0.154s  max=0.318s
+      patched r5 (warm): [patched_d610warmc1_r5] median=0.145s  min=0.103s  max=0.274s
+  1컬럼 cold
+      baseline r5 (cold): [baseline_d610coldc1_r5] median=0.218s  min=0.168s  max=0.361s
+      patched r5 (cold): [patched_d610coldc1_r5] median=0.165s  min=0.128s  max=0.257s
+  20컬럼 warm
+      baseline r5 (warm): [baseline_d610warmc20_r5] median=2.646s  min=2.299s  max=2.987s
+      patched r5 (warm): [patched_d610warmc20_r5] median=2.608s  min=2.321s  max=3.563s
+  20컬럼 cold
+      baseline r5 (cold): [baseline_d610coldc20_r5] median=2.559s  min=2.176s  max=3.225s
+      patched r5 (cold): [patched_d610coldc20_r5] median=2.526s  min=2.240s  max=2.885s
+
+### 라운드 6 / 6
+  1컬럼 warm
+      baseline r6 (warm): [baseline_d610warmc1_r6] median=0.238s  min=0.180s  max=0.377s
+      patched r6 (warm): [patched_d610warmc1_r6] median=0.195s  min=0.124s  max=0.294s
+  1컬럼 cold
+      baseline r6 (cold): [baseline_d610coldc1_r6] median=0.229s  min=0.184s  max=0.328s
+      patched r6 (cold): [patched_d610coldc1_r6] median=0.160s  min=0.136s  max=0.224s
+  20컬럼 warm
+      baseline r6 (warm): [baseline_d610warmc20_r6] median=2.109s  min=2.009s  max=2.585s
+      patched r6 (warm): [patched_d610warmc20_r6] median=2.491s  min=2.039s  max=5.579s
+  20컬럼 cold
