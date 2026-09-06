@@ -32,12 +32,51 @@
 #   ⚠️ 정직하게: 이 예측을 적는 시점에 라운드 1 의 wall-clock 중앙값 4개(1컬럼 웜/콜드,
 #      baseline/patched)는 이미 봤다. DV 비중은 웜·콜드 어느 쪽도 아직 안 봤고,
 #      R4 는 비중을 입력으로 받는 관계식이므로 그 4개로는 답을 알 수 없다.
+#
+# ---------------------------------------------------------------------------
+# 2026-09-06 추가 — 순서 교란을 걷어낸다 (F-019 의 자기 지적)
+#
+# 라운드 1~6 은 전부 baseline -> patched 고정 순서로 돌았다. F-015 에서 순서 효과에
+# 속을 뻔한 뒤 신규 축의 기본으로 삼은 교대가 이 스크립트에만 안 들어가 있었다.
+# 그래서 F-019 의 콜드 wall-clock '크기' 는 해석할 수 없다 —
+# 콜드 1컬럼이 -27.1% 로 웜의 -20.7% 보다 큰데, 분모가 17% 커진 상황에서는
+# 오히려 작아져야(-17.7%) 정상이다. 패치의 성질인지 순서인지 구분이 안 된다.
+#
+# 이미 잰 6 라운드는 버리지 않는다. 순서를 뒤집은 6 라운드를 더 붙여
+# 균형 설계로 만든다 (r1~6 = baseline 먼저, r7~12 = patched 먼저).
+#
+#   R5. patched 를 먼저 돌려도 patched 가 계속 빠르다 = 패치의 효과다.
+#       1컬럼 웜/콜드 모두 r7~12 의 중앙값이 음수로 유지되고, 12쌍 전체의
+#       부호검정이 유의하다.
+#       깨지는 방향이 둘 다 의미가 있다:
+#         - r7~12 에서 부호가 뒤집히면 -> F-019 의 콜드 wall-clock 은 순서 효과였다.
+#           R1~R3 (샘플 기반) 은 그대로지만 wall-clock 문장은 전부 철회해야 한다.
+#         - 20컬럼에서도 음수로 유지되면 -> 지금까지 '주장 불가' 였던 넓은 투영에서
+#           처음으로 주장이 선다. 그건 좋은 소식이고 따로 설명해야 한다.
+#
+#   ⚠️ 정직하게: 이 예측을 적는 시점에 r1~6 의 결과는 전부 봤다 (F-019 에 적혀 있다).
+#      R5 는 '뒤집었을 때도 같은가' 를 묻는 것이므로 r1~6 을 아는 것과 무관하다.
+#
+#   ⚠️ 이건 block flip 이다 (전반 6 / 후반 6). 순서와 측정 시각이 부분적으로 얽힌다 —
+#      F-015 에서 이미 지적한 한계다. 라운드마다 교대하는 alternate 가 더 좋지만,
+#      그러려면 이미 잰 6 라운드를 버려야 한다. 여기서는 기존 데이터를 살리는 쪽을 택했다.
 # ---------------------------------------------------------------------------
 #
 # ⚠️ 다른 측정과 절대 동시에 돌리지 말 것 (같은 머신을 나눠 쓰면 양쪽이 오염된다).
 set -euo pipefail
 cd "$(dirname "$0")/.."
+
+# config.env 가 REPS 를 3 으로 심는다. 호출자가 준 값을 source 전에 붙잡아 둔다.
+# (06c-coltype.sh 에서 실제로 밟은 함정이다 — 헤더 첫 줄을 반드시 확인할 것.)
+_REPS_CALLER="${REPS:-}"
 source ./config.env
+REPS="${_REPS_CALLER:-$REPS}"
+
+# arm 순서 — r1~6 은 baseline 먼저 (이미 측정됨), r7 부터 뒤집는다.
+#   block     : FLIP_FROM 부터 뒤집는다. 기존 6 라운드를 재현하려면 이게 기본이어야 한다.
+#   alternate : 라운드마다 뒤집는다. 새 축을 처음부터 잴 때 쓸 것.
+FLIP_MODE="${FLIP_MODE:-block}"
+FLIP_FROM="${FLIP_FROM:-7}"
 
 COLD_TABLE="${COLD_TABLE:-dv.g.d610}"
 COLD_TAG="${COLD_TAG:-d610}"
@@ -70,14 +109,21 @@ run_one() {   # $1=arm $2=rep $3=cols $4=mode(warm|cold)
 
 START=$(date +%s)
 echo "콜드/웜 × ${COLD_COLS} 컬럼 × 2 arm × ${REPS}회"
+echo "FLIP_MODE=${FLIP_MODE}  FLIP_FROM=${FLIP_FROM}  SCAN_ITERS=${SCAN_ITERS}"
 echo
 for R in $(seq 1 "$REPS"); do
   echo "### 라운드 $R / $REPS"
   for C in $COLD_COLS; do
+    case "$FLIP_MODE" in
+      alternate) if (( R % 2 == 0 )); then ARMS=(patched baseline); else ARMS=(baseline patched); fi ;;
+      block)     if (( R >= FLIP_FROM )); then ARMS=(patched baseline); else ARMS=(baseline patched); fi ;;
+      *) echo "unknown FLIP_MODE=$FLIP_MODE (block|alternate)" >&2; exit 1 ;;
+    esac
     for MODE in warm cold; do
-      echo "  ${C}컬럼 ${MODE}"
-      run_one baseline "$R" "$C" "$MODE"
-      run_one patched  "$R" "$C" "$MODE"
+      echo "  ${C}컬럼 ${MODE}  [순서: ${ARMS[*]}]"
+      for A in "${ARMS[@]}"; do
+        run_one "$A" "$R" "$C" "$MODE"
+      done
     done
   done
   echo
