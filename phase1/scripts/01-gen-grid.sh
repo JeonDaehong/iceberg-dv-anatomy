@@ -12,8 +12,12 @@ echo
 START=$(date +%s)
 for BP in $DENSITIES_BP; do
   TABLE="dv.g.d${BP}"
-  if [[ -f "${RESULTS}/gen_${BP}.json" && "${FORCE:-0}" != "1" ]]; then
-    echo "  skip d=${BP}bp (이미 생성됨. 다시 하려면 FORCE=1)"
+  # 영수증(gen_*.json)이 아니라 산출물(테이블 디렉터리)을 보고 판단한다.
+  # results/*.json 은 저장소에 커밋돼 있어서, 새로 클론하면 테이블이 하나도 없는데도
+  # 전부 skip 하고 "✅ 생성 완료 (0초)" 를 찍는다. 실제로 EC2 에서 그렇게 됐고,
+  # 그 뒤 측정이 빈 warehouse 를 향해 돌았다.
+  if [[ -f "${RESULTS}/gen_${BP}.json" && -d "${WAREHOUSE}/g/d${BP}" && "${FORCE:-0}" != "1" ]]; then
+    echo "  skip d=${BP}bp (테이블·결과 모두 있음. 다시 하려면 FORCE=1)"
     continue
   fi
   spark-submit \
