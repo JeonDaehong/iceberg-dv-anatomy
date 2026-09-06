@@ -78,7 +78,7 @@ def drop_caches():
 
 
 def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=None,
-        cold=False, col_list=None, split_size=None):
+        cold=False, col_list=None, split_size=None, group_col=None):
     # 기본은 앞에서부터 ncols 개. 그런데 ALL_COLS 는 타입이 섞여 있고 순서가 고정이라
     # "컬럼 수" 를 늘리면 "디코딩 비용" 도 같이 늘어난다 — 앞 5개는 전부 정수이고
     # 첫 문자열은 8번째다 (F-016). 두 축을 분리하려면 컬럼을 이름으로 골라야 한다.
@@ -105,11 +105,23 @@ def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=
     df = reader.table(table).select(*cols)
     check_vectorized(df, label)
 
+    # 셔플 축: group_col 이 주어지면 집계를 붙인다. 스캔이 읽는 컬럼은 그대로 두고
+    # (투영한 컬럼 전부를 sum 으로 소비해 컬럼 프루닝을 막는다) 그 뒤에 셔플이 붙는다.
+    # => 스캔이 하는 일은 같고 '스캔 밖' 일만 늘어난다. 그게 이 축이 분리하려는 것이다.
+    target = df
+    if group_col:
+        from pyspark.sql import functions as F
+        if group_col not in cols:
+            raise SystemExit("group-col %s 이 투영에 없다: %s" % (group_col, cols))
+        others = [c for c in cols if c != group_col]
+        aggs = [F.count(F.lit(1)).alias("n")] + [F.sum(F.col(c)).alias("s_" + c) for c in others]
+        target = df.groupBy(group_col).agg(*aggs)
+
     def once():
         if cold:
             drop_caches()          # 측정 시작 '전에' 비운다. 비우는 시간은 안 잰다.
         t0 = time.perf_counter()
-        df.write.format("noop").mode("overwrite").save()
+        target.write.format("noop").mode("overwrite").save()
         return time.perf_counter() - t0
 
     for i in range(warmup):
@@ -131,6 +143,7 @@ def run(spark, table, ncols, warmup, iters, label, is_deleted=False, batch_size=
         "cols": cols,
         "batch_size": batch_size,
         "split_size": split_size,
+        "group_col": group_col,
         "cold": cold,
         "iters": iters,
         "min_s": times[0],
@@ -174,6 +187,12 @@ def main():
         help="벡터화 배치 크기. 생략하면 Iceberg 기본값 5000 을 그대로 쓴다.",
     )
     p.add_argument(
+        "--group-col",
+        default=None,
+        help="이 컬럼으로 GROUP BY 를 붙여 셔플을 만든다. 투영한 나머지 컬럼은 sum 으로 "
+             "소비해 컬럼 프루닝을 막는다. 생략하면 순수 스캔(셔플 없음).",
+    )
+    p.add_argument(
         "--split-size",
         type=int,
         default=None,
@@ -205,12 +224,14 @@ def main():
     mode = " + _deleted" if args.is_deleted else ""
     bs = f", 배치 {args.batch_size}" if args.batch_size else ", 배치 기본(5000)"
     bs += f", split {args.split_size}" if args.split_size else ""
+    bs += f", GROUP BY {args.group_col}" if args.group_col else ", 셔플 없음"
     bs += " · 콜드 캐시" if args.cold else " · 웜 캐시"
     shown = ",".join(col_list) if col_list else f"{args.cols} 컬럼"
     print(f"\n=== 스캔: {args.table}  ({shown}{mode}{bs}) ===")
     stats = run(spark, args.table, args.cols, args.warmup, args.iters, args.label,
                 is_deleted=args.is_deleted, batch_size=args.batch_size,
-                cold=args.cold, col_list=col_list, split_size=args.split_size)
+                cold=args.cold, col_list=col_list, split_size=args.split_size,
+                group_col=args.group_col)
     stats["is_deleted"] = args.is_deleted
 
     if args.out_json:
