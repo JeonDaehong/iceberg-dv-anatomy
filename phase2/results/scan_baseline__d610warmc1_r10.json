@@ -1,0 +1,16 @@
+{
+  "label": "baseline_d610warmc1_r10",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1505343180001546,
+  "median_s": 0.1944237540001268,
+  "max_s": 0.28476913200006493,
+  "mean_s": 0.1985226245666657,
+  "is_deleted": false
+}
