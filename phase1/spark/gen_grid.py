@@ -77,6 +77,10 @@ def main():
                    help="청크 점유율 p, basis point of 10000. 10000 이면 모든 청크. "
                         "낮추면 일부 청크에만 삭제가 생겨 컨테이너 개수가 줄어든다. "
                         "청크 '안'의 밀도는 --density-bp 로 유지되므로 컨테이너 타입은 안 바뀐다.")
+    p.add_argument("--sort-by", default=None,
+                   help="테이블을 이 컬럼으로 전역 정렬해서 쓴다 (Phase 3-A). "
+                        "주면 L/p 축은 쓰지 않고, 삭제 술어도 이 컬럼으로 건다. "
+                        "무정렬 테이블과 '같은 행'이 삭제되면서 물리 배치만 달라진다.")
     p.add_argument("--rows-per-file", type=int, required=True)
     p.add_argument("--num-files", type=int, required=True)
     p.add_argument("--seed", type=int, default=20260817)
@@ -96,8 +100,14 @@ def main():
 
     spark.sql(f"DROP TABLE IF EXISTS {args.table} PURGE")
     # 파티션 i = id [i*R, (i+1)*R) 를 순서대로 -> position = id % R (phase0 와 동일 불변량)
-    spark.range(0, total, 1, args.num_files).selectExpr(*COLUMN_EXPRS) \
-         .createOrReplaceTempView("src")
+    src = spark.range(0, total, 1, args.num_files).selectExpr(*COLUMN_EXPRS)
+    if args.sort_by:
+        # 전역 정렬. repartitionByRange 로 파일 경계를 값 범위에 맞추고 파티션 안에서 정렬한다.
+        # 그래야 "삭제 키로 정렬해 둔 테이블" 이 된다.
+        src = (src.repartitionByRange(args.num_files, args.sort_by)
+                  .sortWithinPartitions(args.sort_by))
+        print(f"  정렬: {args.sort_by} 로 전역 정렬 (파일 {args.num_files}개)")
+    src.createOrReplaceTempView("src")
     spark.sql(
         f"""
         CREATE TABLE {args.table} USING iceberg
@@ -115,7 +125,14 @@ def main():
 
     files = spark.sql(
         f"SELECT record_count FROM {args.table}.files").collect()
-    bad = [f.record_count for f in files if f.record_count != args.rows_per_file]
+    if args.sort_by:
+        # repartitionByRange 는 파일당 행 수를 정확히 맞추지 않는다. 개수만 확인하고
+        # 실제 분포를 찍어 둔다 — 두 테이블의 총 행 수가 같은지가 중요하다.
+        print("  파일별 행 수: %s (합 %s)"
+              % ([f.record_count for f in files], f"{sum(f.record_count for f in files):,}"))
+        bad = []
+    else:
+        bad = [f.record_count for f in files if f.record_count != args.rows_per_file]
     if len(files) != args.num_files or bad:
         print(f"*** 레이아웃 불변량 위반: 파일 {len(files)}개, 이상 record_count={bad}")
         sys.exit(2)
@@ -125,7 +142,13 @@ def main():
     #
     # position = id % ROWS_PER_FILE (레이아웃 불변량, 위에서 검증됨)
     L = args.run_length
-    if L <= 1:
+    if args.sort_by:
+        # Phase 3-A: 술어를 **정렬 컬럼**에 건다. 정렬/무정렬 두 테이블에 같은 술어를
+        # 쓰므로 삭제되는 '행 자체' 가 같고, 달라지는 건 그 행들이 파일 안 어디에
+        # 놓여 있느냐(= position 분포)뿐이다. 그게 이 실험이 분리하려는 것이다.
+        key = args.sort_by
+        L = 1
+    elif L <= 1:
         key = f"id"
     else:
         key = f"(pmod(id, {args.rows_per_file}) div {L})"
@@ -162,6 +185,7 @@ def main():
                 "table": args.table,
                 "density_bp": args.density_bp,
                 "run_length": L,
+                "sort_by": args.sort_by,
                 "occupancy_bp": args.occupancy_bp,
                 "target_density": density,
                 "actual_density": actual,
