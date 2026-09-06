@@ -1,0 +1,21 @@
+{
+  "label": "patched_d610p16c5_r1",
+  "table": "dv.g.d610",
+  "n_cols": 5,
+  "cols": [
+    "id",
+    "k01",
+    "k02",
+    "k03",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": 33554432,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.12317206399995939,
+  "median_s": 0.14123775600000954,
+  "max_s": 0.22472548400003234,
+  "mean_s": 0.14600159953333408,
+  "is_deleted": false
+}
