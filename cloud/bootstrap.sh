@@ -169,10 +169,24 @@ else
   echo "  없음 — 생성한다 (밀도 3개만)"
   cd /root/iceberg-dv-anatomy/phase1
   DENSITIES_BP="50 610 700" ./scripts/01-gen-grid.sh || die "테이블 생성"
+  # 진짜 게이트. 위 스크립트는 0초에 "완료" 를 찍고 끝날 수 있다(그렇게 한 번 당했다).
+  # 디렉터리 존재가 아니라 밀도별 테이블과 데이터 파일 수를 직접 센다.
+  for BP in 50 610 700; do
+    D="/root/dv-anatomy/warehouse-p1/g/d${BP}"
+    [[ -d "$D" ]] || die "테이블 없음: $D"
+    NP=$(find "$D" -name '*.parquet' | wc -l)
+    echo "  d${BP}: parquet ${NP}개"
+    [[ "$NP" -ge 4 ]] || die "d${BP} 의 parquet 이 ${NP}개뿐이다 (4개 이상이어야 한다)"
+  done
   echo "  S3 로 올린다"
   aws s3 sync /root/dv-anatomy/warehouse-p1/ "s3://$BUCKET/warehouse-p1/" --only-show-errors || die "warehouse 업로드"
 fi
 du -sh /root/dv-anatomy/warehouse-p1 || die "warehouse 없음"
+# 어느 경로로 왔든(생성이든 다운로드든) 세 테이블이 다 있어야 한다.
+for BP in 50 610 700; do
+  [[ -d "/root/dv-anatomy/warehouse-p1/g/d${BP}" ]] || die "테이블 없음: d${BP}"
+done
+echo "  테이블 3개 확인"
 
 say "7. 측정 — 폭 1·20, 밀도 3, arm 2, 반복 6 = 72 프로파일"
 cd /root/iceberg-dv-anatomy/phase2
