@@ -116,6 +116,9 @@ mkdir -p /root/opt/jars-baseline /root/opt/jars-patched
 JARNAME="iceberg-spark-runtime-4.0_2.13-1.11.0.jar"
 aws s3 cp "s3://$BUCKET/jars/baseline.jar" "/root/opt/jars-baseline/$JARNAME" --only-show-errors || die "baseline jar"
 aws s3 cp "s3://$BUCKET/jars/patched.jar"  "/root/opt/jars-patched/$JARNAME"  --only-show-errors || die "patched jar"
+# 테이블 생성용으로도 로컬 jar 을 둔다. 없으면 config 가 --packages 로 폴백하는데,
+# 그러면 spark-submit 마다 Ivy 해석이 프로파일 대상 JVM 안에서 돌아 분모에 섞인다.
+mkdir -p /root/opt/jars && cp "/root/opt/jars-baseline/$JARNAME" "/root/opt/jars/$JARNAME"
 echo "  md5 확인:"; md5sum /root/opt/jars-*/"$JARNAME"
 
 # 로컬에서 올린 것과 같은 바이너리인지 확인한다. 다르면 CPU 효과가 아니라 빌드 차이를 잰다.
