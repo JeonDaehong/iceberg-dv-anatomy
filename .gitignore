@@ -36,3 +36,8 @@ derby.log
 .vscode/
 .DS_Store
 Thumbs.db
+
+# 클라우드 측정 원본 — 로컬 results/profiles/ 와 같은 이유로 저장소에 안 넣는다.
+# 집계 결과(cloudcmp.json, scan_*.json, lscpu.txt)는 남긴다.
+phase2/cloud-results/*.tgz
+phase2/cloud-results/*/profiles/
