@@ -188,17 +188,65 @@ for BP in 50 610 700; do
 done
 echo "  테이블 3개 확인"
 
-say "7. 측정 — 폭 1·20, 밀도 3, arm 2, 반복 6 = 72 프로파일"
+MODE="${MODE:-cpu}"
 cd /root/iceberg-dv-anatomy/phase2
-WIDTHS="1 20" REPS=6 FLIP_MODE=alternate ./scripts/06b-breakeven.sh || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
+
+case "$MODE" in
+cpu)
+  say "7. 측정 [cpu] — 폭 1·20, 밀도 3, arm 2, 반복 6 = 72 프로파일"
+  WIDTHS="1 20" REPS=6 FLIP_MODE=alternate ./scripts/06b-breakeven.sh \
+    || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
+  ;;
+
+s3)
+  say "7a. S3A 의존성 해석 — 프로파일 밖에서 미리 받는다"
+  # --packages 를 측정에 쓰면 Ivy 해석이 프로파일 대상 JVM 안에서 돌아 분모에 섞인다.
+  # 그래서 여기서 한 번 해석해 캐시에 받아두고, 측정에는 --jars 로 넘긴다.
+  HV=$(ls "$SPARK_HOME"/jars/hadoop-client-api-*.jar 2>/dev/null | head -1 \
+       | sed 's|.*hadoop-client-api-||; s|\.jar$||')
+  [[ -n "$HV" ]] || die "Spark 의 hadoop 버전을 못 알아냈다"
+  echo "  Spark 번들 hadoop 버전: $HV"
+  printf '%s\n' 'from pyspark.sql import SparkSession' \
+                 'SparkSession.builder.getOrCreate().stop()' > /root/noop.py
+  spark-submit --master "local[1]" \
+    --packages "org.apache.hadoop:hadoop-aws:${HV}" \
+    --conf spark.jars.ivy=/root/ivy \
+    /root/noop.py > /root/ivy-resolve.log 2>&1 || { tail -30 /root/ivy-resolve.log; die "hadoop-aws 해석 실패"; }
+  S3_JARS=$(ls /root/ivy/jars/*.jar 2>/dev/null | tr '\n' ',' | sed 's|,$||')
+  [[ -n "$S3_JARS" ]] || die "ivy 가 jar 을 안 남겼다"
+  echo "  받은 jar $(ls /root/ivy/jars/*.jar | wc -l)개"
+
+  say "7b. 측정 [s3] — EBS vs S3 × 폭 1·20 × arm 2 × 반복 6 = 48 프로파일"
+  BUCKET="$BUCKET" S3_JARS="$S3_JARS" REPS=6 ./scripts/08-storage.sh \
+    || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
+  ;;
+
+par)
+  say "7. 측정 [par] — local[1,2,4,16] × 폭 1·5 × arm 2 × 반복 6 = 96 프로파일"
+  echo "  vCPU: $(nproc)"
+  [[ "$(nproc)" -ge 16 ]] || die "vCPU 가 $(nproc) 개뿐이다 — local[16] 을 못 잰다"
+  REPS=6 ./scripts/09-parallelism.sh \
+    || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
+  ;;
+
+*) die "모르는 MODE=$MODE (cpu|s3|par)" ;;
+esac
 
 say "8. 결과 수집"
 cd /root/iceberg-dv-anatomy/phase2
 N=$(ls results/profiles/*.collapsed 2>/dev/null | wc -l)
-echo "  프로파일 $N 개"
-[[ "$N" -ge 72 ]] || echo "  ⚠️ 72개 미만이다. 로그를 확인할 것."
-python3 tools/breakeven.py results > "results/cloud_${TAG}.txt" 2>&1 || true
-tail -60 "results/cloud_${TAG}.txt"
+case "$MODE" in cpu) WANT=72 ;; s3) WANT=48 ;; par) WANT=96 ;; *) WANT=0 ;; esac
+echo "  프로파일 $N 개 (기대 $WANT)"
+[[ "$N" -ge "$WANT" ]] || echo "  ⚠️ 기대보다 적다. 로그를 확인할 것."
+if [[ "$MODE" == "cpu" ]]; then
+  python3 tools/breakeven.py results > "results/cloud_${TAG}.txt" 2>&1 || true
+  tail -40 "results/cloud_${TAG}.txt"
+else
+  # s3 / par 은 태그 체계가 달라 breakeven.py 로 안 읽힌다. 채점은 로컬에서 한다.
+  ls results/profiles/*.collapsed | sed 's|.*/||; s|_r[0-9]*\.collapsed||' | sort | uniq -c \
+    > "results/cloud_${TAG}.txt"
+  cat "results/cloud_${TAG}.txt"
+fi
 
 # 프로파일 원본은 크다(수십 MB). 집계 결과와 wall-clock JSON 만 올린다.
 aws s3 cp "results/cloud_${TAG}.txt" "s3://$BUCKET/results/${TAG}/summary.txt" --only-show-errors || true
