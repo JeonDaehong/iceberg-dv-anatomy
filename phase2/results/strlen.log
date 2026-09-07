@@ -1,0 +1,102 @@
+문자열 길이 축 — 컬럼 5종 × 2 arm × 6회 = 60 프로파일
+  int = id  (8자)
+  s8 = s10  (8자)
+  s16 = s09  (16자)
+  s24 = s17  (24자)
+  s32 = s07  (32자)
+  SCAN_ITERS=30 SCAN_WARMUP=3 REPS=6
+
+### 라운드 1 / 6
+  int (id)  [순서: baseline patched]
+      baseline r1 (int=id): [baseline_d610Lint_r1] median=0.197s  min=0.162s  max=0.283s
+      patched r1 (int=id): [patched_d610Lint_r1] median=0.142s  min=0.113s  max=0.315s
+  s8 (s10)  [순서: baseline patched]
+      baseline r1 (s8=s10): [baseline_d610Ls8_r1] median=0.269s  min=0.240s  max=0.402s
+      patched r1 (s8=s10): [patched_d610Ls8_r1] median=0.260s  min=0.212s  max=0.503s
+  s16 (s09)  [순서: baseline patched]
+      baseline r1 (s16=s09): [baseline_d610Ls16_r1] median=0.320s  min=0.269s  max=0.485s
+      patched r1 (s16=s09): [patched_d610Ls16_r1] median=0.308s  min=0.256s  max=0.445s
+  s24 (s17)  [순서: baseline patched]
+      baseline r1 (s24=s17): [baseline_d610Ls24_r1] median=0.381s  min=0.320s  max=0.514s
+      patched r1 (s24=s17): [patched_d610Ls24_r1] median=0.375s  min=0.302s  max=0.540s
+  s32 (s07)  [순서: baseline patched]
+      baseline r1 (s32=s07): [baseline_d610Ls32_r1] median=0.436s  min=0.371s  max=0.707s
+      patched r1 (s32=s07): [patched_d610Ls32_r1] median=0.408s  min=0.332s  max=0.594s
+
+### 라운드 2 / 6
+  int (id)  [순서: patched baseline]
+      patched r2 (int=id): [patched_d610Lint_r2] median=0.318s  min=0.166s  max=0.534s
+      baseline r2 (int=id): [baseline_d610Lint_r2] median=0.190s  min=0.143s  max=0.366s
+  s8 (s10)  [순서: patched baseline]
+      patched r2 (s8=s10): [patched_d610Ls8_r2] median=0.275s  min=0.195s  max=0.376s
+      baseline r2 (s8=s10): [baseline_d610Ls8_r2] median=0.269s  min=0.229s  max=0.350s
+  s16 (s09)  [순서: patched baseline]
+      patched r2 (s16=s09): [patched_d610Ls16_r2] median=0.261s  min=0.239s  max=0.503s
+      baseline r2 (s16=s09): [baseline_d610Ls16_r2] median=0.309s  min=0.279s  max=0.591s
+  s24 (s17)  [순서: patched baseline]
+      patched r2 (s24=s17): [patched_d610Ls24_r2] median=0.312s  min=0.277s  max=0.459s
+      baseline r2 (s24=s17): [baseline_d610Ls24_r2] median=0.356s  min=0.311s  max=0.520s
+  s32 (s07)  [순서: patched baseline]
+      patched r2 (s32=s07): [patched_d610Ls32_r2] median=0.427s  min=0.324s  max=0.678s
+      baseline r2 (s32=s07): [baseline_d610Ls32_r2] median=0.429s  min=0.366s  max=0.655s
+
+### 라운드 3 / 6
+  int (id)  [순서: baseline patched]
+      baseline r3 (int=id): [baseline_d610Lint_r3] median=0.195s  min=0.160s  max=0.368s
+      patched r3 (int=id): [patched_d610Lint_r3] median=0.149s  min=0.117s  max=0.241s
+  s8 (s10)  [순서: baseline patched]
+      baseline r3 (s8=s10): [baseline_d610Ls8_r3] median=0.369s  min=0.288s  max=0.491s
+      patched r3 (s8=s10): [patched_d610Ls8_r3] median=0.223s  min=0.185s  max=0.365s
+  s16 (s09)  [순서: baseline patched]
+      baseline r3 (s16=s09): [baseline_d610Ls16_r3] median=0.692s  min=0.307s  max=0.885s
+      patched r3 (s16=s09): [patched_d610Ls16_r3] median=0.283s  min=0.236s  max=0.392s
+  s24 (s17)  [순서: baseline patched]
+      baseline r3 (s24=s17): [baseline_d610Ls24_r3] median=0.378s  min=0.327s  max=0.515s
+      patched r3 (s24=s17): [patched_d610Ls24_r3] median=0.319s  min=0.271s  max=0.473s
+  s32 (s07)  [순서: baseline patched]
+      baseline r3 (s32=s07): [baseline_d610Ls32_r3] median=0.486s  min=0.348s  max=1.341s
+      patched r3 (s32=s07): [patched_d610Ls32_r3] median=0.335s  min=0.308s  max=0.528s
+
+### 라운드 4 / 6
+  int (id)  [순서: patched baseline]
+      patched r4 (int=id): [patched_d610Lint_r4] median=0.120s  min=0.102s  max=0.221s
+      baseline r4 (int=id): [baseline_d610Lint_r4] median=0.177s  min=0.144s  max=0.280s
+  s8 (s10)  [순서: patched baseline]
+      patched r4 (s8=s10): [patched_d610Ls8_r4] median=0.217s  min=0.189s  max=0.294s
+      baseline r4 (s8=s10): [baseline_d610Ls8_r4] median=0.257s  min=0.226s  max=0.392s
+  s16 (s09)  [순서: patched baseline]
+      patched r4 (s16=s09): [patched_d610Ls16_r4] median=0.247s  min=0.231s  max=0.426s
+      baseline r4 (s16=s09): [baseline_d610Ls16_r4] median=0.296s  min=0.271s  max=0.469s
+  s24 (s17)  [순서: patched baseline]
+      patched r4 (s24=s17): [patched_d610Ls24_r4] median=0.345s  min=0.285s  max=0.494s
+      baseline r4 (s24=s17): [baseline_d610Ls24_r4] median=0.362s  min=0.314s  max=0.484s
+  s32 (s07)  [순서: patched baseline]
+      patched r4 (s32=s07): [patched_d610Ls32_r4] median=0.380s  min=0.308s  max=0.519s
+      baseline r4 (s32=s07): [baseline_d610Ls32_r4] median=0.439s  min=0.347s  max=0.585s
+
+### 라운드 5 / 6
+  int (id)  [순서: baseline patched]
+      baseline r5 (int=id): [baseline_d610Lint_r5] median=0.209s  min=0.152s  max=0.298s
+      patched r5 (int=id): [patched_d610Lint_r5] median=0.133s  min=0.104s  max=0.218s
+  s8 (s10)  [순서: baseline patched]
+      baseline r5 (s8=s10): [baseline_d610Ls8_r5] median=0.264s  min=0.241s  max=0.487s
+      patched r5 (s8=s10): [patched_d610Ls8_r5] median=0.264s  min=0.204s  max=0.405s
+  s16 (s09)  [순서: baseline patched]
+      baseline r5 (s16=s09): [baseline_d610Ls16_r5] median=0.297s  min=0.274s  max=0.425s
+      patched r5 (s16=s09): [patched_d610Ls16_r5] median=0.255s  min=0.232s  max=0.381s
+  s24 (s17)  [순서: baseline patched]
+      baseline r5 (s24=s17): [baseline_d610Ls24_r5] median=0.419s  min=0.349s  max=0.579s
+      patched r5 (s24=s17): [patched_d610Ls24_r5] median=0.318s  min=0.277s  max=0.567s
+  s32 (s07)  [순서: baseline patched]
+      baseline r5 (s32=s07): [baseline_d610Ls32_r5] median=0.435s  min=0.357s  max=0.918s
+      patched r5 (s32=s07): [patched_d610Ls32_r5] median=0.393s  min=0.326s  max=0.667s
+
+### 라운드 6 / 6
+  int (id)  [순서: patched baseline]
+      patched r6 (int=id): [patched_d610Lint_r6] median=0.130s  min=0.098s  max=0.207s
+      baseline r6 (int=id): [baseline_d610Lint_r6] median=0.173s  min=0.136s  max=0.266s
+  s8 (s10)  [순서: patched baseline]
+      patched r6 (s8=s10): [patched_d610Ls8_r6] median=0.214s  min=0.196s  max=0.313s
+      baseline r6 (s8=s10): [baseline_d610Ls8_r6] median=0.271s  min=0.231s  max=0.368s
+  s16 (s09)  [순서: patched baseline]
+      patched r6 (s16=s09): [patched_d610Ls16_r6] median=0.250s  min=0.220s  max=0.338s

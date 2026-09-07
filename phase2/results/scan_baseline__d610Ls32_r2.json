@@ -1,0 +1,18 @@
+{
+  "label": "baseline_d610Ls32_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "s07"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.3664866130002338,
+  "median_s": 0.42946639900037553,
+  "max_s": 0.6553675230002227,
+  "mean_s": 0.4447281249000146,
+  "is_deleted": false
+}

@@ -1,0 +1,18 @@
+{
+  "label": "patched_d610Lint_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1655360700001438,
+  "median_s": 0.3175489589998506,
+  "max_s": 0.5341287710000415,
+  "mean_s": 0.32205730076668715,
+  "is_deleted": false
+}
