@@ -15,6 +15,7 @@ import argparse
 import json
 import os
 import sys
+import time
 
 from pyspark.sql import SparkSession
 
@@ -111,6 +112,10 @@ def main():
                   .sortWithinPartitions(args.sort_by))
         print(f"  정렬: {args.sort_by} 로 전역 정렬 (파일 {args.num_files}개)")
     src.createOrReplaceTempView("src")
+    # 쓰기 시간. 정렬 arm 은 여기에 (범위 경계 샘플링 + 전체 셔플 + 파티션 내 정렬) 이 들어간다.
+    # ⚠️ 소스 생성(spark.range + selectExpr) 비용이 두 arm 에 똑같이 포함된다.
+    #    그래서 **비율보다 차이(초)** 가 일반화되는 값이다. 실무 ETL 은 소스가 다르다.
+    _t_write = time.time()
     spark.sql(
         f"""
         CREATE TABLE {args.table} USING iceberg
@@ -126,8 +131,13 @@ def main():
         """
     )
 
+    write_secs = time.time() - _t_write
+    print(f"  쓰기 {write_secs:.2f}초" + (f"  (정렬 포함: {args.sort_by})" if args.sort_by else "  (무정렬)"))
+
     files = spark.sql(
-        f"SELECT record_count FROM {args.table}.files").collect()
+        f"SELECT record_count, file_size_in_bytes FROM {args.table}.files").collect()
+    data_bytes = sum(f.file_size_in_bytes for f in files)
+    print(f"  데이터 파일 {len(files)}개  {data_bytes:,}B")
     if args.sort_by:
         # repartitionByRange 는 파일당 행 수를 정확히 맞추지 않는다. 개수만 확인하고
         # 실제 분포를 찍어 둔다 — 두 테이블의 총 행 수가 같은지가 중요하다.
@@ -200,6 +210,8 @@ def main():
                 "dv_bytes": dv_bytes,
                 "rows_per_file": args.rows_per_file,
                 "num_files": args.num_files,
+                "write_secs": write_secs,
+                "data_bytes": data_bytes,
                 "chunks_per_file": args.rows_per_file / CHUNK,
                 "expected_chunk_cardinality": CHUNK * density,
             }, fh, indent=2)
