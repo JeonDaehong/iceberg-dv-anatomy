@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """F-008 반등 기전 채점. 예측 Q_P5~Q_P7 은 scripts/16-rebound.sh 헤더에 있고 여기 없다."""
-import io, os, sys
+import glob, io, os, re, sys, statistics as st
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from perfstat import collect, med, rng
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "..", "phase0", "tools"))
+from attribute import parse_collapsed, analyze
 
 OUT = io.open(1, "w", encoding="utf-8", closefd=False)
 def p(*a): OUT.write(" ".join(str(x) for x in a) + "\n")
@@ -74,4 +77,53 @@ elif in_hi > in_lo and cy_hi > cy_lo:
 else:
     p("   판정: 예측한 모양이 아니다 (명령어 %+.1f%%, 사이클 %+.1f%%)"
       % ((in_hi/in_lo-1)*100, (cy_hi/cy_lo-1)*100))
+# ── Q_P8: DV 구간 귀속 ────────────────────────────────────────────────────
+def dv_branch_share(tag):
+    """branch-misses 프로파일에서 DV 구간의 비중. (스캔 대비, 전체 대비) 두 쌍을 돌려준다.
+
+    ⚠️ 분모를 섞으면 안 된다. 비중 비교는 **스캔 대비**(F-008 이 스캔 안의 이야기라서),
+       perf stat 총량과 곱해 절대값을 낼 때는 **전체 대비**를 써야 한다.
+    """
+    of_scan, of_all = [], []
+    for path in sorted(glob.glob(os.path.join(
+            R, "profiles", "baseline__rb%s_branch_misses_r*.collapsed" % tag))):
+        stacks = parse_collapsed(path)
+        if not stacks:
+            continue
+        a = analyze(stacks)
+        if a.get("scan_samples") and a.get("total_samples"):
+            of_scan.append(a["dv_pct_of_scan"])
+            of_all.append(a["dv_pct_of_all"])
+    return of_scan, of_all
+
+p("")
+p("─ Q_P8 ★귀속★  늘어난 분기 실패가 DV 체크 구간에서 났는가")
+sh = {t: dv_branch_share(t) for t in TAGS}
+if not sh[LO][0] or not sh[HI][0]:
+    p("   프로파일이 없다 (LO=%d, HI=%d개) — 2단계를 안 돌렸거나 실패했다."
+      % (len(sh[LO][0]), len(sh[HI][0])))
+else:
+    for t in TAGS:
+        v, va = sh[t]
+        p("   %-6s DV/스캔 %6.2f%%  [%.2f ~ %.2f]   DV/전체 %5.2f%%   n=%d"
+          % (t, st.median(v), min(v), max(v), st.median(va), len(v)))
+    m_lo, m_hi = st.median(sh[LO][0]), st.median(sh[HI][0])
+    a_lo, a_hi = st.median(sh[LO][1]), st.median(sh[HI][1])
+    ov = not (max(sh[LO][0]) < min(sh[HI][0]) or max(sh[HI][0]) < min(sh[LO][0]))
+    p("   스캔 대비 차이 %+.2f%%p   범위 겹침: %s" % (m_hi - m_lo, "예" if ov else "아니오"))
+    # 절대값 환산은 **전체 대비** 비중으로만 한다 (perf stat 과 분모를 맞춘다).
+    dv_lo_abs, dv_hi_abs = bm_lo * a_lo / 100.0, bm_hi * a_hi / 100.0
+    d_total, d_dv = bm_hi - bm_lo, dv_hi_abs - dv_lo_abs
+    p("   DV 구간 절대 실패 %.0f → %.0f  (%+.0f)" % (dv_lo_abs, dv_hi_abs, d_dv))
+    p("   총 추가 실패 %+.0f 중 DV 몫 %+.0f  (%.1f%%)"
+      % (d_total, d_dv, d_dv / d_total * 100 if d_total else float("nan")))
+    frac = d_dv / d_total if d_total else 0.0
+    if ov:
+        p("   판정: 판정 불가 — 비중의 범위가 겹친다.")
+    elif m_hi > m_lo and frac >= 0.5:
+        p("   판정: 맞음 — 반등의 기전이 확정된다. 삭제 판정 분기가 d=50% 에서 동전 던지기가 된다.")
+    elif m_hi > m_lo:
+        p("   판정: 절반만 맞음 — DV 비중은 올랐지만 추가 실패의 %.1f%% 만 DV 몫이다." % (frac * 100))
+    else:
+        p("   판정: ★빗나감 — DV 비중이 안 올랐다. 늘어난 실패는 DV 밖에서 났다.")
 p("=" * 92)

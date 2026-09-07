@@ -45,6 +45,15 @@
 #         깨져서 비중이 같거나 낮으면, 늘어난 실패는 DV 밖 — 살아남는 행 수가 바뀌면서
 #         달라진 다운스트림 코드 — 에서 난 것이고 반등은 여전히 미해결이다.
 #
+#   Q_P9. [정량 마감 · 3단계] Q_P8 로 DV 구간의 분기 실패가 늘어난 것은 봤다. 그게
+#         F-008 의 DV 비용 반등(394 -> 496, 1.26배)을 **설명하는 크기인가**를 마지막으로 친다.
+#         cycles 이벤트로 같은 두 테이블을 귀속해 DV 구간의 사이클을 구하고:
+#         (a) 총 사이클이 줄어드는데도 **DV 구간 사이클은 늘어난다.**
+#         (b) 늘어난 DV 사이클의 **절반 이상**이 분기 오예측 페널티로 설명된다
+#             (Q_P8 의 추가 실패 x 18 cycle).
+#         (a) 가 깨지면 F-008 의 반등 자체가 이 조건에서 재현되지 않는 것이다.
+#         (a) 는 되는데 (b) 가 깨지면, 분기는 늘지만 반등의 주범은 여전히 다른 것이다.
+#
 # ⚠️ 통제의 한계 (F-008 이 이미 안고 있던 것):
 #   d=8% 와 d=50% 는 살아남는 행 수가 다르다 (7.36M vs 4.0M). contains() 호출 횟수는
 #   8M 으로 같지만 그 뒤에 이어지는 작업량은 다르다. 이 축은 **완전 통제가 아니다.**
@@ -121,6 +130,31 @@ for R in $(seq 1 "$REPS"); do
   if (( R % 2 == 1 )); then ORDER="$RB_TAGS"; else ORDER=$(echo "$RB_TAGS" | tr ' ' '\n' | tac | tr '\n' ' '); fi
   echo "  라운드 $R  순서: $ORDER"
   for T in $ORDER; do prof_one "$T" "$R" || true; done
+done
+
+echo
+echo "③ 귀속 (async-profiler, cycles)"
+prof_cyc() {  # $1=tag $2=rep
+  local PROF="${RESULTS}/profiles/baseline__rb${1}_cycles_r${2}.collapsed"
+  [[ -s "$PROF" && "${FORCE:-0}" != "1" ]] && { echo "    skip ${1} r${2}"; return; }
+  spark-submit \
+    --master "local[${LOCAL_CORES}]" --driver-memory "${DRIVER_MEM}" \
+    --driver-java-options "-agentpath:${AP_LIB}=start,event=cycles,collapsed,file=${PROF}" \
+    --jars "$BASELINE_JAR" \
+    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
+    ../phase0/spark/scan.py \
+      --warehouse "$WAREHOUSE" --table "dv.g.${1}" --label "rbc_${1}_r${2}" --cols "$RB_COLS" \
+      --warmup "$SCAN_WARMUP" --iters "$SCAN_ITERS" \
+      --cores "$LOCAL_CORES" --driver-mem "$DRIVER_MEM" \
+      --out-json "${RESULTS}/qperf/rbc_scan_${1}_r${2}.json" \
+    >/dev/null 2>&1 || true
+  [[ -s "$PROF" ]] || { echo "    *** 프로파일이 비었다 (${1} r${2})" >&2; return 1; }
+  echo "    ${1} r${2}: $(wc -l < "$PROF") 스택"
+}
+for R in $(seq 1 "$REPS"); do
+  if (( R % 2 == 1 )); then ORDER="$RB_TAGS"; else ORDER=$(echo "$RB_TAGS" | tr ' ' '\n' | tac | tr '\n' ' '); fi
+  echo "  라운드 $R  순서: $ORDER"
+  for T in $ORDER; do prof_cyc "$T" "$R" || true; done
 done
 
 echo
