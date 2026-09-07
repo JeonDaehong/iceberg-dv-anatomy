@@ -96,6 +96,25 @@ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export PATH="$SPARK_HOME/bin:$SPARK_HOME/sbin:$JAVA_HOME/bin:$PATH"
 sysctl -w kernel.perf_event_paranoid=1 >/dev/null 2>&1 || true
 
+say "3b. S3A jar 을 SPARK_HOME/jars 에 직접 넣는다"
+# ⚠️ --jars 로 넘기면 안 된다. Hadoop 의 FileSystem.get() 은 s3a:// 를 만나면
+# 시스템 클래스로더로 S3AFileSystem 을 찾는데, --jars 는 Spark 의 user 클래스로더에
+# 들어간다. local 모드에서는 같은 JVM 이라 우연히 되지만, standalone client 모드에서는
+# 드라이버가 **플랜 수립 중** S3 를 읽을 때 클래스를 못 찾고 죽는다.
+# 실제로 첫 시도에서 24회 전부 이렇게 죽었다 (실행당 13.5초, median 한 줄도 못 찍음).
+if ! ls "$SPARK_HOME"/jars/hadoop-aws-*.jar >/dev/null 2>&1; then
+  HV=$(ls "$SPARK_HOME"/jars/hadoop-client-api-*.jar | head -1 | sed 's|.*hadoop-client-api-||; s|[.]jar$||')
+  echo "  Spark 번들 hadoop 버전: $HV"
+  printf '%s\n' 'from pyspark.sql import SparkSession' 'SparkSession.builder.getOrCreate().stop()' > /root/noop.py
+  "$SPARK_HOME/bin/spark-submit" --master "local[1]" \
+    --packages "org.apache.hadoop:hadoop-aws:${HV}" \
+    --conf spark.jars.ivy=/root/ivy /root/noop.py > /root/ivy.log 2>&1 \
+    || { tail -20 /root/ivy.log; die "hadoop-aws 해석 실패"; }
+  cp /root/ivy/jars/*.jar "$SPARK_HOME/jars/" || die "S3A jar 복사 실패"
+  echo "  복사한 jar: $(ls /root/ivy/jars/*.jar | wc -l)개 -> SPARK_HOME/jars"
+fi
+ls "$SPARK_HOME"/jars/ | grep -E "hadoop-aws|bundle" | head -3
+
 say "4. 프로파일 수집 루프 — 모든 노드가 /mnt/prof 를 S3 로 sync"
 mkdir -p /mnt/prof
 HN=$(hostname)

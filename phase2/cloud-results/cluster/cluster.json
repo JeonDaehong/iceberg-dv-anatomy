@@ -1,0 +1,56 @@
+{
+  "cells": {
+    "clscan_baseline": {
+      "n": 6,
+      "nexec": 2.0,
+      "dv": 0,
+      "scan": 41,
+      "total": 2264.3333333333335,
+      "share_scan": 0.0,
+      "share_all": 0.0,
+      "rng": [
+        0,
+        0
+      ]
+    },
+    "clscan_patched": {
+      "n": 6,
+      "nexec": 2.0,
+      "dv": 0,
+      "scan": 32.833333333333336,
+      "total": 2209.5,
+      "share_scan": 0.0,
+      "share_all": 0.0,
+      "rng": [
+        0,
+        0
+      ]
+    },
+    "claggL_baseline": {
+      "n": 6,
+      "nexec": 2.0,
+      "dv": 0,
+      "scan": 33.5,
+      "total": 2535.8333333333335,
+      "share_scan": 0.0,
+      "share_all": 0.0,
+      "rng": [
+        0,
+        0
+      ]
+    },
+    "claggL_patched": {
+      "n": 6,
+      "nexec": 2.0,
+      "dv": 0,
+      "scan": 32,
+      "total": 2530.3333333333335,
+      "share_scan": 0.0,
+      "share_all": 0.0,
+      "rng": [
+        0,
+        0
+      ]
+    }
+  }
+}
