@@ -80,17 +80,24 @@ def main():
         rows.append((b - a, k, a, b, lo.get(k, 0), hi.get(k, 0)))
     rows.sort(reverse=True)
 
-    p("%-92s %8s %8s %9s" % ("말단 프레임", "LO %", "HI %", "차이%p"))
+    net = hit - lot
+    p("DV 구간 샘플 총합: %s -> %s  (%+.1f%%),  순증 %+d" % (f"{lot:,}", f"{hit:,}", (hit/lot-1)*100, net))
+    p("")
+    p("%-78s %8s %8s %8s %9s %9s" % ("말단 프레임", "LO %", "HI %", "차이%p", "절대차", "순증대비"))
     p("-" * 122)
     for d, k, a, b, _, _ in rows[:14]:
         if abs(d) < 0.05:
             continue
-        p("%-92s %7.2f%% %7.2f%% %+8.2f" % (k[:92], a, b, d))
+        da = hi.get(k, 0) - lo.get(k, 0)
+        p("%-78s %7.2f%% %7.2f%% %+8.2f %+9d %8.0f%%"
+          % (k.split("/")[-1][:78], a, b, d, da, da / net * 100 if net else float("nan")))
     p("   ... (가운데 생략)")
     for d, k, a, b, _, _ in rows[-8:]:
         if abs(d) < 0.05:
             continue
-        p("%-92s %7.2f%% %7.2f%% %+8.2f" % (k[:92], a, b, d))
+        da = hi.get(k, 0) - lo.get(k, 0)
+        p("%-78s %7.2f%% %7.2f%% %+8.2f %+9d %8.0f%%"
+          % (k.split("/")[-1][:78], a, b, d, da, da / net * 100 if net else float("nan")))
     p("-" * 122)
     gain = sum(d for d, _, _, _, _, _ in rows if d > 0)
     p("증가한 프레임들의 합 %+.2f%%p / 감소 %+.2f%%p"
