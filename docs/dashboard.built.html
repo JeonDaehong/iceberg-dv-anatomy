@@ -247,7 +247,7 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--rule);font-si
     <b>언제 빨라지고 언제 안 빨라지는지</b>를 1,000개가 넘는 프로파일로 따라갔다.
   </p>
   <div class="stamp">
-    <span class="chip ok">F-001 → F-028 확정</span>
+    <span class="chip ok">F-001 → F-032 확정</span>
     <span class="chip ok">이식성 6축 검증</span>
     <span class="chip bad">업스트림 미제출</span>
     <span class="chip plan">업스트림 미제출</span>
@@ -854,6 +854,42 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--rule);font-si
           <dt class="le">예외</dt><dd>F-001 의 <b>표는 그대로다</b>(4.1배는 이번에도 4.03배로 재현). 틀린 건 "왜" 다. 그리고 이건 처방을 <b>강하게</b> 만든다 — 가장 싼 컨테이너조차 행당 86.5 명령어를 쓴다. 컨테이너 타입이 곁가지고 진짜 비용은 <b>"행마다 호출한다"는 구조</b>이며, 그게 정확히 §7.1 이 고치려는 것이다</dd>
         </dl>
       </div>
+      <div class="rec">
+        <div class="rhead"><span class="rid">F-029</span><span class="rt">정렬 처방의 값 — 쓰기 +63%, 본전은 300번 읽어야</span><span class="chip bad">예측 2/3 실패</span></div>
+        <dl>
+          <dt class="lq">질문</dt><dd>F-023·F-026 은 처방의 <b>이득</b>만 쟀다. 값을 안 쟀으면 그건 처방이 아니라 광고다. 얼마를 내야 하나</dd>
+          <dt class="lm">방법</dt><dd>같은 데이터(8M행 20컬럼)를 무정렬/정렬로 각각 쓰고 벽시계를 잰다. arm 순서 교대, 4라운드씩. 저장 바이트는 Iceberg <span class='mono'>.files</span> 메타데이터에서 컬럼별로 뽑았다</dd>
+          <dt class="lr">결과</dt><dd>쓰기 <b>+63%</b>(+12.67초, 행당 +1.58µs, 범위 안 겹침). 그리고 <b>본전 회수가 10회가 아니라 약 300회</b> — 30배 빗나갔다. 다행히 300 은 이식성이 있다(쓰기 비용도 스캔당 절감도 행 수에 비례하고, DV 절감은 투영 폭과 무관)</dd>
+          <dt class="le">예외</dt><dd><b>파일이 오히려 2.64% 커졌다.</b> 통제 실패인가 했는데 기전이 있었다 — 정렬 키 k04 는 <b>399배</b> 작아지는데(10MB→25KB), 원래 등차수열이던 <span class='mono'>id</span> 가 델타 인코딩 이득을 잃고 <b>2.07배</b>, id 파생 k13 이 1.95배 커진다. 나머지 17컬럼은 ±0.1% 로 안 움직인다(통제가 살아 있다는 증거). <b>실무 함의</b>: 삭제 키로 정렬하면 자동증가 id·적재 타임스탬프가 커진다</dd>
+        </dl>
+      </div>
+      <div class="rec">
+        <div class="rhead"><span class="rid">F-030</span><span class="rt">s24 이상치는 없었다 — 평균을 쓴 내 잘못이다</span><span class="chip bad">F-025 정정</span></div>
+        <dl>
+          <dt class="lq">질문</dt><dd>F-025 가 "s24 만 선형에서 벗어난다" 고 적고 Parquet 페이지 인코딩을 범인으로 지목했다. 뜯어보기 전에 원자료부터 봤다</dd>
+          <dt class="lm">방법</dt><dd>6라운드를 펼쳐서 <b>같은 라운드의 다른 tag 들도 같이 튀었는지</b> 확인. 벽시계도 같이 봤다</dd>
+          <dt class="lr">결과</dt><dd><b>3라운드가 오염됐다.</b> 거기서 s16 이 자기 중앙값의 1.76배, s32 가 1.42배, s8 이 1.29배로 같이 튀었고 <b>s24 만 1.02배로 멀쩡</b>해서 s16 평균만 부풀어 둘이 같아 보였다. 중앙값으로 다시 적합하면 R² 0.892→<b>0.950</b>, s24 잔차 −10.0%→<b>−6.0%</b> 로 노이즈 바닥(9.7%) 안이다</dd>
+          <dt class="le">예외</dt><dd>원인은 <b>규칙이 도구마다 달랐던 것</b> — 다른 채점기는 중앙값인데 <span class='mono'>strlen.py</span> 만 평균이었다. 도구를 고쳤다. <b>없는 현상을 후속 과제로 남겨둘 뻔했다</b></dd>
+        </dl>
+      </div>
+      <div class="rec">
+        <div class="rhead"><span class="rid">F-031</span><span class="rt">실제 쿼리 경로에서도 분기가 아니다 — 그리고 ctimer 는 믿어도 된다</span><span class="chip ok">Q_P1·2·4 통과</span></div>
+        <dl>
+          <dt class="lq">질문</dt><dd>F-028 은 JMH 마이크로벤치다. Parquet 디코딩·코드젠·GC 가 섞인 진짜 Spark 스캔에서도 같은 답인가</dd>
+          <dt class="lm">방법</dt><dd><span class='mono'>perf stat</span> 으로 <span class='mono'>spark-submit</span> 전체를 감싸고, async-profiler 이벤트를 <span class='mono'>ctimer</span> 대신 <b>cycles / branch-misses</b> 로 바꿔 메서드별로 귀속</dd>
+          <dt class="lr">결과</dt><dd>분기 설명력 <b>0.2%</b>. 가장 말해주는 건 절대값이 안 변한다는 것이다(12.047억→12.009억) — 패치가 분기를 <b>38% 지웠는데</b> 실패는 그대로다. <b>지운 건 원래 잘 맞히던 분기였다.</b> 그리고 <b>ctimer 50.00% vs cycles 52.21%</b> — 이 프로젝트가 지금까지 낸 모든 비중이 사이클 기준으로도 같다</dd>
+          <dt class="le">예외</dt><dd>단 <b>F-028 을 그대로 옮기면 안 된다.</b> 마이크로벤치는 명령어비와 사이클비가 3.8% 안에서 맞았는데 실제 경로는 1.499배 vs 1.167배로 갈린다(IPC 1.64→1.28). <b>명령어를 절반 지워도 이득은 6분의 1만 온다</b> — 이게 F-018 보정 0.53 의 일부다. 그리고 Q_P3 은 <b>내가 대상 밀도를 잘못 지정</b>해 채점에서 뺐다</dd>
+        </dl>
+      </div>
+      <div class="rec">
+        <div class="rhead"><span class="rid">F-032</span><span class="rt">반등의 분기 가설은 살아남았다 — 다만 주범은 아니다</span><span class="chip noise">일부만 맞음</span></div>
+        <dl>
+          <dt class="lq">질문</dt><dd>F-008 이 "bitmap 구간에서 밀도가 오르면 비용이 다시 오른다"(1.26배)며 세운 분기 가설. <b>F-028 이 죽인 것과 다른 분기다</b> — 컨테이너 내부가 아니라 <span class='mono'>if (!contains(pos))</span> 라는 데이터 의존 분기이고 d=50% 에서 동전 던지기가 된다</dd>
+          <dt class="lm">방법</dt><dd>기대값을 <b>먼저 계산</b>해 예측을 반증 가능하게 만들었다 (2.64억 행 × 42%p = 약 1.11억 회 추가 실패, 총량의 9%). d=8% vs d=50% 를 총량·분기귀속·사이클귀속 3층으로</dd>
+          <dt class="lr">결과</dt><dd>총 실패 <b>+7.9%</b>(기대값 9% 와 근접, 범위 안 겹침). DV 구간 절대 실패 <b>+40%</b>(8271만→1억1551만, 범위 안 겹침) — <b>여기까지는 확정</b>. 그런데 늘어난 DV 사이클의 <b>28.5%</b> 밖에 설명 못 한다. 세 축 비교: F-028 컨테이너 <b>1.4%</b> / F-031 패치 <b>0.2%</b> / <b>F-032 반등 28.5%</b> — 여기서만 분기가 몫을 갖는다</dd>
+          <dt class="le">예외</dt><dd>채점 도구 버그를 잡았다 — DV 비중(스캔 기준)에 perf stat 총량(전체 기준)을 곱해 <b>"183.9%"</b> 라는 말이 안 되는 값을 냈고 그 상태로 <b>"맞음"</b> 판정이 났다. 분모를 맞추니 34.9% 이고 판정이 뒤집혔다. 그리고 DV 사이클 +15.5% 는 <b>범위가 겹쳐</b> 규칙상 주장할 수 없다. <b>나머지 71.5% 는 미해결</b></dd>
+        </dl>
+      </div>
   </div>
 </section>
 
@@ -934,7 +970,9 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--rule);font-si
     <div class="row"><span class="chip plan">대기</span><div><div class="txt"><b>셔플 축 재측정</b></div><div class="why">예측 효과가 노이즈 바닥 밑이라 판정 불가였다. 전용 인스턴스 + 반복 증가로 (F-024)</div></div></div>
     <div class="row"><span class="chip plan">대기</span><div><div class="txt"><b>측정 환경을 WSL2 에서 옮긴다</b></div><div class="why">노이즈 바닥이 로컬 27.2% vs Graviton3 7.0%. 앞으로는 전용 인스턴스에서 (F-020)</div></div></div>
     <div class="row"><span class="chip ok">완료</span><div><div class="txt"><b>PMU 로 기전 확증</b></div><div class="why"><b><span class='mono'>.metal</span> 인스턴스가 필요 없었다</b> — WSL2 에 vPMU 가 있었다. 그리고 F-001 의 기전 설명이 반증됐다. 비용은 분기도 캐시도 아니고 명령어 수다 (F-028)</div></div></div>
-    <div class="row"><span class="chip plan">대기</span><div><div class="txt"><b>실제 쿼리 경로의 <span class='mono'>perfnorm</span></b></div><div class="why">F-028 은 마이크로벤치다. Spark 스캔 전체에 붙이면 F-008 의 bitmap 반등과 F-018 의 보정 0.53 도 기전을 볼 수 있다</div></div></div>
+    <div class="row"><span class="chip ok">완료</span><div><div class="txt"><b>실제 쿼리 경로의 <span class='mono'>perfnorm</span></b></div><div class="why">분기는 실제 경로에서도 아니다(0.2%). 단 명령어 수만으로도 아니다 — 절반을 지워도 이득은 1/6 (F-031). 반등은 분기가 28.5% 몫 (F-032)</div></div></div>
+    <div class="row"><span class="chip ok">완료</span><div><div class="txt"><b>정렬 처방의 값</b></div><div class="why">쓰기 +63%, 저장 +2.6%, <b>본전 약 300회</b>. 처방에 "한 번 쓰고 300번 이상 읽을 때만" 조건이 붙는다 (F-029)</div></div></div>
+    <div class="row"><span class="chip plan">대기</span><div><div class="txt"><b>반등의 나머지 71.5%</b></div><div class="why">DV 구간 분기 실패가 40% 느는 건 확정인데 사이클 귀속은 범위가 겹친다. 노이즈 27% 인 WSL2 말고 조용한 기계에서 (F-032)</div></div></div>
   </div>
 </section>
 
