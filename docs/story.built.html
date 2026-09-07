@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Deletion Vector Anatomy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+  html{color-scheme:light dark}
+  body{margin:0; font:14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif}
+  img{max-width:100%}
+  [hidden]{display:none !important}
+</style>
+<style>
+:root{
+  --ground:#f6f7f8; --panel:#ffffff; --ink:#171b21; --ink-2:#3d4650; --muted:#69737f;
+  --rule:#dfe3e8; --rule-2:#eef1f4;
+  --teal:#1f6b66; --teal-soft:#e4efee;
+  --amber:#9a6218; --amber-soft:#f7eddc;
+  --rust:#96393b; --rust-soft:#f6e5e4;
+  --slate:#4a5b74; --slate-soft:#e7ecf3;
+  --code-bg:#f0f2f5;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0f1318; --panel:#151a21; --ink:#e6e9ed; --ink-2:#bcc4cd; --muted:#8b96a3;
+    --rule:#28313b; --rule-2:#1e252d;
+    --teal:#5fb8b0; --teal-soft:#14312f;
+    --amber:#d9a75a; --amber-soft:#33280f;
+    --rust:#d98785; --rust-soft:#331d1d;
+    --slate:#9db2cf; --slate-soft:#1b2430;
+    --code-bg:#1a212a;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0f1318; --panel:#151a21; --ink:#e6e9ed; --ink-2:#bcc4cd; --muted:#8b96a3;
+  --rule:#28313b; --rule-2:#1e252d;
+  --teal:#5fb8b0; --teal-soft:#14312f;
+  --amber:#d9a75a; --amber-soft:#33280f;
+  --rust:#d98785; --rust-soft:#331d1d;
+  --slate:#9db2cf; --slate-soft:#1b2430;
+  --code-bg:#1a212a;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink);
+  font-family:"Source Sans 3", ui-sans-serif, system-ui, sans-serif;
+  font-size:16.5px; line-height:1.68; margin:0;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{display:grid; grid-template-columns:minmax(0,1fr); max-width:1180px; margin:0 auto; padding:0 22px 96px}
+@media(min-width:1060px){ .wrap{grid-template-columns:236px minmax(0,1fr); gap:56px} }
+
+/* ── 헤더 ── */
+header.top{border-bottom:1px solid var(--rule); margin-bottom:44px; padding:56px 0 30px}
+.kicker{
+  font-family:"JetBrains Mono", ui-monospace, monospace; font-size:11.5px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--teal); margin:0 0 14px
+}
+h1{
+  font-family:"Newsreader", Georgia, serif; font-weight:600; font-size:clamp(34px,5.2vw,52px);
+  line-height:1.1; letter-spacing:-.015em; margin:0 0 16px; text-wrap:balance;
+}
+.sub{color:var(--ink-2); font-size:18px; max-width:64ch; margin:0}
+.meta{
+  display:flex; flex-wrap:wrap; gap:8px 20px; margin-top:22px;
+  font-family:"JetBrains Mono", monospace; font-size:12px; color:var(--muted);
+}
+.meta b{color:var(--ink-2); font-weight:700}
+
+/* ── 목차 ── */
+nav.toc{display:none}
+@media(min-width:1060px){
+  nav.toc{
+    display:block; position:sticky; top:0; align-self:start;
+    max-height:100vh; overflow-y:auto; padding:56px 0 40px;
+  }
+  nav.toc a{
+    display:block; padding:5px 0 5px 12px; border-left:2px solid var(--rule-2);
+    color:var(--muted); text-decoration:none; font-size:13.5px; line-height:1.4;
+  }
+  nav.toc a:hover{color:var(--teal); border-left-color:var(--teal)}
+}
+main{min-width:0}
+
+/* ── 타이포 ── */
+h2{
+  font-family:"Newsreader", Georgia, serif; font-weight:600;
+  font-size:clamp(25px,3.2vw,33px); line-height:1.22; letter-spacing:-.01em;
+  margin:64px 0 18px; padding-top:26px; border-top:1px solid var(--rule);
+  text-wrap:balance; position:relative;
+}
+h2 .num{
+  font-family:"JetBrains Mono", monospace; font-size:12px; color:var(--teal);
+  display:block; margin-bottom:8px; letter-spacing:.1em;
+}
+h3{
+  font-family:"Source Sans 3", sans-serif; font-weight:700; font-size:19.5px;
+  margin:38px 0 12px; letter-spacing:-.005em; text-wrap:balance; color:var(--ink);
+}
+h4{font-size:16px; font-weight:700; margin:26px 0 8px; color:var(--ink-2)}
+p{margin:0 0 15px; max-width:70ch}
+ul,ol{margin:0 0 16px; padding-left:22px; max-width:70ch}
+li{margin:0 0 7px}
+a{color:var(--teal); text-underline-offset:2px; text-decoration-thickness:1px}
+a.ref{
+  font-family:"JetBrains Mono", monospace; font-size:.86em;
+  background:var(--teal-soft); color:var(--teal); padding:1px 5px; border-radius:3px;
+  text-decoration:none; white-space:nowrap;
+}
+strong{font-weight:700; color:var(--ink)}
+code{
+  font-family:"JetBrains Mono", ui-monospace, monospace; font-size:.86em;
+  background:var(--code-bg); padding:1.5px 5px; border-radius:3px; color:var(--ink-2);
+}
+pre{
+  background:var(--code-bg); border:1px solid var(--rule); border-radius:6px;
+  padding:16px 18px; overflow-x:auto; margin:0 0 20px; line-height:1.55;
+}
+pre code{background:none; padding:0; font-size:12.8px; color:var(--ink-2)}
+blockquote{
+  margin:0 0 20px; padding:14px 18px; border-left:3px solid var(--slate);
+  background:var(--slate-soft); border-radius:0 5px 5px 0; color:var(--ink-2);
+  font-size:15.5px; max-width:72ch;
+}
+blockquote strong{color:var(--ink)}
+hr{border:0; border-top:1px solid var(--rule-2); margin:34px 0}
+h2 + hr, hr + h2{display:none}
+
+/* ── 표 ── */
+.tw{overflow-x:auto; margin:0 0 24px; border:1px solid var(--rule); border-radius:7px; background:var(--panel)}
+table{border-collapse:collapse; width:100%; font-size:14.2px; font-variant-numeric:tabular-nums}
+th{
+  text-align:left; font-weight:700; font-size:11.5px; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--muted); padding:11px 14px;
+  border-bottom:1px solid var(--rule); white-space:nowrap; background:var(--ground);
+}
+td{padding:10px 14px; border-bottom:1px solid var(--rule-2); vertical-align:top; color:var(--ink-2)}
+tbody tr:last-child td{border-bottom:0}
+td strong{color:var(--ink)}
+td code{font-size:12.4px}
+
+/* ── 상태 칩 ── */
+.chip{
+  display:inline-block; font-family:"JetBrains Mono", monospace; font-size:10.5px;
+  font-weight:700; letter-spacing:.06em; padding:2.5px 8px; border-radius:100px;
+  white-space:nowrap; border:1px solid transparent;
+}
+.chip.todo{background:var(--amber-soft); color:var(--amber); border-color:var(--amber)}
+.chip.run{background:var(--teal-soft); color:var(--teal); border-color:var(--teal)}
+.chip.blocked{background:var(--rust-soft); color:var(--rust); border-color:var(--rust)}
+.chip.unsure{background:var(--slate-soft); color:var(--slate); border-color:var(--slate)}
+
+@media (prefers-reduced-motion: reduce){*{animation:none!important; transition:none!important}}
+:focus-visible{outline:2px solid var(--teal); outline-offset:2px; border-radius:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc"><a href="#1-왜-했는가">1. 왜 했는가</a><a href="#2-무엇을-왜-실험했는가-설계와-규율">2. 무엇을, 왜 실험했는가 — 설계와 규율</a><a href="#3-결과-①-진단-문제가-실재하는가">3. 결과 ① 진단 — 문제가 실재하는가</a><a href="#4-개선하려면-어떤-방법이-있는가">4. 개선하려면 어떤 방법이 있는가</a><a href="#5-어떻게-개선했는가">5. 어떻게 개선했는가</a><a href="#6-결과-②-개선-얼마나-좋아졌는가">6. 결과 ② 개선 — 얼마나 좋아졌는가</a><a href="#7-결과-③-이식성-내-기계-밖에서도-성립하는가">7. 결과 ③ 이식성 — 내 기계 밖에서도 성립하는가</a><a href="#8-결과-④-처방-패치를-기다리는-동안-할-수-있는-것">8. 결과 ④ 처방 — 패치를 기다리는 동안 할 수 있는 것</a><a href="#9-기전-왜-비싼가">9. 기전 — 왜 비싼가</a><a href="#10-내가-틀린-것들">10. 내가 틀린 것들</a><a href="#11-최종-결론">11. 최종 결론</a><a href="#12-예정-아직-안-한-것-전부">12. 🔜 예정 — 아직 안 한 것 전부</a><a href="#13-한계">13. 한계</a><a href="#14-재현-방법">14. 재현 방법</a><a href="#부록-문서-지도">부록 — 문서 지도</a></nav>
+<main>
+<header class="top">
+  <p class="kicker">Apache Iceberg V3 · 읽기 경로 해부</p>
+  <h1>Deletion Vector Anatomy</h1>
+  <p class="sub">행마다 삭제 여부를 묻는 루프가 스캔 CPU 의 절반을 먹는다. 그걸 찾고, 고치고,
+     내 노트북 밖에서도 성립하는지 확인한 기록 — 틀렸던 것까지 포함해서.</p>
+  <div class="meta">
+    <span>발견 <b>35</b>개</span>
+    <span>측정 축 <b>25</b>개</span>
+    <span>빗나간 예측 <b>11</b>개</span>
+    <span>Spark <b>4.0.4</b> · Iceberg <b>1.11.0</b></span>
+    <span>최종 <b>2026-09-07</b></span>
+  </div>
+</header>
+<h1 id="deletion-vector-anatomy-전체-이야기">Deletion Vector Anatomy — 전체 이야기</h1>
+<blockquote>Apache Iceberg V3 의 deletion vector 읽기 경로를 뜯어 <strong>문제를 찾고, 고치고, 그 결과가 내 노트북 밖에서도 성립하는지 확인한</strong> 기록.  이 문서는 <strong>서사</strong>다. 34개의 발견을 시간순으로 쌓아둔 <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref"><code>findings.md</code></a> 가 근거 원본이고, 여기서는 그것들을 "왜 했는가 → 무엇을 실험했는가 → 결과 → 개선 방법 → 어떻게 개선했는가 → 결과 → 결론" 순서로 다시 엮는다. <strong>빠뜨린 것 없이, 틀렸던 것까지 포함해서.</strong></blockquote>
+<h3 id="이-문서의-상태-표시">이 문서의 상태 표시</h3>
+<div class="tw"><table><thead><tr><th>표시</th><th>뜻</th></tr></thead><tbody><tr><td>(표시 없음)</td><td><strong>측정 완료.</strong> 근거가 <code>findings.md</code> 에 있고 반복 측정을 통과했다</td></tr><tr><td>&lt;span class="chip unsure"&gt;미확정&lt;/span&gt;</td><td>측정은 했지만 <strong>범위가 겹치거나 기전을 모른다.</strong> 주장하지 않는다</td></tr><tr><td>&lt;span class="chip todo"&gt;예정&lt;/span&gt;</td><td><strong>아직 안 했다.</strong> 무엇을·왜·어떻게 할지만 적혀 있다</td></tr><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td>돈이나 환경이 필요해 지금 못 한다</td></tr></tbody></table></div>
+<p><strong>아직 안 한 것 전부는 <a href="#12-예정--아직-안-한-것-전부">12장</a>에 모아뒀다.</strong> 본문에도 나오는 자리마다 🔜 로 표시했다.</p>
+<hr>
+<p><strong>한 문단 요약</strong> — Iceberg V3 의 벡터화 리더는 배치의 <strong>모든 행에 대해</strong> 삭제 여부를 한 번씩 묻는다(<code>ColumnarBatchUtil.buildRowIdMapping</code>). 삭제가 0.5%뿐이어도 800만 번을 다 묻는다. 측정해보니 이 체크가 <strong>좁은 스캔에서 스캔 CPU 의 43~58%</strong> 를 차지했고, 행 단위 프로브를 <strong>구간 단위 API 로 바꾸자 최악 지점에서 9.28배</strong>, <code>_deleted</code> 투영 경로에서 <strong>18.9배</strong> 싸졌다. 그 결과는 CPU 3종·스토리지 2종·병렬도 16배·분산 클러스터에서 모두 유지됐다. 다만 <strong>넓은 투영에서는 사라지고</strong>(손익분기는 "DV 체크가 스캔 CPU 의 20% 이상"), 비용의 정체는 분기 예측도 캐시도 아닌 <strong>행마다 호출한다는 구조 그 자체</strong>였다.</p>
+<hr>
+<h2 id="목차">목차</h2>
+<ol><li><a href="#1-왜-했는가">왜 했는가</a></li><li><a href="#2-무엇을-왜-실험했는가--설계와-규율">무엇을, 왜 실험했는가 — 설계와 규율</a></li><li><a href="#3-결과--진단--문제가-실재하는가">결과 ① 진단 — 문제가 실재하는가</a></li><li><a href="#4-개선하려면-어떤-방법이-있는가">개선하려면 어떤 방법이 있는가</a></li><li><a href="#5-어떻게-개선했는가">어떻게 개선했는가</a></li><li><a href="#6-결과--개선--얼마나-좋아졌는가">결과 ② 개선 — 얼마나 좋아졌는가</a></li><li><a href="#7-결과--이식성--내-기계-밖에서도-성립하는가">결과 ③ 이식성 — 내 기계 밖에서도 성립하는가</a></li><li><a href="#8-결과--처방--패치를-기다리는-동안-할-수-있는-것">결과 ④ 처방 — 패치를 기다리는 동안 할 수 있는 것</a></li><li><a href="#9-기전--왜-비싼가">기전 — 왜 비싼가</a></li><li><a href="#10-내가-틀린-것들">내가 틀린 것들</a></li><li><a href="#11-최종-결론">최종 결론</a></li><li><a href="#12-예정--아직-안-한-것-전부">🔜 예정 — 아직 안 한 것 전부</a></li><li><a href="#13-한계">한계</a></li><li><a href="#14-재현-방법">재현 방법</a></li></ol>
+<hr>
+<h2 id="1-왜-했는가"><span class="num">1</span>1. 왜 했는가</h2>
+<h3 id="11-deletion-vector-가-무엇인가">1.1 Deletion vector 가 무엇인가</h3>
+<p>Iceberg 는 데이터 파일을 <strong>불변</strong>으로 다룬다. 행 하나를 지우려면 파일 전체를 다시 쓰거나, "이 행은 지워졌다"는 <strong>별도의 표시</strong>를 남겨야 한다. 후자가 merge-on-read 다.</p>
+<ul><li><strong>V2</strong> 는 이걸 <em>positional delete file</em> 로 했다. <code>(파일 경로, 행 위치)</code> 쌍을 담은 Parquet 파일이고, 삭제할 때마다 새 파일이 하나씩 생긴다. 파일이 수천 개로 불어난다.</li><li><strong>V3</strong> 는 이걸 <strong>deletion vector</strong> 로 바꿨다. 데이터 파일 하나당 <strong>RoaringBitmap 하나</strong>를 Puffin 포맷에 담는다. 파일 수가 데이터 파일 수를 넘지 않고, 크기도 훨씬 작다.</li></ul>
+<p><strong>저장 측면에서는 명백한 개선이다.</strong> 이 프로젝트가 묻는 것은 그다음이다 — <strong>읽을 때는?</strong></p>
+<h3 id="12-읽기-경로에서-무슨-일이-일어나는가">1.2 읽기 경로에서 무슨 일이 일어나는가</h3>
+<p>Spark 가 Iceberg 테이블을 벡터화 모드로 읽으면, Parquet 를 5,000행짜리 <code>ColumnarBatch</code> 단위로 디코딩한다. 삭제가 있으면 그 배치에서 지워진 행을 걷어내야 하는데, 그 일을 하는 것이 <code>ColumnarBatchUtil</code> 이다. 구조를 줄이면 이렇다:</p>
+<pre><code>// ColumnarBatchUtil.buildRowIdMapping — 살아남은 행의 인덱스를 모은다
+int[] mapping = new int[batchSize];
+int live = 0;
+for (int rowId = 0; rowId &lt; batchSize; rowId++) {
+    long pos = batchStart + rowId;
+    if (!deletes.isDeleted(pos)) {      // ← 행마다 한 번씩 묻는다
+        mapping[live++] = rowId;
+    }
+}</code></pre>
+<p><strong>핵심은 <code>if</code> 안쪽이 아니라 루프 자체다.</strong> 삭제율이 0.5% 든 50% 든 <code>isDeleted(pos)</code> 호출 횟수는 <strong>언제나 배치 크기와 같다.</strong> 800만 행 테이블이면 삭제가 4만 행뿐이어도 800만 번 묻는다.</p>
+<p>그리고 <code>isDeleted(pos)</code> 한 번은 공짜가 아니다. <code>RoaringPositionBitmap.contains(long)</code> 은 <code>long</code> 위치를 (상위 32비트 키, 하위 16비트) 로 쪼개고 → 키 배열을 이진 탐색해 컨테이너를 찾고 → 2단 간접을 거쳐야 비로소 비트를 만진다.</p>
+<h3 id="13-왜-이게-문제라고-의심했는가">1.3 왜 이게 문제라고 의심했는가</h3>
+<p>RoaringBitmap 은 <strong>구간 단위 API</strong> 를 이미 갖고 있다 — <code>forAllInRange</code>, <code>forEachInRange</code>, <code>getBatchIterator</code>, <code>rangeCardinality</code>. 배치의 위치는 <code>[batchStart, batchStart+batchSize)</code> 라는 <strong>연속 구간</strong>이다. 즉 한 번의 구간 순회로 끝날 일을 5,000번의 개별 조회로 하고 있다.</p>
+<p>특히 <strong>삭제가 하나도 없는 배치</strong>조차 5,000번을 다 묻는다. 구간 API 라면 O(1) 이다.</p>
+<p>여기까지가 <strong>코드를 읽고 세운 가설</strong>이다. 이 프로젝트의 첫 번째 규율은 <em>"가설은 가설이라고 적고, 재기 전에는 주장하지 않는다"</em> 이다.</p>
+<h3 id="14-이-프로젝트가-스스로에게-건-규율">1.4 이 프로젝트가 스스로에게 건 규율</h3>
+<p>측정 프로젝트는 원하는 답을 찾기 쉽다. 그래서 규칙을 코드에 박아뒀다.</p>
+<div class="tw"><table><thead><tr><th>규칙</th><th>왜</th><th>어디에 박혀 있나</th></tr></thead><tbody><tr><td><strong>예측을 측정 전에 적고 커밋한다</strong></td><td>나중에 판정 기준을 슬쩍 바꾸는 걸 막는다</td><td>각 <code>scripts/NN-*.sh</code> 헤더</td></tr><tr><td><strong>채점 도구는 예측을 복제하지 않는다</strong></td><td>두 곳에 있으면 한쪽만 고칠 수 있다</td><td><code>tools/*.py</code> 주석</td></tr><tr><td><strong>반복 측정 범위가 겹치면 차이를 주장하지 않는다</strong></td><td>노이즈를 발견으로 착각하는 걸 막는다</td><td>모든 채점기</td></tr><tr><td><strong>REPS ≥ 3, arm 순서는 라운드마다 교대</strong></td><td>머신 상태 표류가 arm 차이로 둔갑하는 걸 막는다</td><td>모든 측정 스크립트</td></tr><tr><td><strong>게이트는 로그가 아니라 산출물을 본다</strong></td><td>"완료" 메시지는 거짓말을 한다</td><td>스크립트 게이트</td></tr><tr><td><strong>실측 없이 업스트림에 내지 않는다</strong></td><td>초안의 전제가 실제로 틀렸던 적이 있다</td><td>프로젝트 원칙</td></tr></tbody></table></div>
+<p>이 규칙들은 장식이 아니다. <strong>아래 <a href="#10-내가-틀린-것들">10장</a>에 이 규칙들이 실제로 잡아낸 것들을 전부 모아뒀다.</strong></p>
+<hr>
+<h2 id="2-무엇을-왜-실험했는가-설계와-규율"><span class="num">2</span>2. 무엇을, 왜 실험했는가 — 설계와 규율</h2>
+<h3 id="21-축-설계-d-c-p-격자">2.1 축 설계 — (d, C, p) 격자</h3>
+<p>가설이 맞다면 비용은 <strong>RoaringBitmap 이 어떤 컨테이너를 고르느냐</strong>에 달려 있다. Roaring 은 64K 짜리 "청크" 마다 컨테이너를 따로 고른다:</p>
+<div class="tw"><table><thead><tr><th>컨테이너</th><th>조건</th><th>표현</th><th>조회</th></tr></thead><tbody><tr><td><strong>array</strong></td><td>카디널리티 ≤ 4096</td><td>정렬된 <code>char[]</code></td><td>이진 탐색 O(log n)</td></tr><tr><td><strong>bitmap</strong></td><td>카디널리티 &gt; 4096</td><td>8KB 고정 비트셋</td><td>O(1) 비트 테스트</td></tr><tr><td><strong>run</strong></td><td>연속 구간이 적을 때</td><td><code>(시작, 길이)</code> 목록</td><td>이진 탐색</td></tr></tbody></table></div>
+<p>카디널리티 4096 은 청크 밀도로 <strong>4096/65536 = 6.25%</strong> 다. 그래서 세 축을 잡았다:</p>
+<ul><li><strong><code>d</code></strong> — 삭제 밀도. 6.25% 경계를 가로지르게 촘촘히 스윕한다.</li><li><strong><code>C</code></strong> — 클러스터링(평균 run 길이 <code>L</code>). 밀도는 고정하고 삭제가 얼마나 뭉쳐 있는지만 바꾼다.</li><li><strong><code>p</code></strong> — 점유 청크 비율. 밀도와 <code>L</code> 을 고정하고 "삭제가 있는 청크가 몇 개냐"만 바꾼다.</li></ul>
+<blockquote><strong>왜 3점 설계가 아니라 스윕인가</strong>: 원안은 A/B/C 세 지점만 잴 생각이었다. 그랬다면 6.25% 경계를 건드리지 못했을 것이다. 실제로 이 경계가 이 프로젝트에서 제일 중요한 발견이 됐다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-001</a>, <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-007</a>).</blockquote>
+<h3 id="22-측정-방법과-그-한계">2.2 측정 방법과 그 한계</h3>
+<ul><li><strong>프로파일러</strong>: async-profiler 4.5, <code>ctimer</code> 이벤트 (CPU 시간 기반 샘플링). 스택에 DV 프레임이 있으면 그 샘플을 DV 로 귀속하는 <strong>inclusive 집계</strong>다.</li><li><strong>분모 두 개</strong>: <code>DV/전체</code>(JVM 기동·JIT·GC 포함, 보수적) 와 <code>DV/스캔</code>(리더 서브트리 안). 게이트 판정은 보수적인 쪽을 썼다.</li><li><strong>왜 CPU 시간인가</strong>: I/O 대기가 분모에 안 들어간다. 이게 나중에 <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-019</a> 에서 "콜드 캐시로 바꿔도 비중이 안 움직인다"는 결과의 원인이 된다.</li><li><strong>환경</strong>: Spark 4.0.4 / Iceberg 1.11.0 / JDK 17 / WSL2 Ubuntu 24.04 / AMD Zen 3, <code>local[4]</code>, 8M 행 × 20컬럼 × 4파일.</li></ul>
+<h3 id="23-노이즈를-먼저-쟀다">2.3 노이즈를 먼저 쟀다</h3>
+<p>"차이가 있다"고 말하려면 <strong>차이 없음이 얼마나 흔들리는지</strong>를 먼저 알아야 한다. 같은 설정을 15개 × 3회 반복해서 <strong>노이즈 바닥 = 중앙값 9.7%, 최대 25.9%</strong> 를 확정했다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-010</a>).</p>
+<p>이게 없었다면 아래 여러 결과를 잘못 읽었을 것이다. 실제로 반복 측정이 <strong>단일 측정본의 결론 두 개를 뒤집었다</strong> (<a href="#10-내가-틀린-것들">10장</a> 참조).</p>
+<blockquote>나중에 밝혀진 것: 9.7% 는 <strong>워크로드가 아니라 내 WSL2 개발 환경의 성질</strong>이었다. 전용 EC2 인스턴스에서는 7.0~12.7% 였다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-020</a>).</blockquote>
+<hr>
+<h2 id="3-결과-①-진단-문제가-실재하는가"><span class="num">3</span>3. 결과 ① 진단 — 문제가 실재하는가</h2>
+<h3 id="31-컨테이너-경계는-실재한다">3.1 컨테이너 경계는 실재한다</h3>
+<p>먼저 파서를 만들어 Puffin 파일에서 컨테이너 타입을 직접 읽었다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-004</a>, <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-006</a>). 그리고 실제 테이블에서 경계를 확인했다:</p>
+<p><strong>전이 폭이 0.30%p 다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-007</a>). 청크 밀도 6.10% 에서는 거의 다 array, 6.40% 에서는 거의 다 bitmap 이다. 이항분포로 예측한 전이 곡선과 <strong>3.7%p 이내로 일치</strong>했다. 즉 이건 우연이 아니라 구조다.</p>
+<h3 id="32-컨테이너-타입이-비용을-4배-가른다-그리고-방향이-직관과-반대다">3.2 컨테이너 타입이 비용을 4배 가른다 — 그리고 방향이 직관과 반대다</h3>
+<p>같은 5,000행 배치에 현행 경로(<code>contains()</code> 행당 1회)를 마이크로벤치로 재봤다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-001</a>):</p>
+<div class="tw"><table><thead><tr><th>청크 밀도</th><th>카디널리티</th><th>컨테이너</th><th>배치당</th><th>행당</th></tr></thead><tbody><tr><td>0.5%</td><td>327</td><td>array</td><td>64.99 µs</td><td>13.0 ns</td></tr><tr><td><strong>5%</strong></td><td>3,276</td><td><strong>array</strong></td><td><strong>80.22 µs</strong></td><td><strong>16.0 ns</strong></td></tr><tr><td><strong>12%</strong></td><td>7,864</td><td><strong>bitmap</strong></td><td><strong>19.76 µs</strong></td><td><strong>4.0 ns</strong></td></tr><tr><td>연속 30%</td><td>19,661</td><td>run</td><td>23.15 µs</td><td>4.6 ns</td></tr></tbody></table></div>
+<p><strong>삭제를 더 많이 할수록 체크가 싸진다.</strong> 경계를 넘는 순간 행당 16.0ns → 4.0ns 로 <strong>4.1배</strong> 떨어진다.</p>
+<p>함의가 반직관적이라 중요하다. <em>"삭제를 조금만 하면 싸다"</em> 가 아니다. <strong>삭제율 0~6.25% 구간 전체가 행당 비용이 가장 비싼 영역</strong>이고, 실무 CDC 워크로드는 대부분 여기 있다.</p>
+<h3 id="33-실제-쿼리에서도-살아남는다-톱니-곡선">3.3 실제 쿼리에서도 살아남는다 — 톱니 곡선</h3>
+<p>마이크로벤치가 아니라 실제 Spark 스캔에서 밀도를 스윕했다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-008</a>). <code>contains()</code> 호출 횟수는 밀도와 무관하게 800만으로 고정이므로, <strong>DV 샘플 수를 그대로 비교하면 그게 곧 호출당 비용</strong>이다.</p>
+<div class="tw"><table><thead><tr><th>밀도</th><th>컨테이너</th><th>DV 샘플</th><th>범위</th><th>DV/스캔</th></tr></thead><tbody><tr><td>0.50%</td><td>array 100%</td><td>599</td><td>576–633</td><td>44.19%</td></tr><tr><td><strong>6.10%</strong></td><td>array 대부분</td><td><strong>872</strong></td><td>—</td><td><strong>최악 지점</strong></td></tr><tr><td>6.25%</td><td>array/bitmap 혼합</td><td>654</td><td>617–702</td><td>46.21%</td></tr><tr><td>8%</td><td>bitmap</td><td>394</td><td>—</td><td>—</td></tr><tr><td><strong>50%</strong></td><td>bitmap 100%</td><td><strong>496</strong></td><td>454–529</td><td>39.58%</td></tr></tbody></table></div>
+<p>두 가지가 나왔다:</p>
+<ol><li><strong>경계 전후 2.22배.</strong> 최악은 경계 <strong>직전</strong>(d=6.10%)이다.</li><li><strong>bitmap 구간이 평평하지 않다.</strong> d=8% → 50% 에서 <strong>1.26배 다시 오른다</strong></li></ol>
+<p>   (394 → 496, 범위 안 겹침). 이걸 "반등"이라 부르고 <a href="#9-기전--왜-비싼가">9장</a>에서 다시 다룬다.</p>
+<h3 id="34-클러스터링은-밀도와-독립적으로-353배를-가른다">3.4 클러스터링은 밀도와 독립적으로 3.53배를 가른다</h3>
+<p>밀도를 d=0.5% 로 <strong>고정</strong>하고 평균 run 길이 <code>L</code> 만 스윕했다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-009</a>). 삭제 행 수가 같고 호출 횟수도 같으므로 <strong>남는 차이는 컨테이너 구조뿐</strong>이다.</p>
+<div class="tw"><table><thead><tr><th>L</th><th>컨테이너</th><th>DV 샘플</th><th>범위</th><th>DV bytes</th></tr></thead><tbody><tr><td>1</td><td>array</td><td>637</td><td>596–658</td><td>80,308</td></tr><tr><td>4096</td><td>run</td><td><strong>180</strong></td><td>177–185</td><td><strong>72</strong></td></tr></tbody></table></div>
+<p><strong>비용 3.53배, 저장 1,115배.</strong> 범위가 압도적으로 분리된다. 이게 나중에 <a href="#8-결과--처방--패치를-기다리는-동안-할-수-있는-것">8장의 처방</a>의 근거가 된다.</p>
+<h3 id="35-게이트-이걸-계속할-가치가-있는가">3.5 게이트 — 이걸 계속할 가치가 있는가</h3>
+<p>Phase 0 의 판정 기준은 "DV 체크가 스캔 CPU 의 5% 이상"이었다. 결과는 <strong>40%</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-005</a>). 게이트 <strong>GO</strong>.</p>
+<p>음성 대조군도 뒀다 — DV 가 없는 테이블에서 DV 샘플이 <strong>정확히 0</strong> 이었다. 오탐이 없다는 뜻이므로 위 수치를 보정 없이 쓸 수 있다.</p>
+<p>그리고 <strong>벽시계로도 보인다</strong>: 0.5% 만 삭제해도 스캔이 <strong>+13%</strong> 느려진다.</p>
+<hr>
+<h2 id="4-개선하려면-어떤-방법이-있는가"><span class="num">4</span>4. 개선하려면 어떤 방법이 있는가</h2>
+<h3 id="41-근본-행-단위-프로브를-구간-단위로">4.1 근본 — 행 단위 프로브를 구간 단위로</h3>
+<p>RoaringBitmap 이 이미 갖고 있는 API 로 대안 5개를 마이크로벤치했다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-002</a>):</p>
+<div class="tw"><table><thead><tr><th>방법</th><th>API</th><th>개선</th></tr></thead><tbody><tr><td><code>forAllInRange</code> + RelativeRangeConsumer</td><td>구간을 훑으며 present/absent 를 통보</td><td><strong>6~146배</strong></td></tr><tr><td><code>forEachInRange</code></td><td>삭제된 위치만 방문</td><td>큰 개선</td></tr><tr><td><code>getBatchIterator</code></td><td>배치 단위 반복자</td><td>큰 개선</td></tr><tr><td><code>rangeCardinality</code> 빠른 경로</td><td>구간에 삭제가 0개면 O(1) 종료</td><td>빈 배치에 결정적</td></tr></tbody></table></div>
+<p>핵심은 <code>acceptAllAbsent</code> / <code>acceptAllPresent</code> <strong>벌크 콜백</strong>이다. run 컨테이너나 삭제가 없는 구간을 O(1) 로 처리한다.</p>
+<blockquote>이 숫자에는 정정이 붙는다. 처음 3,992배라고 적었던 RUN 케이스는 <strong>배치가 통째로 삭제되는 퇴화 조건</strong>이었다. 정직한 값은 <strong>56~150배</strong> 다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-013</a>).</blockquote>
+<h3 id="42-대안-테이블-레이아웃-사용자가-오늘-할-수-있는-것">4.2 대안 — 테이블 레이아웃 (사용자가 오늘 할 수 있는 것)</h3>
+<p>패치가 업스트림에 들어가 릴리스로 풀리기까지는 시간이 걸린다. 그동안 사용자가 할 수 있는 일이 없으면 이 프로젝트는 절반만 쓸모 있다.</p>
+<p><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-009</a> 가 힌트를 줬다 — 삭제가 뭉쳐 있으면 컨테이너가 run 이 되고 3.53배 싸진다. 그렇다면 <strong>삭제 키로 테이블을 정렬해두면</strong> 실제로 그 효과가 날까? 이건 <a href="#8-결과--처방--패치를-기다리는-동안-할-수-있는-것">8장</a>에서 잰다.</p>
+<hr>
+<h2 id="5-어떻게-개선했는가"><span class="num">5</span>5. 어떻게 개선했는가</h2>
+<h3 id="51-실제-iceberg-를-고쳤다">5.1 실제 Iceberg 를 고쳤다</h3>
+<p>마이크로벤치의 6~146배는 "이론상 가능"일 뿐이다. <strong>Iceberg 를 실제로 패치하고 같은 방법으로 다시 쟀다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-011</a>).</p>
+<p>고친 곳은 세 경로다:</p>
+<div class="tw"><table><thead><tr><th>경로</th><th>하는 일</th><th>고친 방식</th></tr></thead><tbody><tr><td><code>buildRowIdMapping</code></td><td>삭제된 행을 걷어내고 살아남은 행의 인덱스를 모은다</td><td>구간 API 로 교체</td></tr><tr><td><code>buildIsDeleted</code></td><td><code>_deleted</code> 메타데이터 컬럼을 채운다</td><td>구간 API 로 교체</td></tr><tr><td>equality delete</td><td>술어 기반 삭제</td><td><strong>건드리지 않는다</strong> — 게이트로 기존 루프에 폴백</td></tr></tbody></table></div>
+<h3 id="52-정확성을-먼저-검증했다">5.2 정확성을 먼저 검증했다</h3>
+<p>성능 개선이 결과를 바꾸면 아무 의미가 없다. 패치 전후로:</p>
+<ul><li>살아남은 행 수가 정확히 같은지</li><li><code>_deleted</code> 컬럼 값이 정확히 같은지</li><li>equality delete 테이블에서 <strong>회귀가 없는지</strong></li></ul>
+<p>전부 확인했다. equality delete 경로는 게이트가 <strong>기존 루프로 정확히 폴백</strong>하는 것을 확인했고, 이건 덤으로 <strong>음성 대조군</strong> 역할도 했다 — 패치가 안 닿는 경로에서는 개선이 안 나와야 하고, 실제로 안 나왔다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-012</a>).</p>
+<h3 id="53-같은-jar-같은-바이트로-비교했다">5.3 같은 jar, 같은 바이트로 비교했다</h3>
+<p>두 arm 은 <strong>md5 로 검증한 jar 쌍</strong>이고, 테이블 바이트도 같다. 라운드마다 arm 순서를 교대해서 머신 상태 표류가 한쪽에 몰리지 않게 했다.</p>
+<hr>
+<h2 id="6-결과-②-개선-얼마나-좋아졌는가"><span class="num">6</span>6. 결과 ② 개선 — 얼마나 좋아졌는가</h2>
+<h3 id="61-헤드라인">6.1 헤드라인</h3>
+<div class="tw"><table><thead><tr><th>경로</th><th>조건</th><th>개선</th></tr></thead><tbody><tr><td><code>buildRowIdMapping</code></td><td>최악 지점 (d=6.10%)</td><td><strong>9.28배</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-011</a>)</td></tr><tr><td><code>buildIsDeleted</code></td><td><code>_deleted</code> 투영</td><td><strong>18.9배</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-012</a>)</td></tr><tr><td>equality delete</td><td>—</td><td><strong>회귀 없음</strong> (의도된 폴백)</td></tr></tbody></table></div>
+<p><code>buildIsDeleted</code> 가 더 큰 이유는 빈틈을 채울 필요가 없어서다 — 살아남은 행을 앞으로 당기는 작업이 없다.</p>
+<h3 id="62-그런데-경계가-있다-넓은-투영에서는-사라진다">6.2 그런데 경계가 있다 — 넓은 투영에서는 사라진다</h3>
+<p>20컬럼을 투영하면 DV 체크 CPU 는 여전히 <strong>6.33배</strong> 줄지만, <strong>벽시계 차이는 주장할 수 없다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-015</a>). DV 비중이 4.8% 로 떨어져 노이즈에 묻히기 때문이다.</p>
+<p>그래서 "<strong>언제 이 개선이 보이는가</strong>"를 따로 쟀다:</p>
+<ol><li><strong>손익분기는 컬럼 수 5~10개 사이</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-016</a>) — 라고 처음엔 적었다.</li><li>그런데 컬럼 타입을 통제해보니 <strong>컬럼 수 가설이 죽었다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-017</a>):</li></ol>
+<p>   정수 10개(21.6%) &gt; 문자열 3개(10.6%). 3/3 밀도에서 방향이 반대였다.    <strong>md5 문자열 컬럼 1개 = 정수 컬럼 8~10개어치.</strong></p>
+<ol><li>문자열 길이를 통제하니 답은 <strong>둘 다</strong>였다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-025</a>, <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-030</a> 정정 후):</li></ol>
+<p>   <code>비용 = 1,808 + 61.6 × 길이</code> (R² = 0.95). 컬럼 고정비와 바이트당 비용이 둘 다 실재한다.</p>
+<ol><li>결국 <strong>진짜 축은 하나의 숫자</strong>였다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-018</a>):</li></ol>
+<p>   <code>wall 절감 = 0.53 × 샘플 절감</code> 이라는 24점 회귀에서, 손익분기는    <strong>"DV 체크가 스캔 CPU 의 21% 이상"</strong> 이다. 컬럼 수도 타입도 그 비중을 정하는 입력일 뿐이다.</p>
+<blockquote>이 0.53 이라는 보정 계수의 정체는 한참 뒤에야 밝혀진다 → <a href="#95-보정-053-의-정체는-jit-이었다">9.5</a>.</blockquote>
+<h3 id="63-배치-크기를-바꿔도-결론이-흔들리지-않는다">6.3 배치 크기를 바꿔도 결론이 흔들리지 않는다</h3>
+<p>배치 크기를 1,000 ~ 20,000 (20배 범위) 로 스윕해도 <strong>최소 5.68배</strong>가 유지됐다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-014</a>). 다만 여기서 <strong>내 기전 모델이 틀렸다는 걸 발견하고 고쳤다</strong> (<a href="#10-내가-틀린-것들">10장</a> 참조).</p>
+<hr>
+<h2 id="7-결과-③-이식성-내-기계-밖에서도-성립하는가"><span class="num">7</span>7. 결과 ③ 이식성 — 내 기계 밖에서도 성립하는가</h2>
+<p>여기까지는 전부 <strong>한 대에서</strong> 나왔다 — WSL2, Zen 3, 로컬 NVMe, <code>local[4]</code>, 웜 캐시. "현업에게 유용하려면" 이게 환경을 타면 안 된다. 그래서 <strong>같은 jar(md5 검증)과 같은 테이블 바이트</strong>로 여섯 축을 따로 쟀다. 바뀌는 것이 한 번에 하나가 되도록 나머지는 전부 고정했다.</p>
+<div class="tw"><table><thead><tr><th>축</th><th>무엇을 바꿨나</th><th>DV/스캔 비중</th><th>판정</th></tr></thead><tbody><tr><td><strong>페이지 캐시</strong></td><td>웜 → 콜드</td><td>51.2% → <strong>52.0%</strong></td><td>안 움직인다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-019</a>)</td></tr><tr><td><strong>CPU</strong></td><td>Zen 3 / Sapphire Rapids / Graviton3</td><td>49.4% / 56.2% / 54.3%</td><td>±7%p 안 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-020</a>)</td></tr><tr><td><strong>스토리지</strong></td><td>EBS → S3</td><td>56.2% → <strong>58.0%</strong></td><td>오히려 +1.9%p (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-021</a>)</td></tr><tr><td><strong>병렬도</strong></td><td><code>local[1]</code> → <code>local[16]</code></td><td>스프레드 1.7%p</td><td>자릿수 안 바뀜 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-022</a>)</td></tr><tr><td><strong>셔플</strong></td><td>스캔만 → <code>GROUP BY</code></td><td>스캔 내 54% → 43%</td><td>밴드 유지 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-024</a>)</td></tr><tr><td><strong>분산 클러스터</strong></td><td>단일 JVM → 3노드</td><td>54% → <strong>41.6%</strong></td><td>하한 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-027</a>)</td></tr></tbody></table></div>
+<p><strong>결론: 43~58% 밴드는 환경 독립이다.</strong> 그리고 실무 판정 기준은 <strong>"DV 체크가 스캔 CPU 의 20% 안팎이면 이 패치가 벽시계로 보인다"</strong> 이고, 병렬도 보정은 <code>1.30 × N^0.141</code> 로 아주 완만하다.</p>
+<h3 id="71-예상-못-한-부수-결과들">7.1 예상 못 한 부수 결과들</h3>
+<ul><li><strong>콜드 캐시가 비중을 안 바꾸는 이유</strong>: <code>ctimer</code> 가 CPU 시간이라 <strong>I/O 대기가 분모에 안 들어간다</strong>. 스토리지는 "벽시계 중 CPU 비율"을 바꾸지 "CPU 중 DV 비율"을 안 바꾼다.</li><li><strong>S3 가 비중을 안 바꾸는 이유</strong>: S3 클라이언트의 자체 CPU(HTTP·TLS·체크섬)가 전체의 <strong>1.4%p</strong> 뿐이다. 분모를 못 움직인다.</li><li><strong>패치가 최신 CPU 에서 더 잘 든다</strong>: 클라우드 인스턴스에서 11.3~17.9배 vs 내 기계 8.6~9.3배.</li><li><strong>노이즈 바닥 9.7% 는 워크로드가 아니라 내 개발 환경의 성질이었다</strong> — 전용 인스턴스에서는 7.0~12.7%, 내 WSL2 는 중앙값 27.2%.</li></ul>
+<h3 id="72-분산-클러스터에서는-42-로-내려앉는다">7.2 분산 클러스터에서는 42% 로 내려앉는다</h3>
+<p>3노드 Spark standalone(8코어, S3 테이블, <strong>익스큐터</strong>에 프로파일러 부착)에서:</p>
+<div class="tw"><table><thead><tr><th>쿼리</th><th>DV/스캔</th><th>패치 배율</th><th>벽시계</th></tr></thead><tbody><tr><td>스캔, 단일 JVM</td><td>53.95%</td><td>6.8배</td><td>—</td></tr><tr><td><strong>스캔, 클러스터</strong></td><td><strong>41.58%</strong></td><td><strong>5.30배</strong></td><td><strong>−9.5%</strong> (0/6 페어, p=0.03)</td></tr><tr><td>집계, 클러스터</td><td>41.57%</td><td>5.07배</td><td>+0.7% (노이즈 안)</td></tr></tbody></table></div>
+<p>익스큐터 기동·태스크 직렬화·S3 읽기가 전부 스캔 서브트리 안으로 들어와 분모를 키운다. <strong>58% 상단은 단일 JVM 조건</strong>이었다.</p>
+<p><strong>단, 8M행/8코어는 클러스터가 단일 JVM보다 2.3배 느릴 만큼 작다.</strong> 고정비가 지배하므로 42% 는 <strong>하한</strong>으로 읽어야 한다.</p>
+<p>그리고 벽시계 −9.5% 는 <strong>분산 환경에서 지연시간 차이를 주장한 첫 사례</strong>다.</p>
+<hr>
+<h2 id="8-결과-④-처방-패치를-기다리는-동안-할-수-있는-것"><span class="num">8</span>8. 결과 ④ 처방 — 패치를 기다리는 동안 할 수 있는 것</h2>
+<h3 id="81-삭제-키로-정렬하면-280배">8.1 삭제 키로 정렬하면 2.80배</h3>
+<p><strong>같은 행을 지운</strong> 두 테이블(동일 술어, 행 단위로 검증: 양쪽 430,575행)을 놓고 정렬 여부만 바꿨다. 스캔 쿼리에 <strong>술어를 안 걸어</strong> 파일 스킵을 원천 차단했다 — 그래야 "정렬의 전체 이득"이 아니라 <strong>그중 DV 몫</strong>만 잰다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-023</a>).</p>
+<div class="tw"><table><thead><tr><th></th><th>DV 체크 CPU</th><th>DV/스캔</th><th>baseline 대비</th></tr></thead><tbody><tr><td>무정렬, 무패치</td><td>915</td><td>51.0%</td><td>1.0배</td></tr><tr><td><strong>정렬, 무패치</strong></td><td>327</td><td>27.3%</td><td><strong>2.80배</strong></td></tr><tr><td>무정렬, 패치</td><td>117</td><td>10.9%</td><td>7.8배</td></tr><tr><td><strong>정렬 + 패치</strong></td><td>74</td><td>8.0%</td><td><strong>12.39배</strong></td></tr></tbody></table></div>
+<p>기전이 파일에 보인다: 무정렬은 모든 청크가 ~7,000바이트 array, 정렬은 6~10바이트 run 이고 DV 전체가 <strong>864KB → 2.5KB</strong> 로 준다. 비-DV 스캔 샘플은 876 vs 883 으로 같다 — <strong>통제가 살아 있다는 증거</strong>다.</p>
+<h3 id="82-처방에는-조건이-세-개-붙는다">8.2 처방에는 조건이 세 개 붙는다</h3>
+<p><strong>조건 1 — 삭제가 소수 키 값에 몰릴 때만</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-026</a>):</p>
+<div class="tw"><table><thead><tr><th>정렬 키 고유값</th><th>값당 행 수</th><th>DV 체크 이득</th></tr></thead><tbody><tr><td>~1,000</td><td>~8,000</td><td><strong>2.78배</strong></td></tr><tr><td>~1,000,000</td><td>~8</td><td>1.10배</td></tr><tr><td>~10⁹ (사실상 유일)</td><td>1</td><td><strong>0.89배</strong></td></tr></tbody></table></div>
+<p>날짜·지역·테넌트로 지우면 좋은 조언이고, <strong>행 ID 로 흩어 지우면 아무 조언도 아니다.</strong></p>
+<p><strong>조건 2 — 삭제율이 경계 아래일 때만 크다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-035</a>). 경계 <strong>위</strong>(d=12%)에서 같은 실험을 반복했더니 이득이 <strong>1.26배</strong>로 줄었다(경계 아래 3.53배의 1/2.8). 출발점이 이미 bitmap(싼 쪽)이기 때문이다.</p>
+<p>그리고 예측하지 않았던 게 하나 나왔다 — <strong>어중간하게 뭉치면 오히려 손해다.</strong></p>
+<div class="tw"><table><thead><tr><th>L (평균 run 길이)</th><th>컨테이너</th><th>평균 nRuns</th><th>DV 샘플</th><th>범위</th></tr></thead><tbody><tr><td>1</td><td>bitmap</td><td>—</td><td><strong>463</strong></td><td>415 ~ 566</td></tr><tr><td><strong>8</strong></td><td><strong>run</strong></td><td><strong>849.9</strong></td><td><strong>686</strong></td><td>668 ~ 713</td></tr><tr><td>64</td><td>run</td><td>106.5</td><td>649</td><td>585 ~ 676</td></tr><tr><td>512</td><td>run</td><td>14.0</td><td>546</td><td>524 ~ 561</td></tr><tr><td>4096</td><td>run</td><td>1.9</td><td><strong>368</strong></td><td>345 ~ 403</td></tr></tbody></table></div>
+<p><strong>L=8 이 L=1 보다 1.48배 비싸다</strong> (범위 안 겹침). run 조회는 구간 배열의 이진 탐색이라 구간이 850개면 <code>log₂(850) ≈ 9.7</code> 단계인데, 8KB bitmap 은 1단계다. L 을 더 키워 nRuns 가 한 자리로 떨어져야 비로소 bitmap 을 이긴다.</p>
+<blockquote><strong>읽기와 저장이 반대로 가는 구간이 있다.</strong> L=8 은 저장이 2.4배 좋아지는데 (1,015,194 → 421,816 B) 읽기는 1.48배 나빠진다.</blockquote>
+<p><strong>조건 3 — 파일 스킵은 별개다.</strong> 위 숫자는 술어를 뺀 조건이다. 실무에서는 정렬이 파일 스킵으로 더 큰 이득을 주지만 그건 DV 이야기가 아니다.</p>
+<p><strong>조건 4 — 한 번 쓰고 300번 이상 읽을 때만</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-029</a>). 이득만 재고 값을 안 재면 처방이 아니라 광고다. 그래서 정렬 쓰기 비용을 쟀다:</p>
+<div class="tw"><table><thead><tr><th></th><th>쓰기 벽시계</th><th>저장 바이트</th></tr></thead><tbody><tr><td>무정렬</td><td>20.07s (16.31–20.84)</td><td>857,294,068</td></tr><tr><td><strong>정렬</strong></td><td><strong>32.74s</strong> (29.74–36.92)</td><td><strong>879,967,939</strong></td></tr></tbody></table></div>
+<p>쓰기 <strong>+63%</strong>(행당 +1.58µs, 범위 안 겹침), 저장 <strong>+2.6%</strong>.</p>
+<p>저장이 <strong>커진 게 놀라웠다</strong>(작아질 줄 알았다). 컬럼별로 쪼개니 기전이 정확했다:</p>
+<div class="tw"><table><thead><tr><th>컬럼</th><th>무정렬</th><th>정렬</th><th>배율</th></tr></thead><tbody><tr><td><strong>k04 (정렬 키)</strong></td><td>10,051,608</td><td><strong>25,151</strong></td><td><strong>0.003배</strong> (399배 작아짐)</td></tr><tr><td><strong>id</strong></td><td>8,173,850</td><td>16,879,442</td><td><strong>2.065배</strong></td></tr><tr><td><strong>k13 (id 파생)</strong></td><td>25,184,214</td><td>49,109,946</td><td><strong>1.950배</strong></td></tr><tr><td>나머지 17개</td><td>—</td><td>—</td><td>1.000배 (±0.1%)</td></tr></tbody></table></div>
+<p><strong>정렬 키는 거의 공짜가 되고, 원래 순차적이던 컬럼이 그 값을 치른다.</strong> 무정렬 테이블에서 <code>id</code> 는 파일 안에서 완벽한 등차수열이라 델타 인코딩이 극단적으로 잘 먹었는데, 재분배하면 그 이득이 날아간다. 나머지 17개가 <strong>정확히 안 움직이는 것</strong>이 통제가 살아 있다는 증거다.</p>
+<blockquote><strong>실무 함의</strong>: 삭제 키로 정렬하면 <strong>원래 정렬돼 있던 컬럼(자동증가 id, 적재 타임스탬프)이 커진다.</strong> 아무도 말해주지 않는 청구서다.</blockquote>
+<p><strong>본전 회수</strong>: 스캔 1회당 0.042초 절감 vs 추가 쓰기 12.67초 = <strong>약 300회</strong>. 쓰기 비용도 스캔당 절감도 행 수에 비례하고 DV 절감은 투영 폭과 무관하므로, 이 300 은 우리 테이블 크기의 값이 아니라 <strong>처방 자체의 값</strong>에 가깝다.</p>
+<p>즉 <strong>일 단위 적재 + 하루 수백 회 조회하는 분석 테이블</strong>이면 며칠 만에 회수되고, <strong>스트리밍 upsert 로 자주 다시 쓰는 테이블</strong>이면 손해다.</p>
+<h3 id="83-처방을-한-문장으로">8.3 처방을 한 문장으로</h3>
+<blockquote><strong>삭제가 적고(청크 밀도 6.25% 아래), 소수 키 값에 몰려 있고, 한 번 쓰고 수백 번 읽는 테이블이면 삭제 키로 정렬하라.</strong> 삭제가 많으면 이득이 3분의 1로 줄고, 어중간하게 뭉치면 손해이며, 자주 다시 쓰는 테이블이면 쓰기 비용이 이득을 넘는다.</blockquote>
+<p>조건이 네 개나 붙는 처방이지만, <strong>그 조건들이 전부 측정된 것</strong>이라는 게 이 프로젝트가 내놓을 수 있는 최선이다. 조건 없이 "정렬하세요"라고 쓰는 편이 읽기는 좋지만 그건 광고다.</p>
+<hr>
+<h2 id="9-기전-왜-비싼가"><span class="num">9</span>9. 기전 — 왜 비싼가</h2>
+<p>여기서부터가 이 프로젝트에서 가장 여러 번 틀린 부분이다.</p>
+<h3 id="91-8개월-동안-pmu-가-없다고-적어두고-확인을-안-했다">9.1 8개월 동안 "PMU 가 없다"고 적어두고 확인을 안 했다</h3>
+<p><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-001</a> 은 4.1배의 <strong>이유</strong>를 이렇게 설명했다: <em>"array 는 이진 탐색이라 분기 예측 실패가 많고, bitmap 은 분기가 없고 L1 에 상주한다."</em> 근거는 <strong>비용 곡선의 모양뿐</strong>이었다.</p>
+<p>확증하려면 하드웨어 카운터가 필요한데, README·SETUP·findings 등 <strong>8곳</strong>에 <em>"WSL2 라 하드웨어 PMU 가 없다 → 확증은 AWS <code>.metal</code> 인스턴스에서"</em> 라고 적어뒀다.</p>
+<p>2026-09-07 에 그냥 쳐봤다. <strong>있었다.</strong> WSL2 커널이 Hyper-V vPMU 를 노출하고 있었고 <code>branch-misses</code>, <code>cache-misses</code>, <code>cycles</code> 가 전부 값을 준다. 확인 명령은 README 에 이미 적혀 있었는데 <code>.metal</code> 에서 실행하라는 맥락으로만 적혀 있어서 로컬에서 칠 생각을 못 했다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-028</a>).</p>
+<p><strong>통제군을 먼저 뒀다.</strong> 가상화된 카운터는 이벤트가 뜨기만 하고 값이 0 인 경우가 있어서, 답을 아는 워크로드(고전적 sorted-vs-shuffled 분기 실험)로 먼저 확인했다:</p>
+<div class="tw"><table><thead><tr><th>통제군</th><th>branch-misses</th><th>실패율</th><th>벽시계</th></tr></thead><tbody><tr><td>SORTED (한 번만 뒤집힘)</td><td>9,229,171</td><td>0.94%</td><td>0.259s</td></tr><tr><td>SHUFFLED (동전 던지기)</td><td><strong>108,562,909</strong></td><td><strong>13.63%</strong></td><td>0.681s</td></tr></tbody></table></div>
+<p>이론값(2²⁰×200 의 절반 ≈ 1.05억)과 3% 안에서 맞는다. <strong>카운터는 진짜로 센다.</strong></p>
+<h3 id="92-분기-예측도-캐시도-아니었다-명령어-수였다">9.2 분기 예측도 캐시도 아니었다 — 명령어 수였다</h3>
+<p><code>-prof perfnorm</code> 으로 마이크로벤치를 다시 쟀다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-028</a>):</p>
+<div class="tw"><table><thead><tr><th>패턴</th><th>컨테이너</th><th>cycles/행</th><th><strong>insn/행</strong></th><th><strong>분기실패/행</strong></th><th>IPC</th></tr></thead><tbody><tr><td>0.5%</td><td>array</td><td>58.4</td><td>282.9</td><td>0.0126</td><td>4.84</td></tr><tr><td>5%</td><td>array</td><td>78.8</td><td>370.0</td><td>0.0763</td><td>4.70</td></tr><tr><td><strong>12%</strong></td><td><strong>bitmap</strong></td><td><strong>18.6</strong></td><td><strong>86.5</strong></td><td>0.0292</td><td>4.66</td></tr><tr><td>runs</td><td>run</td><td>40.4</td><td>191.4</td><td>0.0066</td><td>4.74</td></tr></tbody></table></div>
+<ul><li><strong>분기 예측 실패는 비용 차이의 1.4% 만 설명한다.</strong> 30만 사이클 격차를 설명하려면 배치당 16,700회 더 틀려야 하는데 실제는 235회다. <strong>두 자릿수가 모자란다.</strong></li><li><strong>캐시 가설도 죽는다.</strong> 가장 <strong>빠른</strong> bitmap 이 L1 미스는 <strong>8배 많다</strong>(1,173.9 vs 141.2).</li><li><strong>IPC 가 4.66~4.84 로 사실상 상수</strong>이고, 사이클이 명령어를 0.8~3.8% 안에서 따라간다. <strong>파이프라인이 막혀서 비싼 게 아니라 그냥 일을 더 한다.</strong></li></ul>
+<p><strong>F-001 의 표는 그대로다</strong>(4.1배는 이번에도 4.03배로 재현). 틀린 건 <strong>"왜"</strong> 다.</p>
+<h3 id="93-그리고-이게-처방을-강하게-만든다">9.3 그리고 이게 처방을 강하게 만든다</h3>
+<p>행당 <strong>86.5 명령어</strong>. 이건 비트 하나 테스트하는 비용이 아니다. 가장 싼 경로조차 <code>contains(long)</code> 의 고정비(위치 쪼개기 → 키 배열 이진 탐색 → 2단 간접)를 다 낸다.</p>
+<p>즉 <strong>컨테이너 타입은 곁가지고, 진짜 비용은 "행마다 호출한다"는 구조 자체다.</strong> 그리고 그게 정확히 §5.1 의 패치가 고치는 것이다 — 배치 API 로 바꾸면 이 고정비를 5,000번이 아니라 몇 번만 낸다. <strong>기전 설명이 처방과 같은 방향을 가리킨다.</strong></p>
+<h3 id="94-실제-쿼리-경로에서도-마찬가지다-그리고-ctimer-가-검증됐다">9.4 실제 쿼리 경로에서도 마찬가지다 — 그리고 <code>ctimer</code> 가 검증됐다</h3>
+<p>마이크로벤치를 실제 Spark 스캔으로 옮겼다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-031</a>):</p>
+<div class="tw"><table><thead><tr><th>arm</th><th>cycles</th><th>instructions</th><th>branch-misses</th><th>실패율</th><th>IPC</th></tr></thead><tbody><tr><td>baseline</td><td>237,714,166,096</td><td>390,468,338,748</td><td>1,204,681,888</td><td>1.55%</td><td>1.64</td></tr><tr><td>patched</td><td>203,636,206,746</td><td>260,507,995,090</td><td>1,200,937,204</td><td>2.51%</td><td>1.28</td></tr></tbody></table></div>
+<ul><li><strong>분기 설명력 0.2%.</strong> 가장 말해주는 건 절대값이 거의 같다는 것이다 — 패치가 분기를 <strong>38% 지웠는데</strong> 실패 수는 안 줄었다. <strong>지운 건 원래 잘 맞히던 분기였다.</strong></li><li><strong><code>ctimer</code> 50.00% vs <code>cycles</code> 52.21%, 차이 +2.21%p.</strong> 이 프로젝트가 지금까지 낸 <strong>모든 비중 값이 사이클 기준으로도 같다.</strong> 43~58% 밴드가 샘플링 착시가 아니라는 뜻이고, 이건 F-008·F-011·F-020·F-027 전부를 떠받친다.</li><li>다만 <strong>F-028 을 그대로 옮기면 안 된다.</strong> 마이크로벤치는 명령어비와 사이클비가 3.8% 안에서 맞았는데 실제 경로는 1.499배 vs 1.167배로 갈린다(IPC 1.64→1.28). <strong>명령어를 절반 지워도 이득은 6분의 1만 온다.</strong></li><li>실제 스캔의 분기 실패율 <strong>1.55%</strong> 는 마이크로벤치(0.016%)의 <strong>97배</strong>다. 마이크로벤치 카운터 값은 실제 경로로 못 옮긴다. 옮길 수 있는 건 결론뿐이다.</li></ul>
+<h3 id="95-보정-053-의-정체는-jit-이었다">9.5 보정 0.53 의 정체는 JIT 이었다</h3>
+<p><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-018</a> 의 <code>wall = 0.53 × 샘플</code> 을 <strong>다시 재지 않고</strong> 이미 찍어둔 프로파일을 쪼갰다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-033</a>):</p>
+<div class="tw"><table><thead><tr><th>구간</th><th>전체 대비</th></tr></thead><tbody><tr><td>스캔 (분석 대상)</td><td>29.3%</td></tr><tr><td><strong>JIT 컴파일</strong></td><td><strong>41.6%</strong></td></tr><tr><td>Spark 실행 골격</td><td>10.6%</td></tr><tr><td>클래스 로딩·검증</td><td>10.5%</td></tr><tr><td>나머지</td><td>8.0%</td></tr></tbody></table></div>
+<p><strong>프로세스 CPU 의 41.6% 가 JIT 컴파일이다.</strong> 패치가 못 건드리는 고정비이고, 크기만 한 게 아니라 라운드마다 <strong>31% 흔들린다.</strong></p>
+<p>그런데 우리는 JVM 을 새로 띄워 <strong>30회만</strong> 돌린다. JIT 이 30회에만 상각된다. 프로덕션 익스큐터는 오래 살면서 수천 번 돈다. 그렇다면 0.53 은 <strong>워크로드가 아니라 내 벤치 설계의 성질</strong> 아닌가? 예측을 적고 <code>iters</code> 만 10배로 올려 쟀다:</p>
+<div class="tw"><table><thead><tr><th></th><th>iters=30</th><th>iters=300</th></tr></thead><tbody><tr><td>스캔 몫</td><td>29.3%</td><td><strong>47.4%</strong></td></tr><tr><td>JIT 몫</td><td>41.6%</td><td><strong>19.2%</strong></td></tr><tr><td><strong>희석 계수</strong></td><td>계산 불가 (−0.26)</td><td><strong>0.447</strong></td></tr><tr><td>라운드 간 퍼짐</td><td>31.1%</td><td>15.2%</td></tr></tbody></table></div>
+<p><strong>희석 계수 0.447 이 F-018 의 0.53 과 가깝다.</strong> 보정의 정체는 <strong>고정비 희석</strong>이다.</p>
+<blockquote><strong>함의</strong>: <code>wall = 0.53 × 샘플</code> 은 <strong>짧게 사는 JVM 의 성질</strong>이다. 오래 사는 익스큐터에서는 희석이 약해지므로, <strong>이 프로젝트가 보고한 벽시계 이득은 프로덕션에 대해 보수적</strong>일 가능성이 높다. (다만 우리가 잰 건 여전히 단일 JVM 이므로 방향만 주장하고 크기는 주장하지 않는다.)</blockquote>
+<h3 id="96-예외가-하나-있다-고삭제율의-반등">9.6 예외가 하나 있다 — 고삭제율의 반등</h3>
+<p><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-008</a> 의 bitmap 구간 반등(d=8%→50%, 1.26배)은 <strong>다른 분기</strong>의 이야기다. F-028 이 반증한 건 <em>컨테이너 내부 이진 탐색</em>의 분기이고, 여기는 <code>if (!contains(pos))</code> 라는 <strong>데이터 의존 분기</strong>로 d=50% 에서 정확히 동전 던지기가 된다.</p>
+<p>기대값을 <strong>먼저 계산</strong>해 예측을 반증 가능하게 만들었다(2.64억 행 × 42%p ≈ 1.11억 회 추가 실패, 총량의 9%). 결과 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-032</a>):</p>
+<ul><li>총 branch-misses <strong>+7.9%</strong> (범위 안 겹침, 계산한 기대값 9% 와 근접) ✅</li><li>DV 구간 절대 실패 8,271만 → <strong>1억 1,551만 (+40%)</strong>, 범위 안 겹침 ✅</li><li>그러나 늘어난 DV 사이클의 <strong>28.5% 만</strong> 설명한다 ❌</li></ul>
+<div class="tw"><table><thead><tr><th>축</th><th>분기 예측 실패의 설명력</th></tr></thead><tbody><tr><td>F-028 컨테이너 비용 차이 (마이크로벤치)</td><td>1.4%</td></tr><tr><td>F-031 패치 전후 (실제 경로)</td><td>0.2%</td></tr><tr><td><strong>F-032 고삭제율 반등</strong></td><td><strong>28.5%</strong></td></tr></tbody></table></div>
+<p><strong>세 축 중 여기서만 분기가 의미 있는 몫을 갖는다.</strong> 20배 차이다.</p>
+<p>나머지도 <strong>재측정 없이</strong> 좁혔다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-034</a>). 프레임별로 빼보니:</p>
+<div class="tw"><table><thead><tr><th>말단 프레임</th><th>절대차</th><th>순증 대비</th></tr></thead><tbody><tr><td><strong><code>ColumnarBatchUtil.buildRowIdMapping</code></strong></td><td><strong>+10,176</strong></td><td><strong>+206%</strong></td></tr><tr><td><code>RoaringBitmap.contains</code></td><td>+1,075</td><td>+22%</td></tr><tr><td><strong><code>DeleteCounter.increment</code></strong></td><td><strong>+858</strong></td><td><strong>+17%</strong></td></tr><tr><td><strong><code>Util.hybridUnsignedBinarySearch</code></strong></td><td><strong>−4,160</strong></td><td><strong>−84%</strong></td></tr></tbody></table></div>
+<p><strong>조회 기계장치는 오히려 싸진다</strong>(이진 탐색이 거의 사라진다). <strong>루프 몸통이 비싸져서</strong> 순증이 된다. 몸통 안에서 이름이 붙은 것: 분기 28.5% + <code>DeleteCounter.increment</code> 17% (삭제 행마다 1회, d=50% 면 400만 회) = <strong>약 45%</strong>. <strong>나머지 55% 는 아직 모른다.</strong></p>
+<p>미검증 가설: <code>mapping[live++] = rowId</code> 의 <strong>저장 주소가 분기 결과에 의존한다.</strong> d=8% 면 <code>live</code> 가 92% 확률로 증가해 사실상 예측 가능하지만 d=50% 면 매번 갈린다.</p>
+<hr>
+<h2 id="10-내가-틀린-것들"><span class="num">10</span>10. 내가 틀린 것들</h2>
+<p>이 장이 이 프로젝트에서 가장 중요하다. 규율이 없었다면 아래 대부분이 <strong>발견으로 발표됐을 것</strong>이기 때문이다.</p>
+<h3 id="101-반복-측정이-단일-측정본을-뒤집은-것">10.1 반복 측정이 단일 측정본을 뒤집은 것</h3>
+<div class="tw"><table><thead><tr><th>무엇</th><th>단일 측정본의 결론</th><th>3회 반복 후</th></tr></thead><tbody><tr><td>bitmap 구간</td><td>"평평하다, 차이는 노이즈"</td><td><strong>틀렸다.</strong> 1.26배 반등이 있다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-008</a>)</td></tr><tr><td>클러스터링 곡선</td><td>"nRuns 가 줄면 단조 감소"</td><td><strong>틀렸다.</strong> L=1,2,4,8 은 서로 구분되지 않는다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-009</a>)</td></tr><tr><td><code>√n</code> 노이즈 추정</td><td>반복 횟수로 추정</td><td><strong>완전히 틀렸다.</strong> 실측 9.7% (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-010</a>)</td></tr></tbody></table></div>
+<h3 id="102-예측이-빗나간-것들-선기록했으므로-숨길-수-없었다">10.2 예측이 빗나간 것들 (선기록했으므로 숨길 수 없었다)</h3>
+<div class="tw"><table><thead><tr><th>예측</th><th>결과</th></tr></thead><tbody><tr><td>배치 크기의 기전 모델 (P2·P3)</td><td>틀렸고 <strong>모델을 고쳤다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-014</a>)</td></tr><tr><td>손익분기는 컬럼 <strong>수</strong></td><td>죽었다. 축은 <strong>디코딩 비용</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-017</a>)</td></tr><tr><td>콜드 캐시면 DV 비중이 내려간다 (R1)</td><td>사망. <code>ctimer</code> 가 CPU 시간이라 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-019</a>)</td></tr><tr><td>S3 면 DV 비중이 내려간다 (S1)</td><td>사망. 오히려 +1.9%p (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-021</a>)</td></tr><tr><td>병렬도 16배면 보정이 크게 움직인다 (N1)</td><td>1.5배만. <code>N^0.141</code> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-022</a>)</td></tr><tr><td>셔플 효과 2.0~9.1%</td><td><strong>노이즈 바닥(9.7%) 밑을 예측했다</strong> → 판정 불가 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-024</a>)</td></tr><tr><td>클러스터 예측 3개</td><td><strong>전부 부분 실패</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-027</a>)</td></tr><tr><td>분기 예측이 컨테이너 비용을 설명한다 (P-B3)</td><td><strong>반증</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-028</a>)</td></tr><tr><td>정렬하면 파일이 작아진다 (W3)</td><td>반대로 2.6% 커졌다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-029</a>)</td></tr><tr><td>본전 회수 10회 미만 (W2)</td><td><strong>약 300회. 30배 빗나갔다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-029</a>)</td></tr><tr><td>JIT 상각 후 A1·A2·A3</td><td><strong>셋 다 크기는 틀렸고 방향만 맞았다</strong> (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-033</a>)</td></tr></tbody></table></div>
+<h3 id="103-발표한-뒤-정정한-것들">10.3 발표한 뒤 정정한 것들</h3>
+<ul><li><strong>RUN 마이크로벤치 3,992배</strong> → 배치가 통째로 삭제되는 <strong>퇴화 조건</strong>이었다. 정직한 값은 56~150배 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-013</a>).</li><li><strong>F-019 의 R4 판정</strong> → arm 순서 교대를 추가하고 라운드를 늘리니 <strong>4/4 → 2/4 로 뒤집혀서 철회</strong>했다.</li><li><strong>F-025 의 "s24 이상치"</strong> → <strong>존재하지 않았다.</strong> 집계에 <strong>평균</strong>을 썼고 3라운드가 오염돼 있었다(s16 1.76배, s32 1.42배, s8 1.29배가 같이 튀고 s24 만 멀쩡). 중앙값으로 다시 적합하면 R² 0.892 → 0.950, 잔차 −6.0% 로 노이즈 안이다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-030</a>). <strong>없는 현상을 후속 과제로 남겨둘 뻔했다.</strong> 원인은 <strong>규칙이 도구마다 달랐던 것</strong> — 다른 채점기는 중앙값인데 <code>strlen.py</code> 만 평균이었다.</li><li><strong>F-001 의 기전 설명</strong> → 분기도 캐시도 아니었다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-028</a>).</li><li><strong>"WSL2 에는 PMU 가 없다"</strong> (8곳) → 있었다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-028</a>).</li><li><strong>Q_P3 예측</strong> → <strong>대상 밀도를 잘못 지정했다.</strong> "d=6.10%(반등 정점)"이라 썼는데 d=6.10% 는 array 쪽 정점이고 반등은 d=8%→50% 다. 채점에서 빼고 다시 쳤다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-031</a>).</li><li><strong>Q_P8 채점</strong> → DV 비중(스캔 서브트리 기준)에 <code>perf stat</code> 총량(프로세스 전체 기준)을 곱해 <strong>"총 추가 실패의 183.9%"</strong> 라는 말이 안 되는 값을 냈고 <strong>그 상태로 "맞음" 판정이 났다.</strong> 분모를 맞추니 34.9% 이고 판정이 "절반만 맞음"으로 뒤집혔다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-032</a>).</li></ul>
+<h3 id="104-같은-함정을-반복해서-밟은-것">10.4 같은 함정을 반복해서 밟은 것</h3>
+<p><strong><code>config.env</code> 오버라이드 함정 — 일곱 번.</strong> 두 변종이 있다:</p>
+<ul><li><strong>변종 A</strong>: config 가 <code>VAR=값</code> 으로 <strong>하드코딩</strong>하면 <code>VAR=x ./script</code> 가 조용히 무시된다. (<code>REPS</code>, <code>WIDE_COLS</code>, <code>DENSITIES_BP</code>, <code>ROWS_PER_FILE</code>)</li><li><strong>변종 B</strong>: config 가 이미 값을 채운 뒤에 스크립트가 <code>VAR="${VAR:-내기본값}"</code> 을 쓰면 <strong>내 기본값이 죽은 코드</strong>가 된다. (<code>REPS</code>, <code>SCAN_ITERS</code> ×3)</li></ul>
+<p>가장 아팠던 건 일곱 번째다. <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-033</a> 의 축은 <strong><code>iters</code> 를 30→300 으로 올리는 게 측정의 전부</strong>인데 30 으로 돌았다. 알아챈 단서는 숫자가 <strong>안 움직인 것</strong> — 10배 일했다는데 전체 샘플이 573,119 → 501,259 로 <strong>오히려 줄었다.</strong></p>
+<p><strong>게이트가 산출물이 아니라 로그를 본 것 — 세 번.</strong></p>
+<ul><li><code>gen_*.json</code> 영수증이 커밋돼 있어서 <strong>빈 warehouse 를 향해</strong> 측정이 시작됐다.</li><li><code>grep -q "master=spark://"</code> 가 통과했는데 <strong>24개 실행이 아무것도 안 만들었다.</strong></li><li><code>grep -E "median="</code> 이 spark-submit 에러를 삼켰다.</li></ul>
+<p><strong><code>scan.py</code> 가 <code>--master</code> 를 덮어썼다.</strong> 클러스터로 던진 잡이 마스터 노드에서 조용히 <code>local[4]</code> 로 돌았다. <strong>결과는 멀쩡히 나왔고 에러도 없었다.</strong> 유일한 단서는 워커의 빈 <code>work</code> 디렉터리와 프로파일 0개였다.</p>
+<p><strong>전제를 검증 안 했다.</strong> "환경 때문에 못 한다"를 8곳에 적고 8개월 뒤 되는 걸 발견했다. 예측을 선기록하는 규율은 있었는데 <strong>전제를 선검증하는 규율이 없었다.</strong></p>
+<p><strong>그 외</strong>: Iceberg 매니페스트에 로컬 절대경로가 박혀 워커가 파일을 못 찾은 것 (그리고 <strong>내 첫 진단(S3A 클래스로더)이 틀렸다는 것</strong>), 28개 셸 스크립트에 exec 비트가 없었는데 WSL DrvFs 가 0777 로 보고해서 로컬에서는 안 보였던 것, <code>ctimer</code> 지원 확인이 <code>java -version</code> 으로 프로브해서 <strong>거짓 음성</strong>이 뜬 것, Git Bash → WSL 에서 <code>$VAR</code> 가 작은따옴표 안인데도 바깥에서 먼저 치환돼 <strong>에러 없이 빈 값으로 돌던 것</strong>.</p>
+<hr>
+<h2 id="11-최종-결론"><span class="num">11</span>11. 최종 결론</h2>
+<h3 id="111-이-문제가-당신에게-해당되는가">11.1 이 문제가 당신에게 해당되는가</h3>
+<p><strong>해당된다면:</strong></p>
+<ul><li>Iceberg <strong>V3</strong> 테이블을 <strong>merge-on-read</strong> 로 쓰고 있고,</li><li><strong>좁은 투영</strong>(몇 컬럼만 SELECT)이 많고,</li><li>삭제율이 <strong>청크 밀도 0~6.25% 구간</strong>(= 대부분의 CDC 워크로드)이고,</li><li>쿼리가 스캔 위주다(무거운 집계가 없다).</li></ul>
+<p><strong>판정 기준 하나로 줄이면</strong>: <strong>DV 체크가 스캔 CPU 의 20% 이상</strong>이면 이 패치가 벽시계로 보인다. 그 밑이면 CPU 는 줄어도 쿼리 시간은 안 변한다.</p>
+<h3 id="112-무엇을-발견했는가">11.2 무엇을 발견했는가</h3>
+<ol><li><strong>행 단위 프로브가 좁은 스캔에서 스캔 CPU 의 43~58% 를 차지한다.</strong></li></ol>
+<p>   이 밴드는 CPU 3종·스토리지 2종·병렬도 16배·셔플·분산 클러스터에서 유지된다.    (분산 클러스터에서는 42% 로 내려앉고, 그게 하한이다.)</p>
+<ol><li><strong>구간 API 로 바꾸면 최악 지점에서 9.28배, <code>_deleted</code> 경로에서 18.9배</strong> 싸진다.</li></ol>
+<p>   equality delete 경로는 회귀가 없다.</p>
+<ol><li><strong>비용의 정체는 분기 예측도 캐시도 아니고 "행마다 호출한다"는 구조</strong>다.</li></ol>
+<p>   가장 싼 컨테이너조차 행당 86.5 명령어를 쓴다.</p>
+<ol><li><strong>삭제율 6.25% 부근에서 비용이 불연속적으로 점프</strong>하고, 그 <strong>아래 구간 전체</strong>가</li></ol>
+<p>   행당 비용이 가장 비싼 영역이다. 직관과 반대다.</p>
+<ol><li><strong>오늘 할 수 있는 처방</strong>: 삭제 키로 정렬하면 DV 체크가 2.80배(패치까지 하면 12.39배)</li></ol>
+<p>   싸진다. 단 <strong>조건 세 개</strong> — 삭제가 소수 키 값에 몰릴 것, 파일 스킵과는 별개, 그리고    <strong>한 번 쓰고 300번 이상 읽을 것</strong>(쓰기 +63%, 저장 +2.6%).</p>
+<h3 id="113-이-프로젝트가-방법론으로-남기는-것">11.3 이 프로젝트가 방법론으로 남기는 것</h3>
+<p>숫자보다 이게 더 오래 갈 것 같다:</p>
+<ul><li><strong>예측을 먼저 적어라.</strong> 이 프로젝트는 예측이 <strong>11번 빗나갔고</strong>, 그때마다 배웠다. 적어두지 않았다면 전부 "예상대로였다"가 됐을 것이다.</li><li><strong>노이즈를 먼저 재라.</strong> 9.7% 를 모른 채였다면 반등도 클러스터링 곡선도 잘못 읽었다.</li><li><strong>전제도 측정 대상이다.</strong> "환경 때문에 못 한다"를 8곳에 적고 8개월을 버렸다.</li><li><strong>게이트는 산출물을 봐라.</strong> "✅ 완료 (0초)"는 거짓말을 한다.</li><li><strong>100% 를 넘는 비율이 나오면 멈춰라.</strong> 분모가 섞였다는 뜻이다.</li><li><strong>숫자가 안 움직이면 의심해라.</strong> 10배 일했는데 샘플이 줄면 설정이 안 먹은 것이다.</li></ul>
+<hr>
+<h2 id="12-예정-아직-안-한-것-전부"><span class="num">12</span>12. 🔜 예정 — 아직 안 한 것 전부</h2>
+<p><strong>빠짐없이 적는다.</strong> 각 항목에 <em>무엇을 · 왜 · 어떻게</em> 와 현재 상태를 붙였다.</p>
+<h3 id="121-지금-진행-중">12.1 지금 진행 중</h3>
+<div class="tw"><table><thead><tr><th>상태</th><th>항목</th><th>무엇을 · 왜</th><th>어떻게</th></tr></thead><tbody><tr><td>&lt;span class="chip run"&gt;진행 중&lt;/span&gt;</td><td><strong><code>p</code> 축 재설계</strong></td><td>F-009 의 3.53배가 <em>run 구조</em> 덕인지 <em>컨테이너 개수가 줄어서</em>인지 아직 못 가린다. L 을 키우면 컨테이너 개수도 같이 줄기 때문이다(124→12개). <strong>처방의 근거가 여기 걸려 있다.</strong></td><td>밀도·L 고정하고 점유 청크 비율 <code>p</code> 만 바꾼다. 컨테이너 개수는 12개로 같은데 타입은 array 로 유지되므로 개수 효과와 구조 효과가 갈린다. <strong>1차 시도는 실패했다</strong>(<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-010</a>) — 파일당 청크가 30개뿐이라 해상도가 3.3%p 였다. <code>ROWS_PER_FILE</code> 을 2M→8M 으로 올려 청크 122개를 확보하고 재시도. 예측 P1~P3 은 <code>scripts/19-paxis.sh</code> 헤더에 기록 완료</td></tr><tr><td>&lt;span class="chip todo"&gt;예정&lt;/span&gt;</td><td><strong>d=6.1% 의 patched 6/6 저하</strong></td><td>최악 지점에서 패치 arm 이 <strong>6라운드 모두</strong> 미세하게 느렸다. 순서와 무관하게 일관적이라 노이즈로 보기 어렵다. 기전을 모르면 이슈에 "일부 조건에서 회귀 가능"을 적어야 한다</td><td>반복을 늘려 노이즈인지 확정하고, 아니면 프로파일을 프레임 단위로 갈라 어디서 나는지 본다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-015</a>)</td></tr></tbody></table></div>
+<h3 id="122-사람이-정할-일">12.2 사람이 정할 일</h3>
+<div class="tw"><table><thead><tr><th>상태</th><th>항목</th><th>상태</th></tr></thead><tbody><tr><td>&lt;span class="chip todo"&gt;대기&lt;/span&gt;</td><td><strong>업스트림 이슈 제출</strong></td><td>초안(<code>upstream/issue-columnarbatchutil.md</code>, 524줄)은 <strong>완성</strong>돼 있다. 이식성·처방·분산 클러스터·하드웨어 카운터까지 반영했다. <strong>낼지 말지는 사람이 정한다</strong></td></tr><tr><td>&lt;span class="chip todo"&gt;대기&lt;/span&gt;</td><td><strong>블로그 / LinkedIn</strong></td><td>재료는 다 있다. 숫자보다 <strong>방법</strong>(예측 선기록, 11번 빗나감)이 중심이 되어야 한다는 것까지 정해졌다</td></tr></tbody></table></div>
+<h3 id="123-돈이나-환경이-필요해-막힌-것">12.3 돈이나 환경이 필요해 막힌 것</h3>
+<div class="tw"><table><thead><tr><th>상태</th><th>항목</th><th>무엇을 · 왜</th><th>무엇이 필요한가</th></tr></thead><tbody><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td><strong>측정 환경을 WSL2 밖으로</strong></td><td>내 기계의 노이즈 중앙값이 <strong>27.2%</strong> 다. 전용 인스턴스는 7.0~12.7%. 지금 "노이즈 안"이라고 적은 것들이 조용한 기계에서는 갈릴 수 있다</td><td>전용 EC2. 이전 클라우드 축 전체가 $2.3 였으므로 하루치 $3~5 수준</td></tr><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td><strong>반등의 나머지 55%</strong></td><td>분기 28.5% + <code>DeleteCounter</code> 17% 까지 이름이 붙었다. 남은 가설은 <code>mapping[live++]</code> 의 <strong>저장 주소가 분기 결과에 의존</strong>한다는 것</td><td>조용한 기계 + <code>mapping</code> 쓰기를 없앤 변형 벤치. 지금은 DV 사이클 증가(+15.5%)의 범위가 겹쳐 분모를 못 믿는다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-032</a>, <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-034</a>)</td></tr><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td><strong>셔플 축 재측정</strong></td><td>예측한 효과 크기(2.0~9.1%)가 <strong>노이즈 바닥(9.7%) 밑</strong>이라 판정 자체가 불가능했다. 예측을 적을 때 잴 수 있는 크기인지 확인 안 한 내 잘못이다</td><td>전용 인스턴스 + 반복 증가 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-024</a>)</td></tr><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td><strong>파일 수가 많은 테이블의 S3</strong></td><td>파일 <strong>4개</strong>로만 쟀다. 수천 개면 요청 지연이 지배한다. 예상은 "그건 대기라 비중은 안 변하고 wall 만 나빠진다" 인데 <strong>미측정 추측</strong>이다</td><td>S3 비용 + 수천 파일 테이블 생성 시간 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-021</a>)</td></tr><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td><strong>더 큰 클러스터 · 더 큰 데이터</strong></td><td>8M행/8코어는 클러스터가 단일 JVM보다 <strong>2.3배 느릴</strong> 만큼 작다. 그래서 42% 는 하한이다</td><td>더 큰 인스턴스 여러 대 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-027</a>)</td></tr></tbody></table></div>
+<h3 id="124-하기로-했다가-안-하기로-한-것">12.4 하기로 했다가 안 하기로 한 것</h3>
+<div class="tw"><table><thead><tr><th>항목</th><th>왜 안 하나</th></tr></thead><tbody><tr><td><strong>EMR 에서 재측정</strong></td><td>EMR 은 Spark 3.5.8 이라 jar 을 새로 빌드해야 하고, 그러면 <strong>"같은 바이너리" 통제가 깨진다.</strong> 그래서 Spark 4.0.4 standalone 을 직접 띄웠다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-027</a>)</td></tr><tr><td><strong><code>.metal</code> 인스턴스</strong></td><td>PMU 때문에 필요하다고 8곳에 적어뒀는데 <strong>WSL2 에 vPMU 가 있었다.</strong> 돈 들일 일이 아니었다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-028</a>)</td></tr><tr><td><strong>s24 Parquet 페이지 인코딩 조사</strong></td><td>조사할 이상치가 <strong>애초에 없었다.</strong> 평균을 쓴 내 집계 오류였다 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-030</a>)</td></tr></tbody></table></div>
+<hr>
+<h2 id="13-한계"><span class="num">13</span>13. 한계</h2>
+<p><strong>측정 환경</strong></p>
+<ul><li>주 측정은 WSL2 개발 머신이다. 노이즈 중앙값 27.2% 로, 전용 인스턴스(7.0~12.7%)보다 훨씬 시끄럽다. <strong>"노이즈 안"이라고 적은 것들은 조용한 기계에서 갈릴 수 있다.</strong></li><li>테이블 모양이 하나다: 8M 행 / 4파일 / 20컬럼. 파일 수천 개, 중첩 타입, 술어 있는 스캔은 안 쟀다.</li><li>벤치는 JDK 21, Spark 측정은 JDK 17 이다 (서로 다른 축이므로 섞어 읽으면 안 된다).</li></ul>
+<p><strong>방법론의 한계</strong></p>
+<ul><li><code>ctimer</code> / <code>cycles</code> 는 <strong>inclusive 샘플링</strong>이다. 스택에 DV 프레임이 있으면 그 샘플 전체를 DV 로 센다. 배타적 자기 시간이 아니다.</li><li>프로파일 비중과 벽시계 사이에는 <strong>고정비 희석</strong>이 있다 (보정 ≈ 0.45~0.53). 그 정체가 JIT 이라는 것까지는 밝혔지만 (<a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">F-033</a>), 남은 부분은 미상이다.</li><li>클러스터링 축(<code>C</code>)과 <code>p</code> 축은 <strong>술어를 조작한 합성 축</strong>이다. 실제 정렬은 F-023/F-026 이 따로 쟀다.</li></ul>
+<p><strong>🟡 측정했지만 주장하지 못하는 것</strong></p>
+<ul><li>반등의 DV 사이클 증가(+15.5%) — 범위가 겹친다.</li><li>d=6.1% 의 patched 6/6 저하 — 일관적이지만 기전 미상.</li><li>셔플 축의 예측 효과 — 노이즈 바닥 밑.</li></ul>
+<hr>
+<h2 id="14-재현-방법"><span class="num">14</span>14. 재현 방법</h2>
+<pre><code># 0) 환경
+#    Spark 4.0.4 / Iceberg 1.11.0 / JDK 17 / async-profiler 4.5
+#    자세한 건 docs/SETUP.md
+
+# 1) Phase 0 — 게이트
+cd phase0 &amp;&amp; ./scripts/01-gen.sh &amp;&amp; ./scripts/02-profile.sh
+python3 tools/attribute.py results/profiles/*.collapsed
+
+# 2) Phase 1 — (d, C, p) 격자
+cd ../phase1 &amp;&amp; ./scripts/01-gen-grid.sh &amp;&amp; ./scripts/02-inspect.sh
+./scripts/03-profile.sh &amp;&amp; ./scripts/07-remeasure.sh   # 반복 측정
+
+# 3) Phase 2 — 패치 전후
+cd ../phase2 &amp;&amp; ./scripts/00-install-jar.sh &amp;&amp; ./scripts/01-verify.sh
+REPS=3 ./scripts/02-profile.sh
+python3 tools/compare.py results
+
+# 4) 축별 측정 (각 스크립트 헤더에 예측이 적혀 있다)
+REPS=6 ./scripts/10-layout.sh    &amp;&amp; python3 tools/layout.py results     # 정렬 처방
+REPS=4 ./scripts/14-sortcost.sh  &amp;&amp; python3 tools/sortcost.py results   # 정렬의 값
+REPS=3 ./scripts/15-qperf.sh     &amp;&amp; python3 tools/qperf.py results      # 실제 경로 PMU
+REPS=4 ./scripts/16-rebound.sh   &amp;&amp; python3 tools/rebound.py results    # 반등 기전
+SCAN_ITERS=300 REPS=3 ./scripts/17-amortize.sh                          # JIT 상각
+
+# 5) 마이크로벤치 + 하드웨어 카운터
+cd ../bench &amp;&amp; FORKS=2 WI=2 IT=3 ./run-perf.sh a_baseline
+python3 perf/score_perfnorm.py</code></pre>
+<p><strong>주의</strong>: 이 저장소의 결과 JSON 은 커밋돼 있다. 스크립트가 그걸 보고 skip 하지 않도록 게이트는 <strong>산출물(테이블 디렉터리, 프로파일 파일)</strong> 을 보게 고쳐뒀지만, 새로 재려면 <code>FORCE=1</code> 을 준다.</p>
+<hr>
+<h2 id="부록-문서-지도">부록 — 문서 지도</h2>
+<div class="tw"><table><thead><tr><th>문서</th><th>무엇</th></tr></thead><tbody><tr><td><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref"><code>findings.md</code></a></td><td><strong>근거 원본.</strong> 발견 34개, 시간순. 각 발견에 예측·결과·판정·재현법</td></tr><tr><td><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/threats.md"><code>threats.md</code></a></td><td>타당성 위협 목록</td></tr><tr><td><a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/SETUP.md"><code>SETUP.md</code></a></td><td>환경 구성</td></tr><tr><td><a href="dashboard.built.html"><code>dashboard.built.html</code></a></td><td>발견 카드 뷰 (질문 / 방법 / 결과 / 예외)</td></tr><tr><td><code>../upstream/issue-columnarbatchutil.md</code></td><td>업스트림 이슈 초안 (영문, 미제출)</td></tr><tr><td><code>../README.md</code></td><td>프로젝트 개요와 원안 설계</td></tr></tbody></table></div>
+</main>
+</div>
+</body>
+</html>
