@@ -210,8 +210,8 @@ first and got wrong:
   CPU is the delete check.
 - **The patch helps *more* on newer cores**, not less: 11.3x–17.9x on the cloud instances against
   8.6x–9.3x on mine, because the per-row probe gets relatively more expensive while the bulk range
-  traversal gets cheaper. That is consistent with a branch-prediction explanation but I have no PMU
-  data, so I state it as an observation, not a mechanism.
+  traversal gets cheaper. I first attributed that to branch prediction. Hardware counters do not
+  support it (see below), so I state it as an observation, not a mechanism.
 
 One methodological note that cuts against my own earlier numbers: the run-to-run spread on the
 dedicated instances was **7–13%**, against **27% median** on my WSL2 box. The 9.7% noise floor I
@@ -289,6 +289,41 @@ Caveat on size: 8M rows over 8 cores is small enough that the cluster is 2.3x sl
 on the same query (0.50s vs 0.215s), which means fixed overhead is inflating the denominator. On a
 job large enough to be worth a cluster I would expect the share to move back toward the single-JVM
 figure, so 42% reads as a floor.
+
+### Evidence — hardware counters, and a mechanism I had wrong
+
+I had assumed the per-row probe was expensive because the `array` container does a binary search
+whose branches mispredict. **That is not what the counters say.** Running the microbenchmark under
+`-prof perfnorm` (AMD Zen 3, 5000-row batch, 2 forks x 3 iterations):
+
+| pattern | container | us/op | cycles/row | **insn/row** | branches/row | **br-misses/row** | IPC |
+|---|---|---|---|---|---|---|---|
+| 0.5% density | array (card. 327) | 66.05 | 58.4 | 282.9 | 77.2 | 0.0126 | 4.84 |
+| 5% density | array (card. 3,276) | 85.21 | 78.8 | 370.0 | 96.6 | 0.0763 | 4.70 |
+| 12% density | **bitmap** | **21.13** | **18.6** | **86.5** | 17.8 | 0.0292 | 4.66 |
+| scattered runs | run | 45.27 | 40.4 | 191.4 | 45.0 | 0.0066 | 4.74 |
+
+Three things fall out:
+
+- **Branch misprediction explains about 1.4% of the gap, not the gap.** To account for the
+  301,045-cycle difference between the 5% and 12% patterns at an 18-cycle penalty you would need
+  roughly 16,700 extra mispredicts per batch. There are 235. For the 0.5% pattern the array
+  container actually mispredicts *less* than the bitmap one does.
+- **Cache locality does not explain it either.** The fastest pattern (bitmap) takes **8x more**
+  L1-dcache misses than the slow ones — 1,173.9 per op against 141.2.
+- **IPC is flat at 4.66–4.84 across all four patterns**, and cycles track instructions to within
+  0.8–3.8%. Nothing is stalling. The containers differ in **how many instructions they execute
+  per row**, and that is the whole story.
+
+This cuts for the proposal rather than against it. Even the cheapest container costs **86.5
+instructions per row**, because `RoaringPositionBitmap.contains(long)` has to split the position,
+binary-search the key array and follow two levels of indirection before it can test a bit. That
+fixed per-call cost is paid 5,000 times per batch whatever the container is. The batch-oriented API
+pays it a handful of times instead, which is why the speedups are as large as they are.
+
+Control: before trusting numbers this low I checked that the counters work under this hypervisor,
+with a sorted-vs-shuffled branch experiment — 9.2M vs 108.6M mispredicts (11.8x), matching the
+theoretical 50% miss rate to within 3%.
 
 ### Evidence — microbenchmark
 

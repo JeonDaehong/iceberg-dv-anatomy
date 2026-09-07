@@ -36,7 +36,10 @@ Service Quotas 콘솔 → EC2 → 아래 두 개를 **128 이상**으로 요청:
 wsl --install -d Ubuntu-24.04
 ```
 
-> ⚠️ **WSL2에서 하드웨어 PMU는 안 나옵니다** (VM이라 PMU 비가상화).
+> ⚠️ ~~**WSL2에서 하드웨어 PMU는 안 나옵니다**~~ → **나옵니다.** (F-028, 2026-09-07)
+> WSL2 커널이 Hyper-V vPMU 를 노출합니다. 먼저 이걸 쳐서 확인하세요:
+> `perf stat -e cycles,instructions,branches,branch-misses sleep 1`
+> `<not supported>` 없이 값이 나오면 `-prof perfnorm` 을 로컬에서 쓸 수 있습니다.
 > 하지만 Phase 0에 필요한 건 async-profiler의 상대 비중 attribution뿐이고, `-e ctimer`(perf 불필요) 폴백으로 충분합니다.
 > 정밀 카운터(`branch-misses`, `LLC-load-misses`)는 Phase 2의 `.metal`에서만 필요합니다.
 
