@@ -38,14 +38,20 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# ⚠️ config.env 는 `SCAN_ITERS="${SCAN_ITERS:-30}"` 로 값을 **채운다.** 그래서 source 뒤에
+#    `SCAN_ITERS="${SCAN_ITERS:-300}"` 라고 쓰면 그 기본값은 절대 안 먹는다 (죽은 코드).
+#    이 축은 iters 를 바꾸는 게 전부라서 이걸 놓치면 측정이 통째로 무의미해진다 —
+#    실제로 처음 돌렸을 때 30 회로 돌았고, 전체 샘플이 오히려 **줄어서** 겨우 알아챘다.
+#    호출자 값을 source **앞에서** 붙잡는다.
 _REPS_CALLER="${REPS:-}"
+_ITERS_CALLER="${SCAN_ITERS:-}"
 source ./config.env
 REPS="${_REPS_CALLER:-3}"
 
 AM_TABLE="${AM_TABLE:-dv.g.d610}"
 AM_TAG="${AM_TAG:-d610am}"
 AM_COLS="${AM_COLS:-1}"
-export SCAN_ITERS="${SCAN_ITERS:-300}"
+export SCAN_ITERS="${_ITERS_CALLER:-300}"
 export SCAN_WARMUP="${SCAN_WARMUP:-3}"
 
 mkdir -p "$RESULTS/qperf" "$RESULTS/profiles"
@@ -73,10 +79,20 @@ run_one() {  # $1=arm $2=rep
   # 게이트는 산출물을 본다.
   [[ -s "$PROF" ]] || { echo "    *** 프로파일이 비었다 (${1} r${2})" >&2; return 1; }
   [[ -s "$SJ"   ]] || { echo "    *** 스캔 JSON 이 없다 (${1} r${2})" >&2; return 1; }
+  # 게이트: 로그가 아니라 **산출물**에서 iters 를 확인한다. 같은 함정을 일곱 번 밟았다.
+  local GOT
+  GOT=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1],encoding='utf-8')).get('iters'))" "$SJ")
+  if [[ "$GOT" != "$SCAN_ITERS" ]]; then
+    echo "    *** iters 가 ${SCAN_ITERS} 가 아니라 ${GOT} 로 돌았다 — 오버라이드가 먹혔다" >&2
+    return 1
+  fi
   echo "    ${1} r${2}: $(wc -l < "$PROF") 스택"
 }
 
 echo "JIT 상각 축  (${AM_TABLE}, iters=${SCAN_ITERS}, REPS=${REPS})"
+if [[ "${SCAN_ITERS}" == "30" ]]; then
+  echo "  ⚠️ iters 가 30 이다 — config.env 기본값 그대로다. 이 축은 iters 를 올려야 의미가 있다." >&2
+fi
 echo "  iters 말고는 15-qperf.sh 와 전부 같다. JIT 이 상각되면 희석이 풀리는가."
 echo
 for R in $(seq 1 "$REPS"); do
