@@ -6,7 +6,9 @@ Spark: vectorized reads probe the position delete index once per row, ignoring t
 
 `ColumnarBatchUtil.buildRowIdMapping` and `buildIsDeleted` call `PositionDeleteIndex.isDeleted(pos)` once for every row in a batch. Positions within a batch are a contiguous ascending range and the DV-backed index is a Roaring bitmap, so the same information can be obtained with a single range traversal instead of `batchSize` independent probes.
 
-On a V3 table read with a narrow projection, this loop accounts for **43–58% of scan CPU**, depending on delete density — a figure I have since reproduced on three CPU microarchitectures (Zen 3, Sapphire Rapids, Graviton3), on local disk and on S3, with a warm and a dropped page cache, and at task parallelism 1 through 16. It moves by at most a few points across all of those. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
+On a V3 table read with a narrow projection, this loop accounts for **43–58% of scan CPU**, depending on delete density — a figure I have since reproduced on three CPU microarchitectures (Zen 3, Sapphire Rapids, Graviton3), on local disk and on S3, with a warm and a dropped page cache, and at task parallelism 1 through 16. It moves by at most a few points across all of those; with a heavy aggregation in the same job it settles toward the low end of that range. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
+
+There is also something users can do today, without waiting for this: **sorting the table by the column the deletes target makes the delete check 2.8x cheaper on its own**, because the Roaring bitmap switches from array to run containers. That only works when the deletes concentrate on relatively few distinct key values — I measured it fading to 1.1x and then to nothing as the sort key's cardinality rises. The two remedies overlap but do not replace each other: sorting alone 2.8x, this patch alone 7.8x, both together 12.4x.
 
 How much of that reaches end-to-end query time depends on how much work the rest of the scan does. The threshold is not a column count — it is the share the delete check holds in scan CPU. Above roughly 20% the change is worth **13–19% of end-to-end query time**; below it the difference falls inside my measurement noise, even though the delete-check CPU is still reduced 3.0x–6.7x there. The change removes the same absolute CPU either way.
 
@@ -216,6 +218,45 @@ dedicated instances was **7–13%**, against **27% median** on my WSL2 box. The 
 use throughout this issue is a property of my development environment more than of the workload.
 Anything I mark "inside the noise" might be resolvable on quieter hardware.
 
+### Evidence — what a user can do before this is fixed
+
+The delete check is cheap or expensive depending on which Roaring container the positions land in,
+so the physical layout of the table matters independently of this patch. I tested that directly:
+two tables with the **same rows deleted** (identical predicate, verified to the row: 430,575 in
+both), differing only in whether the table was sorted by the column the deletes target. The scan
+carries no predicate, so no files can be skipped — this isolates the delete-check effect from the
+file-pruning effect that sorting also gives you.
+
+| | delete-check CPU | share of scan | vs baseline |
+|---|---|---|---|
+| unsorted, unpatched | 915 | 51.0% | 1.0x |
+| **sorted, unpatched** | 327 | 27.3% | **2.8x** |
+| unsorted, patched | 117 | 10.9% | 7.8x |
+| **sorted + patched** | 74 | 8.0% | **12.4x** |
+
+The mechanism is visible in the files: unsorted, every chunk is an `array` container at ~7,000 bytes;
+sorted, every chunk is a `run` container at 6-10 bytes, and the whole deletion vector shrinks from
+864 KB to 2.5 KB. Decoding cost is unchanged between the two (non-delete scan samples 876 vs 883),
+which is what makes the comparison valid.
+
+**This has a condition, and it matters.** Sorting only helps when the deletes concentrate on
+relatively few distinct values of the sort key. Sweeping the key's cardinality:
+
+| sort key cardinality | rows per value | delete-check gain |
+|---|---|---|
+| ~1,000 | ~8,000 | **2.78x** |
+| ~1,000,000 | ~8 | 1.10x |
+| ~10^9 (effectively unique) | 1 | **0.89x** |
+
+So "sort by the delete key" is good advice for deletes driven by date, region or tenant, and no
+advice at all for deletes driven by individual row ids — there the sorted table performs like the
+unsorted one and you have paid the sort for nothing. The two remedies also overlap: the sorting
+gain drops from 2.78x to 1.58x once this patch is applied, since the patch has already removed most
+of what sorting was saving.
+
+(Wall-clock differences on this axis did not clear my noise band, so the numbers above are CPU
+samples, where the repeat ranges are disjoint. I did not measure the cost of the sort itself.)
+
 ### Evidence — microbenchmark
 
 JMH, batchSize 5000, positions built into a full 65536-position chunk at the target density, then round-tripped through `BitmapPositionDeleteIndex.serialize()`/`deserialize()` so the containers match what the read path actually sees. Time per batch, µs (RoaringBitmap 1.6.20 standalone):
@@ -348,11 +389,11 @@ New coverage on the branch:
 ### Caveats on the numbers
 
 - The primary measurements are on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode; the portability checks above are on dedicated EC2 instances. No hardware PMU anywhere, so cycle- and branch-level attribution would still need a bare-metal run.
-- Everything is single-JVM `local[N]`. I have not measured a distributed cluster, so shuffle, network and executor scheduling are absent from all of it.
+- Everything is single-JVM `local[N]`. I did measure what happens when the query does more than scan — adding a `GROUP BY` moves the delete check from **14.0% of total query CPU to 6.8% and then 2.4%** as the aggregation grows, while its share *of the scan* stays in the 43-54% band and the absolute CPU saved is unchanged. But that shuffle spills to local disk in one JVM; a real cluster adds network and executor scheduling, which I have not measured. Expect the share of total query CPU to fall further there, not to rise.
 - One table shape throughout: 8M rows, 4 files, 20 columns. File-skipping predicates, nested types and many-file tables are unmeasured.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
-- The type-controlled experiment separates column count from decode cost, but not decode cost from column width: `s07` is a 32-character string and `k01` is a 4-byte int, so "expensive because it is a string" and "expensive because it is wide" are still the same cut. A length-controlled axis (32-char vs 8-char md5) would separate those; I have not run it.
+- I ran the length-controlled axis afterwards (four md5-derived string columns of 8, 16, 24 and 32 characters, same type, one column projected at a time). Fitting scan samples against length gives **1,099 + 63.8 x length** (R² = 0.94), so it is neither purely "because it is a string" nor purely "because it is wide" — both terms are real. At 8 characters the fixed per-column term and the length term are about equal; at 32 characters length dominates 2:1. Against an integer column the same measurement gives 2.1x for an 8-char string and 4.2x for a 32-char one, so the "8-10 integer columns" figure above applies to full-length md5, not to short strings. One point (24 chars) sits well off the line and I have not explained it — Parquet page encoding is the obvious suspect and I did not inspect the page headers.
 - The 0.53 sample-to-wall-clock slope is a fit to data I had already collected, not a prediction I tested. It is measured on one machine at `local[4]` with a warm page cache; I would expect a different slope at other parallelism or on other storage.
 - The 1-column wall-clock rows come from 3 repetitions; every other row from 6.
 - The `_deleted` projection emits every row rather than filtering, so its wall clock is not comparable to the plain scans above.
