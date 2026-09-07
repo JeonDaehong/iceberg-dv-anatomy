@@ -1,0 +1,18 @@
+{
+  "label": "rb_d5000_r3",
+  "table": "dv.g.d5000",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.13692352299995036,
+  "median_s": 0.16780028900006982,
+  "max_s": 0.3529263540000329,
+  "mean_s": 0.1893946182333252,
+  "is_deleted": false
+}

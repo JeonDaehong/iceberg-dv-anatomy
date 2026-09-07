@@ -347,6 +347,36 @@ Control: before trusting numbers this low I checked that the counters work under
 with a sorted-vs-shuffled branch experiment — 9.2M vs 108.6M mispredicts (11.8x), matching the
 theoretical 50% miss rate to within 3%.
 
+**The same holds in a real Spark scan, but with two qualifications.** Wrapping `spark-submit`
+itself in `perf stat` (3 alternating rounds):
+
+| arm | cycles | instructions | branch-misses | miss rate | IPC |
+|---|---|---|---|---|---|
+| baseline | 237,714,166,096 | 390,468,338,748 | 1,204,681,888 | 1.55% | 1.64 |
+| patched | 203,636,206,746 | 260,507,995,090 | 1,200,937,204 | 2.51% | 1.28 |
+
+- **Branch misprediction explains 0.2% of the patch's effect**, and the clearest sign is that the
+  absolute count barely moves (1.2047G to 1.2009G) even though the patch deletes **38% of all
+  branches**. What it removes are branches that were already being predicted correctly.
+- **But instruction count does not fully explain it either, unlike in the microbenchmark.** The
+  patch removes 50% of instructions and 17% of cycles; IPC falls from 1.64 to 1.28. The work that
+  remains is more stall-bound. So the honest statement for a real query is *"removing half the
+  instructions buys you a sixth of the time"*, which is also why my CPU-sample numbers overstate
+  wall-clock gains by about 1.9x.
+- The real scan's branch miss rate is **1.55%**, roughly 100x the microbenchmark's. Microbenchmark
+  counter values do not transfer; only the conclusion does.
+
+One useful side effect: profiling with `cycles` instead of the CPU-time timer gives a delete-check
+share of **52.2%** against **50.0%** from CPU-time sampling — within 2.2 points. Every share figure
+in this issue holds under cycle-accurate attribution too.
+
+**Where branch prediction does matter.** At very high delete densities the row test
+`if (!contains(pos))` becomes a coin flip. Comparing 8% against 50% density, mispredicts attributed
+to the delete-check region rise from 82.7M to 115.5M (**+40%**, disjoint ranges), and the region's
+share of scan mispredicts goes 41.1% to 51.6%. That accounts for about **28%** of the extra cycles
+the delete check spends there — small in absolute terms, but 20x more than in any other comparison
+I ran. I have not identified the remaining 72%.
+
 ### Evidence — microbenchmark
 
 JMH, batchSize 5000, positions built into a full 65536-position chunk at the target density, then round-tripped through `BitmapPositionDeleteIndex.serialize()`/`deserialize()` so the containers match what the read path actually sees. Time per batch, µs (RoaringBitmap 1.6.20 standalone):

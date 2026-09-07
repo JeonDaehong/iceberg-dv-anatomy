@@ -98,6 +98,7 @@ def dv_branch_share(tag):
 
 p("")
 p("─ Q_P8 ★귀속★  늘어난 분기 실패가 DV 체크 구간에서 났는가")
+d_dv = None   # Q_P8 이 못 돌면 Q_P9 가 NameError 로 죽지 않게 기본값을 둔다
 sh = {t: dv_branch_share(t) for t in TAGS}
 if not sh[LO][0] or not sh[HI][0]:
     p("   프로파일이 없다 (LO=%d, HI=%d개) — 2단계를 안 돌렸거나 실패했다."
@@ -126,4 +127,54 @@ else:
         p("   판정: 절반만 맞음 — DV 비중은 올랐지만 추가 실패의 %.1f%% 만 DV 몫이다." % (frac * 100))
     else:
         p("   판정: ★빗나감 — DV 비중이 안 올랐다. 늘어난 실패는 DV 밖에서 났다.")
+# ── Q_P9: cycles 귀속으로 반등을 정량 마감 ────────────────────────────────
+def dv_cycle_share(tag):
+    """cycles 프로파일에서 DV 구간의 (스캔 대비, 전체 대비) 비중."""
+    of_scan, of_all = [], []
+    for path in sorted(glob.glob(os.path.join(
+            R, "profiles", "baseline__rb%s_cycles_r*.collapsed" % tag))):
+        stacks = parse_collapsed(path)
+        if not stacks:
+            continue
+        a = analyze(stacks)
+        if a.get("scan_samples") and a.get("total_samples"):
+            of_scan.append(a["dv_pct_of_scan"])
+            of_all.append(a["dv_pct_of_all"])
+    return of_scan, of_all
+
+p("")
+p("─ Q_P9 ★정량 마감★  DV 구간 사이클이 늘고, 그게 분기로 설명되는가")
+cy = {t: dv_cycle_share(t) for t in TAGS}
+if not cy[LO][0] or not cy[HI][0]:
+    p("   cycles 프로파일이 없다 (LO=%d, HI=%d) — 3단계를 안 돌렸다."
+      % (len(cy[LO][0]), len(cy[HI][0])))
+else:
+    for t in TAGS:
+        v, va = cy[t]
+        p("   %-6s DV/스캔 %6.2f%%  [%.2f ~ %.2f]   DV/전체 %5.2f%%   n=%d"
+          % (t, st.median(v), min(v), max(v), st.median(va), len(v)))
+    ca_lo, ca_hi = st.median(cy[LO][1]), st.median(cy[HI][1])
+    cs_lo, cs_hi = st.median(cy[LO][0]), st.median(cy[HI][0])
+    dvc_lo, dvc_hi = cy_lo * ca_lo / 100.0, cy_hi * ca_hi / 100.0
+    ovc = not (max(cy[LO][0]) < min(cy[HI][0]) or max(cy[HI][0]) < min(cy[LO][0]))
+    p("   DV 구간 사이클 %.0f → %.0f  (%+.1f%%)   [전체는 %+.1f%%]"
+      % (dvc_lo, dvc_hi, (dvc_hi/dvc_lo-1)*100, (cy_hi/cy_lo-1)*100))
+    p("   (a) 전체가 주는데 DV 는 느는가: %s" %
+      ("맞음" if dvc_hi > dvc_lo and cy_hi < cy_lo else
+       "빗나감 — DV %+.1f%%, 전체 %+.1f%%" % ((dvc_hi/dvc_lo-1)*100, (cy_hi/cy_lo-1)*100)))
+    if ovc:
+        p("   ⚠️ 스캔 대비 비중의 범위가 겹친다 (%.2f~%.2f vs %.2f~%.2f) — 약한 근거다."
+          % (min(cy[LO][0]), max(cy[LO][0]), min(cy[HI][0]), max(cy[HI][0])))
+    ddvc = dvc_hi - dvc_lo
+    if ddvc > 0 and d_dv is not None:
+        # d_dv 는 Q_P8 에서 구한 DV 구간의 추가 분기 실패 (전체 대비 분모로 환산된 값)
+        expl = d_dv * CYC_PER_MISS / ddvc * 100
+        p("   (b) 늘어난 DV 사이클 %+.0f  |  DV 추가 실패 %+.0f x 18 = %+.0f  |  설명력 %.1f%%"
+          % (ddvc, d_dv, d_dv * CYC_PER_MISS, expl))
+        p("   판정: %s" % ("맞음 — 반등은 삭제 판정 분기의 오예측으로 설명된다"
+                          if expl >= 50 else
+                          "★빗나감 — 분기는 늘지만 반등의 %.1f%% 밖에 설명 못 한다" % expl))
+    else:
+        p("   (b) DV 사이클이 안 늘어 설명할 격차가 없다.")
+        p("   판정: ★빗나감 — F-008 의 반등이 이 조건에서 재현되지 않는다")
 p("=" * 92)
