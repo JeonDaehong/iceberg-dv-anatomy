@@ -100,3 +100,114 @@
       baseline r6 (s8=s10): [baseline_d610Ls8_r6] median=0.271s  min=0.231s  max=0.368s
   s16 (s09)  [순서: patched baseline]
       patched r6 (s16=s09): [patched_d610Ls16_r6] median=0.250s  min=0.220s  max=0.338s
+문자열 길이 축 — 컬럼 5종 × 2 arm × 6회 = 60 프로파일
+  int = id  (8자)
+  s8 = s10  (8자)
+  s16 = s09  (16자)
+  s24 = s17  (24자)
+  s32 = s07  (32자)
+  SCAN_ITERS=30 SCAN_WARMUP=3 REPS=6
+
+### 라운드 1 / 6
+  int (id)  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  s8 (s10)  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  s16 (s09)  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  s24 (s17)  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+  s32 (s07)  [순서: baseline patched]
+      skip baseline r1
+      skip patched r1
+
+### 라운드 2 / 6
+  int (id)  [순서: patched baseline]
+      skip patched r2
+      skip baseline r2
+  s8 (s10)  [순서: patched baseline]
+      skip patched r2
+      skip baseline r2
+  s16 (s09)  [순서: patched baseline]
+      skip patched r2
+      skip baseline r2
+  s24 (s17)  [순서: patched baseline]
+      skip patched r2
+      skip baseline r2
+  s32 (s07)  [순서: patched baseline]
+      skip patched r2
+      skip baseline r2
+
+### 라운드 3 / 6
+  int (id)  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  s8 (s10)  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  s16 (s09)  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  s24 (s17)  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+  s32 (s07)  [순서: baseline patched]
+      skip baseline r3
+      skip patched r3
+
+### 라운드 4 / 6
+  int (id)  [순서: patched baseline]
+      skip patched r4
+      skip baseline r4
+  s8 (s10)  [순서: patched baseline]
+      skip patched r4
+      skip baseline r4
+  s16 (s09)  [순서: patched baseline]
+      skip patched r4
+      skip baseline r4
+  s24 (s17)  [순서: patched baseline]
+      skip patched r4
+      skip baseline r4
+  s32 (s07)  [순서: patched baseline]
+      skip patched r4
+      skip baseline r4
+
+### 라운드 5 / 6
+  int (id)  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  s8 (s10)  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  s16 (s09)  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  s24 (s17)  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+  s32 (s07)  [순서: baseline patched]
+      skip baseline r5
+      skip patched r5
+
+### 라운드 6 / 6
+  int (id)  [순서: patched baseline]
+      skip patched r6
+      skip baseline r6
+  s8 (s10)  [순서: patched baseline]
+      skip patched r6
+      skip baseline r6
+  s16 (s09)  [순서: patched baseline]
+      skip patched r6
+      baseline r6 (s16=s09): [baseline_d610Ls16_r6] median=0.337s  min=0.284s  max=0.442s
+  s24 (s17)  [순서: patched baseline]
+      patched r6 (s24=s17): [patched_d610Ls24_r6] median=0.458s  min=0.325s  max=0.613s
+      baseline r6 (s24=s17): [baseline_d610Ls24_r6] median=0.375s  min=0.336s  max=0.599s
+  s32 (s07)  [순서: patched baseline]
+      patched r6 (s32=s07): [patched_d610Ls32_r6] median=0.422s  min=0.342s  max=0.693s
+      baseline r6 (s32=s07): [baseline_d610Ls32_r6] median=0.513s  min=0.398s  max=1.387s
+
+✅ 완료 — 60회, 126초
