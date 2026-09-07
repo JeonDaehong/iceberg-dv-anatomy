@@ -1,0 +1,18 @@
+{
+  "label": "qp_patched_cycles__r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.14254248700001426,
+  "median_s": 0.1748279939999975,
+  "max_s": 0.27901027500001874,
+  "mean_s": 0.18266544743333385,
+  "is_deleted": false
+}

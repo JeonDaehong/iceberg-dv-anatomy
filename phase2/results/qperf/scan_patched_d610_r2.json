@@ -1,0 +1,18 @@
+{
+  "label": "qp_patched_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.11505529200000097,
+  "median_s": 0.15014884400000028,
+  "max_s": 0.28434574000000623,
+  "mean_s": 0.16403723210000035,
+  "is_deleted": false
+}

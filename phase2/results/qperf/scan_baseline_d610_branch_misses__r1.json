@@ -1,0 +1,18 @@
+{
+  "label": "qp_baseline_branch_misses__r1",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.21126422500000785,
+  "median_s": 0.2900758010000004,
+  "max_s": 0.4229104500000176,
+  "mean_s": 0.2873956612333359,
+  "is_deleted": false
+}

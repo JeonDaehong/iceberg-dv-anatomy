@@ -1,0 +1,18 @@
+{
+  "label": "qp_patched_ctimer__r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.10430713299996341,
+  "median_s": 0.13304275100000496,
+  "max_s": 0.21573500200003082,
+  "mean_s": 0.1386727429000056,
+  "is_deleted": false
+}
