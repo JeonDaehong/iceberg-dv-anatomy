@@ -68,7 +68,9 @@ p("   판정: %s" % ("맞음 — 마이크로벤치 숫자를 실제 경로에 �
 # ── Q_P2: 이벤트별 귀속 비교 ─────────────────────────────────────────────
 def share_of_scan(arm, ev):
     """collapsed 프로파일에서 DV/스캔 비중의 라운드별 중앙값."""
-    safe = re.sub(r"[^A-Za-z0-9]", "_", ev)
+    # 스크립트가 `tr -c 'a-zA-Z0-9' '_'` 를 쓰는데 개행까지 바뀌어 뒤에 _ 가 하나 더 붙는다.
+    # 파일명을 바꾸면 이미 찍은 프로파일이 고아가 되므로 여기서 와일드카드로 흡수한다.
+    safe = re.sub(r"[^A-Za-z0-9]", "_", ev) + "*"
     vals = []
     for path in sorted(glob.glob(os.path.join(
             R, "profiles", "%s__qp%s_%s_r*.collapsed" % (arm, TAG, safe)))):

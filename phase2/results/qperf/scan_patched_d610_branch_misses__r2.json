@@ -1,0 +1,18 @@
+{
+  "label": "qp_patched_branch_misses__r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1368743080000172,
+  "median_s": 0.17961147500000152,
+  "max_s": 0.35120919700000286,
+  "mean_s": 0.18995477030000718,
+  "is_deleted": false
+}

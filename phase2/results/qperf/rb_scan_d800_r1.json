@@ -1,0 +1,18 @@
+{
+  "label": "rb_d800_r1",
+  "table": "dv.g.d800",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.13454214499995487,
+  "median_s": 0.17567720599993208,
+  "max_s": 0.2781875590000027,
+  "mean_s": 0.18142965450000853,
+  "is_deleted": false
+}
