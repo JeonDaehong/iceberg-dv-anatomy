@@ -29,7 +29,11 @@ ALL_COLS = [
 def build_spark(warehouse, args):
     return (
         SparkSession.builder.appName(f"dv-anatomy-phase0-scan-{args.label}")
-        .master(f"local[{args.cores}]")
+        # ⚠️ .master() 는 spark-submit 의 --master 를 **덮어쓴다.** 클러스터로 던져도
+        # 조용히 local[N] 으로 돌아버린다 — 분산 측정에서 실제로 밟았다. 숫자는
+        # 그럴듯하게 나오고 익스큐터만 하나도 안 떴다.
+        # --spark-master 를 준 경우 그 값을 쓰고, 안 주면 기존 동작을 유지한다.
+        .master(args.spark_master or f"local[{args.cores}]")
         .config("spark.driver.memory", args.driver_mem)
         .config(
             "spark.sql.extensions",
@@ -205,6 +209,11 @@ def main():
     )
     p.add_argument("--warmup", type=int, default=3)
     p.add_argument("--iters", type=int, default=12)
+    p.add_argument(
+        "--spark-master",
+        default=None,
+        help="Spark master URL (예: spark://host:7077). 생략하면 local[--cores].",
+    )
     p.add_argument("--cores", default="4")
     p.add_argument("--driver-mem", default="8g")
     p.add_argument("--out-json", default=None)
@@ -228,6 +237,7 @@ def main():
     bs += " · 콜드 캐시" if args.cold else " · 웜 캐시"
     shown = ",".join(col_list) if col_list else f"{args.cols} 컬럼"
     print(f"\n=== 스캔: {args.table}  ({shown}{mode}{bs}) ===")
+    print("[%s] master=%s" % (args.label, spark.conf.get("spark.master")))
     stats = run(spark, args.table, args.cols, args.warmup, args.iters, args.label,
                 is_deleted=args.is_deleted, batch_size=args.batch_size,
                 cold=args.cold, col_list=col_list, split_size=args.split_size,
