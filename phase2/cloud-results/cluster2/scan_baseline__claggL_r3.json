@@ -1,0 +1,19 @@
+{
+  "label": "baseline_claggL_r3",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k01",
+  "cold": false,
+  "iters": 10,
+  "min_s": 1.673297322000053,
+  "median_s": 1.9089196359999505,
+  "max_s": 2.3391471820000334,
+  "mean_s": 1.9196697184000187,
+  "is_deleted": false
+}

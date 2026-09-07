@@ -1,0 +1,19 @@
+{
+  "label": "patched_claggL_r2",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k01",
+  "cold": false,
+  "iters": 10,
+  "min_s": 1.6526574180001035,
+  "median_s": 1.8901086759999544,
+  "max_s": 2.104928704000031,
+  "mean_s": 1.859158105000006,
+  "is_deleted": false
+}

@@ -1,0 +1,19 @@
+{
+  "label": "patched_clscan_r1",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 10,
+  "min_s": 0.3976234479999903,
+  "median_s": 0.45124020299999756,
+  "max_s": 0.5242065279999792,
+  "mean_s": 0.4540307976999941,
+  "is_deleted": false
+}
