@@ -1,0 +1,18 @@
+{
+  "label": "hc_baseline_d1200L512_r1",
+  "table": "dv.g.d1200L512",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1338720169999874,
+  "median_s": 0.1685123679999947,
+  "max_s": 0.3001203339999847,
+  "mean_s": 0.17787373286666744,
+  "is_deleted": false
+}
