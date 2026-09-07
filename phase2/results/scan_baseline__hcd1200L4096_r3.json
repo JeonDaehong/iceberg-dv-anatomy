@@ -1,0 +1,18 @@
+{
+  "label": "hc_baseline_d1200L4096_r3",
+  "table": "dv.g.d1200L4096",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.12579965800000537,
+  "median_s": 0.15643356499992933,
+  "max_s": 0.276418718000059,
+  "mean_s": 0.1699352593333515,
+  "is_deleted": false
+}

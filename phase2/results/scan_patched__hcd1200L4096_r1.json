@@ -1,0 +1,18 @@
+{
+  "label": "hc_patched_d1200L4096_r1",
+  "table": "dv.g.d1200L4096",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.12085886599999185,
+  "median_s": 0.15818875400003662,
+  "max_s": 0.309667300000001,
+  "mean_s": 0.174178731233341,
+  "is_deleted": false
+}
