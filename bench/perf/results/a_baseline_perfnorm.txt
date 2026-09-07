@@ -1,0 +1,449 @@
+필터   : a_baseline
+패턴   : SPARSE_0_5,MEDIUM_5,DENSE_12,RUN_PARTIAL
+perf   : perf version 6.8.12
+java   : openjdk version "21.0.12" 2026-07-21
+CPU    : AMD Ryzen 5 5600X 6-Core Processor
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 2 s each
+# Measurement: 3 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = SPARSE_0_5)
+
+# Run progress: 0.00% complete, ETA 00:01:20
+# Fork: 1 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+70.411 us/op
+# Warmup Iteration   2: 67.153 us/op
+Iteration   1: 68.878 us/op
+Iteration   2: 68.559 us/op
+Iteration   3: 61.127 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 12.50% complete, ETA 00:01:18
+# Fork: 2 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=SPARSE_0_5  chunkCardinality=    327  batch[30268,35268)  live=4973/5000  container=array(추정)
+64.057 us/op
+# Warmup Iteration   2: 66.740 us/op
+Iteration   1: 67.429 us/op
+Iteration   2: 65.670 us/op
+Iteration   3: 64.605 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  66.045 ±(99.9%) 8.191 us/op [Average]
+  (min, avg, max) = (61.127, 66.045, 68.878), stdev = 2.921
+  CI (99.9%): [57.853, 74.236] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI":
+  0.206 clks/insn
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC":
+  4.843 insns/clk
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses":
+  141.203 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads":
+  338352.448 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses":
+  1.658 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads":
+  264.404 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses":
+  62.788 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches":
+  385765.352 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles":
+  292071.836 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses":
+  1.618 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads":
+  9.928 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses":
+  1.620 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads":
+  2.037 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions":
+  1414419.059 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend":
+  5746.871 #/op
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 2 s each
+# Measurement: 3 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = MEDIUM_5)
+
+# Run progress: 25.00% complete, ETA 00:01:07
+# Fork: 1 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+81.902 us/op
+# Warmup Iteration   2: 79.805 us/op
+Iteration   1: 82.767 us/op
+Iteration   2: 94.182 us/op
+Iteration   3: 80.715 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 37.50% complete, ETA 00:00:56
+# Fork: 2 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=MEDIUM_5    chunkCardinality=  3,276  batch[30268,35268)  live=4767/5000  container=array(추정)
+81.709 us/op
+# Warmup Iteration   2: 85.714 us/op
+Iteration   1: 82.945 us/op
+Iteration   2: 83.746 us/op
+Iteration   3: 86.880 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  85.206 ±(99.9%) 13.549 us/op [Average]
+  (min, avg, max) = (80.715, 85.206, 94.182), stdev = 4.832
+  CI (99.9%): [71.657, 98.755] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI":
+  0.213 clks/insn
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC":
+  4.697 insns/clk
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses":
+  155.351 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads":
+  433778.344 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses":
+  2.912 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads":
+  389.343 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses":
+  381.344 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches":
+  483227.919 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles":
+  393831.379 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses":
+  2.727 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads":
+  19.642 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses":
+  2.979 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads":
+  4.249 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions":
+  1849862.707 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend":
+  11569.752 #/op
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 2 s each
+# Measurement: 3 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = DENSE_12)
+
+# Run progress: 50.00% complete, ETA 00:00:45
+# Fork: 1 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+19.915 us/op
+# Warmup Iteration   2: 17.882 us/op
+Iteration   1: 20.955 us/op
+Iteration   2: 21.870 us/op
+Iteration   3: 22.267 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 62.50% complete, ETA 00:00:34
+# Fork: 2 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=DENSE_12    chunkCardinality=  7,864  batch[30268,35268)  live=4415/5000  container=bitmap(추정)
+20.334 us/op
+# Warmup Iteration   2: 16.937 us/op
+Iteration   1: 20.053 us/op
+Iteration   2: 20.760 us/op
+Iteration   3: 20.892 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  21.133 ±(99.9%) 2.251 us/op [Average]
+  (min, avg, max) = (20.053, 21.133, 22.267), stdev = 0.803
+  CI (99.9%): [18.881, 23.384] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI":
+  0.215 clks/insn
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC":
+  4.663 insns/clk
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses":
+  1173.905 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads":
+  102442.278 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses":
+  0.365 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads":
+  69.741 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses":
+  145.940 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches":
+  89198.263 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles":
+  92786.102 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses":
+  0.456 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads":
+  2.531 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses":
+  0.348 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads":
+  0.565 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions":
+  432446.079 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend":
+  946.091 #/op
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 2 iterations, 2 s each
+# Measurement: 3 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap
+# Parameters: (batchSize = 5000, pattern = RUN_PARTIAL)
+
+# Run progress: 75.00% complete, ETA 00:00:22
+# Fork: 1 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_PARTIAL chunkCardinality=  3,264  batch[30268,35268)  live=4744/5000  container=array(추정)
+44.007 us/op
+# Warmup Iteration   2: 44.174 us/op
+Iteration   1: 46.566 us/op
+Iteration   2: 44.906 us/op
+Iteration   3: 44.826 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 87.50% complete, ETA 00:00:11
+# Fork: 2 of 2
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] pattern=RUN_PARTIAL chunkCardinality=  3,264  batch[30268,35268)  live=4744/5000  container=array(추정)
+43.923 us/op
+# Warmup Iteration   2: 43.096 us/op
+Iteration   1: 44.819 us/op
+Iteration   2: 44.140 us/op
+Iteration   3: 46.369 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap":
+  45.271 ±(99.9%) 2.718 us/op [Average]
+  (min, avg, max) = (44.140, 45.271, 46.566), stdev = 0.969
+  CI (99.9%): [42.553, 47.989] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI":
+  0.211 clks/insn
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC":
+  4.736 insns/clk
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses":
+  140.769 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads":
+  181467.265 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses":
+  1.015 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads":
+  240.633 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses":
+  32.837 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches":
+  224926.540 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles":
+  202029.856 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses":
+  0.859 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads":
+  6.003 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses":
+  0.914 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads":
+  1.176 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions":
+  956878.905 #/op
+
+Secondary result "org.apache.iceberg.deletes.DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend":
+  1578.473 #/op
+
+
+# Run complete. Total time: 00:01:30
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                                                     (batchSize)    (pattern)  Mode  Cnt        Score    Error      Units
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap                                 5000   SPARSE_0_5  avgt    6       66.045 ±  8.191      us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI                             5000   SPARSE_0_5  avgt    2        0.206           clks/insn
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC                             5000   SPARSE_0_5  avgt    2        4.843           insns/clk
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses           5000   SPARSE_0_5  avgt    2      141.203                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads                 5000   SPARSE_0_5  avgt    2   338352.448                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses           5000   SPARSE_0_5  avgt    2        1.658                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads                 5000   SPARSE_0_5  avgt    2      264.404                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses                   5000   SPARSE_0_5  avgt    2       62.788                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches                        5000   SPARSE_0_5  avgt    2   385765.352                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles                          5000   SPARSE_0_5  avgt    2   292071.836                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses                5000   SPARSE_0_5  avgt    2        1.618                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads                      5000   SPARSE_0_5  avgt    2        9.928                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses                5000   SPARSE_0_5  avgt    2        1.620                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads                      5000   SPARSE_0_5  avgt    2        2.037                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions                    5000   SPARSE_0_5  avgt    2  1414419.059                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend         5000   SPARSE_0_5  avgt    2     5746.871                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap                                 5000     MEDIUM_5  avgt    6       85.206 ± 13.549      us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI                             5000     MEDIUM_5  avgt    2        0.213           clks/insn
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC                             5000     MEDIUM_5  avgt    2        4.697           insns/clk
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses           5000     MEDIUM_5  avgt    2      155.351                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads                 5000     MEDIUM_5  avgt    2   433778.344                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses           5000     MEDIUM_5  avgt    2        2.912                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads                 5000     MEDIUM_5  avgt    2      389.343                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses                   5000     MEDIUM_5  avgt    2      381.344                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches                        5000     MEDIUM_5  avgt    2   483227.919                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles                          5000     MEDIUM_5  avgt    2   393831.379                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses                5000     MEDIUM_5  avgt    2        2.727                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads                      5000     MEDIUM_5  avgt    2       19.642                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses                5000     MEDIUM_5  avgt    2        2.979                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads                      5000     MEDIUM_5  avgt    2        4.249                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions                    5000     MEDIUM_5  avgt    2  1849862.707                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend         5000     MEDIUM_5  avgt    2    11569.752                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap                                 5000     DENSE_12  avgt    6       21.133 ±  2.251      us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI                             5000     DENSE_12  avgt    2        0.215           clks/insn
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC                             5000     DENSE_12  avgt    2        4.663           insns/clk
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses           5000     DENSE_12  avgt    2     1173.905                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads                 5000     DENSE_12  avgt    2   102442.278                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses           5000     DENSE_12  avgt    2        0.365                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads                 5000     DENSE_12  avgt    2       69.741                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses                   5000     DENSE_12  avgt    2      145.940                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches                        5000     DENSE_12  avgt    2    89198.263                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles                          5000     DENSE_12  avgt    2    92786.102                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses                5000     DENSE_12  avgt    2        0.456                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads                      5000     DENSE_12  avgt    2        2.531                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses                5000     DENSE_12  avgt    2        0.348                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads                      5000     DENSE_12  avgt    2        0.565                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions                    5000     DENSE_12  avgt    2   432446.079                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend         5000     DENSE_12  avgt    2      946.091                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap                                 5000  RUN_PARTIAL  avgt    6       45.271 ±  2.718      us/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:CPI                             5000  RUN_PARTIAL  avgt    2        0.211           clks/insn
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:IPC                             5000  RUN_PARTIAL  avgt    2        4.736           insns/clk
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-load-misses           5000  RUN_PARTIAL  avgt    2      140.769                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-dcache-loads                 5000  RUN_PARTIAL  avgt    2   181467.265                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-load-misses           5000  RUN_PARTIAL  avgt    2        1.015                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:L1-icache-loads                 5000  RUN_PARTIAL  avgt    2      240.633                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branch-misses                   5000  RUN_PARTIAL  avgt    2       32.837                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:branches                        5000  RUN_PARTIAL  avgt    2   224926.540                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:cycles                          5000  RUN_PARTIAL  avgt    2   202029.856                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-load-misses                5000  RUN_PARTIAL  avgt    2        0.859                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:dTLB-loads                      5000  RUN_PARTIAL  avgt    2        6.003                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-load-misses                5000  RUN_PARTIAL  avgt    2        0.914                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:iTLB-loads                      5000  RUN_PARTIAL  avgt    2        1.176                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:instructions                    5000  RUN_PARTIAL  avgt    2   956878.905                #/op
+DvBatchBench.a_baseline_perRow_RoaringPositionBitmap:stalled-cycles-frontend         5000  RUN_PARTIAL  avgt    2     1578.473                #/op
