@@ -80,12 +80,26 @@ run_one() {   # $1=arm $2=rep $3=query(scan|aggL)
     --conf spark.hadoop.fs.s3a.endpoint.region=ap-northeast-2 \
     /root/iceberg-dv-anatomy/phase0/spark/scan.py \
       --warehouse "$WH" --table "$TABLE" --label "$LABEL" \
+      --spark-master "$MASTER" \
       --cols 2 --col-list k01,k04 "${G[@]}" \
       --warmup "$WARMUP" --iters "$ITERS" \
       --cores 4 --driver-mem 4g \
       --out-json "$OUT" \
-    2>&1 | grep -E "median=" | sed "s|^|      $1 r$2 ($3)\: |" || true
+    2>&1 | grep -E "median=|master=" | sed "s|^|      $1 r$2 ($3)\: |" || true
 }
+
+say "1b. 게이트 — 정말 클러스터에서 도는지 먼저 확인한다"
+# scan.py 가 한때 --master 를 덮어써서 클러스터가 놀고 있었다. 숫자는 그럴듯하게
+# 나왔고 익스큐터만 하나도 안 떴다. 그래서 본 측정 전에 1회 돌려 확인한다.
+run_one baseline 0 scan
+if ! grep -q "master=spark://" /var/log/dv-measure.log; then
+  echo "!!!!! master 가 spark:// 가 아니다 — local 로 폴백했다. 중단한다."
+  grep -h "master=" /var/log/dv-measure.log | tail -2
+  push; exit 1
+fi
+echo "  OK: $(grep -h "master=" /var/log/dv-measure.log | tail -1)"
+sleep 25   # sync 루프가 익스큐터 프로파일을 올릴 시간
+echo "  워커 프로파일 확인은 S3 clusterprof/ 에서 한다"
 
 say "2. 측정 — 쿼리 2종 × 2 arm × ${REPS}회 (ITERS=${ITERS})"
 START=$(date +%s); N=0
