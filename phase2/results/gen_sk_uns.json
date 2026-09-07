@@ -1,0 +1,18 @@
+{
+  "table": "dv.g.sk_uns",
+  "density_bp": 610,
+  "run_length": 1,
+  "sort_by": null,
+  "delete_key": "k04",
+  "occupancy_bp": 10000,
+  "target_density": 0.061,
+  "actual_density": 0.053821875,
+  "total_rows": 8000000,
+  "deleted_rows": 430575,
+  "dv_count": 4,
+  "dv_bytes": 863978,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 3997.696
+}
