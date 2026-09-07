@@ -123,8 +123,11 @@ echo "① 이벤트 지원 확인 (짧은 JVM 하나로)"
 for EV in $EVENTS; do
   T="${RESULTS}/qperf/_probe_$(echo "$EV" | tr -c 'a-zA-Z0-9' '_').collapsed"
   rm -f "$T"
+  # 프로브 워크로드는 이벤트 성격에 맞아야 한다. `-version` 은 CPU 시간을 거의 안 써서
+  # ctimer 가 빈 프로파일을 내고 **거짓 음성**이 뜬다 (실제로 그렇게 떴다).
   java -agentpath:"${AP_LIB}=start,event=${EV},collapsed,file=${T}" \
-       -version >/dev/null 2>&1 || true
+       -e 'long s=0; for(long i=0;i<400000000L;i++) s+=i; System.out.println(s);' \
+       >/dev/null 2>&1 || true
   if [[ -s "$T" ]]; then echo "   ✅ ${EV}"; else echo "   ❌ ${EV} — 프로파일이 비었다"; fi
 done
 echo
