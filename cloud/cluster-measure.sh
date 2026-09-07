@@ -29,22 +29,15 @@ REPS="${REPS:-6}"
 ITERS="${ITERS:-10}"
 WARMUP="${WARMUP:-2}"
 RES=/root/clres
-mkdir -p "$RES" /mnt/prof
+mkdir -p "$RES" /mnt/prof /root/logs
 
 LOG=/var/log/dv-measure.log
 exec > >(tee -a "$LOG") 2>&1
 push() { aws s3 cp "$LOG" "s3://$BUCKET/logs/cl-measure.log" --only-show-errors 2>/dev/null || true; }
 say() { echo ""; echo "########## [$(date -u +%H:%M:%S)] $* ##########"; push; }
 
-# S3A 의존성을 프로파일 밖에서 미리 받는다 (F-021 과 같은 이유)
-say "0. S3A 의존성 해석"
-HV=$(ls "$SPARK_HOME"/jars/hadoop-client-api-*.jar | head -1 | sed 's|.*hadoop-client-api-||; s|\.jar$||')
-echo "  hadoop $HV"
-printf '%s\n' 'from pyspark.sql import SparkSession' 'SparkSession.builder.getOrCreate().stop()' > /root/noop.py
-spark-submit --master "local[1]" --packages "org.apache.hadoop:hadoop-aws:${HV}" \
-  --conf spark.jars.ivy=/root/ivy /root/noop.py > /root/ivy.log 2>&1 || { tail -20 /root/ivy.log; exit 1; }
-S3JARS=$(ls /root/ivy/jars/*.jar | tr '\n' ',' | sed 's|,$||')
-echo "  ivy jar $(ls /root/ivy/jars/*.jar | wc -l)개"
+say "0. S3A jar 확인 (부트스트랩이 SPARK_HOME/jars 에 넣었어야 한다)"
+ls "$SPARK_HOME"/jars/ | grep -E "hadoop-aws|bundle" || { echo "!!!!! S3A jar 이 없다"; exit 1; }
 
 say "1. 클러스터 상태 (증거로 남긴다)"
 curl -s "http://$SELF:8080/json/" > "$RES/cluster-state.json" 2>/dev/null || true
@@ -74,7 +67,7 @@ run_one() {   # $1=arm $2=rep $3=query(scan|aggL)
     --conf spark.executor.extraJavaOptions="$PROFOPT" \
     --conf spark.executor.cores=4 --conf spark.executor.memory=8g \
     --conf spark.sql.shuffle.partitions=16 \
-    --jars "${JAR},${S3JARS}" \
+    --jars "${JAR}" \
     --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
     --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
     --conf spark.hadoop.fs.s3a.endpoint.region=ap-northeast-2 \
@@ -85,18 +78,33 @@ run_one() {   # $1=arm $2=rep $3=query(scan|aggL)
       --warmup "$WARMUP" --iters "$ITERS" \
       --cores 4 --driver-mem 4g \
       --out-json "$OUT" \
-    2>&1 | grep -E "median=|master=" | sed "s|^|      $1 r$2 ($3)\: |" || true
+    > "/root/logs/${LABEL}.out" 2>&1 || true
+  grep -E "median=|master=" "/root/logs/${LABEL}.out" | sed "s|^|      $1 r$2 ($3)\: |" || true
+  # 결과가 안 나왔으면 에러 꼬리를 로그에 남긴다 — 다시는 조용히 넘어가지 않게
+  if [[ ! -s "$OUT" ]]; then
+    echo "      !! 결과 JSON 없음 — spark-submit 마지막 15줄:"
+    tail -15 "/root/logs/${LABEL}.out" | sed "s|^|        |"
+  fi
 }
 
 say "1b. 게이트 — 정말 클러스터에서 도는지 먼저 확인한다"
 # scan.py 가 한때 --master 를 덮어써서 클러스터가 놀고 있었다. 숫자는 그럴듯하게
 # 나왔고 익스큐터만 하나도 안 떴다. 그래서 본 측정 전에 1회 돌려 확인한다.
 run_one baseline 0 scan
+# 게이트는 로그 줄이 아니라 **산출물**을 본다. 로그 한 줄만 보고 통과시켰다가
+# 24회를 헛돌린 적이 있다 (영수증 말고 산출물을 보라 — 같은 실수를 세 번째로 반복).
 if ! grep -q "master=spark://" /var/log/dv-measure.log; then
-  echo "!!!!! master 가 spark:// 가 아니다 — local 로 폴백했다. 중단한다."
-  grep -h "master=" /var/log/dv-measure.log | tail -2
+  echo "!!!!! master 가 spark:// 가 아니다 — local 로 폴백했다."
   push; exit 1
 fi
+if [[ ! -s "${RES}/scan_baseline__clscan_r0.json" ]]; then
+  echo "!!!!! 검증 실행이 결과 JSON 을 안 냈다. 본 측정을 시작하지 않는다."
+  tail -25 /root/logs/baseline_clscan_r0.out 2>/dev/null | sed "s|^|    |"
+  aws s3 cp /root/logs/baseline_clscan_r0.out "s3://$BUCKET/logs/gate-fail.out" --only-show-errors || true
+  push; exit 1
+fi
+echo "  게이트 통과 — 결과 JSON 확인:"
+python3 -c "import json;d=json.load(open('${RES}/scan_baseline__clscan_r0.json'));print('    median=%.3fs iters=%d'%(d['median_s'],d['iters']))"
 echo "  OK: $(grep -h "master=" /var/log/dv-measure.log | tail -1)"
 sleep 25   # sync 루프가 익스큐터 프로파일을 올릴 시간
 echo "  워커 프로파일 확인은 S3 clusterprof/ 에서 한다"
@@ -113,5 +121,6 @@ for R in $(seq 1 "$REPS"); do
 done
 say "3. 완료 — ${N}회, $(( $(date +%s) - START ))초"
 aws s3 sync "$RES" "s3://$BUCKET/clusterres/" --only-show-errors || true
+aws s3 sync /root/logs "s3://$BUCKET/clusterlogs/" --only-show-errors || true
 sleep 30   # sync 루프가 마지막 프로파일을 올릴 시간
 say "4. 결과 업로드 완료"
