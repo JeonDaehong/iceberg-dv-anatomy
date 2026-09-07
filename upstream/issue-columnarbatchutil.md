@@ -6,7 +6,7 @@ Spark: vectorized reads probe the position delete index once per row, ignoring t
 
 `ColumnarBatchUtil.buildRowIdMapping` and `buildIsDeleted` call `PositionDeleteIndex.isDeleted(pos)` once for every row in a batch. Positions within a batch are a contiguous ascending range and the DV-backed index is a Roaring bitmap, so the same information can be obtained with a single range traversal instead of `batchSize` independent probes.
 
-On a V3 table read with a narrow projection, this loop accounts for **43–58% of scan CPU**, depending on delete density — a figure I have since reproduced on three CPU microarchitectures (Zen 3, Sapphire Rapids, Graviton3), on local disk and on S3, with a warm and a dropped page cache, and at task parallelism 1 through 16. It moves by at most a few points across all of those; with a heavy aggregation in the same job it settles toward the low end of that range. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
+On a V3 table read with a narrow projection, this loop accounts for **43–58% of scan CPU**, depending on delete density — a figure I have since reproduced on three CPU microarchitectures (Zen 3, Sapphire Rapids, Graviton3), on local disk and on S3, with a warm and a dropped page cache, and at task parallelism 1 through 16. It moves by at most a few points across all of those; with a heavy aggregation in the same job it settles toward the low end of that range. On a small distributed cluster it comes out at **42%** — the top of the range is a single-JVM figure, and executor startup and serialization enlarge the denominator once the work is spread across machines. I implemented the change against `apache-iceberg-1.11.0` and measured it end to end: the delete-check CPU drops by **3.1x–9.3x** for `buildRowIdMapping` and **14.9x–18.9x** for `buildIsDeleted`, and the scan subtree as a whole drops by **12–45%**. Tables with equality deletes keep the existing loop and show no regression.
 
 There is also something users can do today, without waiting for this: **sorting the table by the column the deletes target makes the delete check 2.8x cheaper on its own**, because the Roaring bitmap switches from array to run containers. That only works when the deletes concentrate on relatively few distinct key values — I measured it fading to 1.1x and then to nothing as the sort key's cardinality rises. The two remedies overlap but do not replace each other: sorting alone 2.8x, this patch alone 7.8x, both together 12.4x.
 
@@ -257,6 +257,39 @@ of what sorting was saving.
 (Wall-clock differences on this axis did not clear my noise band, so the numbers above are CPU
 samples, where the repeat ranges are disjoint. I did not measure the cost of the sort itself.)
 
+### Evidence — a distributed cluster
+
+Everything above runs in one JVM, so I put the same two jars on a 3-node Spark 4.0.4 standalone
+cluster (1 master + 2 workers, 8 cores total, table on S3, profiler attached to the *executors* via
+`spark.executor.extraJavaOptions` and the per-executor profiles summed per run).
+
+| query | delete-check share of scan CPU | patch speedup | wall clock |
+|---|---|---|---|
+| scan, one JVM | 53.95% | 6.8x | — |
+| **scan, cluster** | **41.58%** | **5.30x** | **−9.5%** (0/6 pairs, sign test p = 0.03) |
+| aggregation, one JVM | 43.19% | 6.9x | — |
+| **aggregation, cluster** | **41.57%** | **5.07x** | +0.7% (inside noise) |
+
+Two things worth stating, both of which contradict what I predicted:
+
+- **The share drops to about 42% and the speedup to about 5x.** Executor startup, task
+  serialization and S3 reads all land inside the scan subtree, enlarging the denominator. The
+  delete check is still the single largest identified item, but the 58% top of my range is a
+  single-JVM number and I have corrected the summary accordingly.
+- **In the cluster the shuffle no longer moves the share** — 41.58% with no shuffle against 41.57%
+  with a large one, where in a single JVM the same contrast was 53.95% against 43.19%. The fixed
+  distributed overhead appears to already occupy the space the shuffle would otherwise take. I have
+  not confirmed that mechanism.
+
+The wall-clock result is the useful one: on the plain scan the patched build is **9.5% faster end
+to end on the cluster**, with all six paired rounds agreeing in sign. That is the first time I have
+been able to claim a latency difference outside a single JVM.
+
+Caveat on size: 8M rows over 8 cores is small enough that the cluster is 2.3x slower than one JVM
+on the same query (0.50s vs 0.215s), which means fixed overhead is inflating the denominator. On a
+job large enough to be worth a cluster I would expect the share to move back toward the single-JVM
+figure, so 42% reads as a floor.
+
 ### Evidence — microbenchmark
 
 JMH, batchSize 5000, positions built into a full 65536-position chunk at the target density, then round-tripped through `BitmapPositionDeleteIndex.serialize()`/`deserialize()` so the containers match what the read path actually sees. Time per batch, µs (RoaringBitmap 1.6.20 standalone):
@@ -389,7 +422,7 @@ New coverage on the branch:
 ### Caveats on the numbers
 
 - The primary measurements are on a developer machine (WSL2, no hardware PMU), Spark `local[4]` mode; the portability checks above are on dedicated EC2 instances. No hardware PMU anywhere, so cycle- and branch-level attribution would still need a bare-metal run.
-- Everything is single-JVM `local[N]`. I did measure what happens when the query does more than scan — adding a `GROUP BY` moves the delete check from **14.0% of total query CPU to 6.8% and then 2.4%** as the aggregation grows, while its share *of the scan* stays in the 43-54% band and the absolute CPU saved is unchanged. But that shuffle spills to local disk in one JVM; a real cluster adds network and executor scheduling, which I have not measured. Expect the share of total query CPU to fall further there, not to rise.
+- Most of the numbers are single-JVM `local[N]`. Adding a `GROUP BY` moves the delete check from **14.0% of total query CPU to 6.8% and then 2.4%** as the aggregation grows, while its share *of the scan* stays in the 43-54% band and the absolute CPU saved is unchanged. I also ran it on a 3-node Spark standalone cluster (see below); the cluster there is small (8 cores, 8M rows), so fixed overhead dominates and the cluster is actually 2.3x *slower* than one JVM on the same query. A production-sized job would sit closer to the single-JVM numbers, so treat 42% as a lower bound rather than a typical cluster value.
 - One table shape throughout: 8M rows, 4 files, 20 columns. File-skipping predicates, nested types and many-file tables are unmeasured.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
