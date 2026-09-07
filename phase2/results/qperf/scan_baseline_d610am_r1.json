@@ -1,0 +1,18 @@
+{
+  "label": "am_baseline_r1",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 300,
+  "min_s": 0.1475386019999405,
+  "median_s": 0.18782647499995164,
+  "max_s": 0.3928078459999824,
+  "mean_s": 0.19472433721999702,
+  "is_deleted": false
+}
