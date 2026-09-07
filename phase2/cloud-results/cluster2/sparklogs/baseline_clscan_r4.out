@@ -1,0 +1,72 @@
+WARNING: Using incubator modules: jdk.incubator.vector
+26/09/07 12:46:52 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+26/09/07 12:46:53 INFO SparkContext: Running Spark version 4.0.4
+26/09/07 12:46:53 INFO SparkContext: OS info Linux, 7.0.0-1012-aws, amd64
+26/09/07 12:46:53 INFO SparkContext: Java version 17.0.20
+26/09/07 12:46:53 INFO ResourceUtils: ==============================================================
+26/09/07 12:46:53 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/09/07 12:46:53 INFO ResourceUtils: ==============================================================
+26/09/07 12:46:53 INFO SparkContext: Submitted application: dv-anatomy-phase0-scan-baseline_clscan_r4
+26/09/07 12:46:53 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 4, script: , vendor: , memory -> name: memory, amount: 8192, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/09/07 12:46:53 INFO ResourceProfile: Limiting resource is cpus at 4 tasks per executor
+26/09/07 12:46:53 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/09/07 12:46:53 INFO SecurityManager: Changing view acls to: root
+26/09/07 12:46:53 INFO SecurityManager: Changing modify acls to: root
+26/09/07 12:46:53 INFO SecurityManager: Changing view acls groups to: root
+26/09/07 12:46:53 INFO SecurityManager: Changing modify acls groups to: root
+26/09/07 12:46:53 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: root groups with view permissions: EMPTY; users with modify permissions: root; groups with modify permissions: EMPTY; RPC SSL disabled
+26/09/07 12:46:53 INFO Utils: Successfully started service 'sparkDriver' on port 35805.
+26/09/07 12:46:53 INFO SparkEnv: Registering MapOutputTracker
+26/09/07 12:46:53 INFO SparkEnv: Registering BlockManagerMaster
+26/09/07 12:46:53 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/09/07 12:46:53 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/09/07 12:46:53 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/09/07 12:46:53 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-3e134806-76a2-4947-ae74-fd97f5f2c927
+26/09/07 12:46:53 INFO SparkEnv: Registering OutputCommitCoordinator
+26/09/07 12:46:53 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/09/07 12:46:53 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/09/07 12:46:53 INFO SparkContext: Added JAR file:///root/opt/jars-baseline/iceberg-spark-runtime-4.0_2.13-1.11.0.jar at spark://ip-172-31-6-161.ap-northeast-2.compute.internal:35805/jars/iceberg-spark-runtime-4.0_2.13-1.11.0.jar with timestamp 1788785213245
+26/09/07 12:46:53 INFO SecurityManager: Changing view acls to: root
+26/09/07 12:46:53 INFO SecurityManager: Changing modify acls to: root
+26/09/07 12:46:53 INFO SecurityManager: Changing view acls groups to: root
+26/09/07 12:46:53 INFO SecurityManager: Changing modify acls groups to: root
+26/09/07 12:46:53 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: root groups with view permissions: EMPTY; users with modify permissions: root; groups with modify permissions: EMPTY; RPC SSL disabled
+26/09/07 12:46:53 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://172.31.6.161:7077...
+26/09/07 12:46:54 INFO TransportClientFactory: Successfully created connection to /172.31.6.161:7077 after 20 ms (0 ms spent in bootstraps)
+26/09/07 12:46:54 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20260907124654-0015
+26/09/07 12:46:54 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260907124654-0015/0 on worker-20260907123516-172.31.2.98-41603 (172.31.2.98:41603) with 4 core(s)
+26/09/07 12:46:54 INFO StandaloneSchedulerBackend: Granted executor ID app-20260907124654-0015/0 on hostPort 172.31.2.98:41603 with 4 core(s), 8.0 GiB RAM
+26/09/07 12:46:54 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20260907124654-0015/1 on worker-20260907123514-172.31.5.138-37617 (172.31.5.138:37617) with 4 core(s)
+26/09/07 12:46:54 INFO StandaloneSchedulerBackend: Granted executor ID app-20260907124654-0015/1 on hostPort 172.31.5.138:37617 with 4 core(s), 8.0 GiB RAM
+26/09/07 12:46:54 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 39409.
+26/09/07 12:46:54 INFO NettyBlockTransferService: Server created on ip-172-31-6-161.ap-northeast-2.compute.internal:39409
+26/09/07 12:46:54 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/09/07 12:46:54 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260907124654-0015/1 is now RUNNING
+26/09/07 12:46:54 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, ip-172-31-6-161.ap-northeast-2.compute.internal, 39409, None)
+26/09/07 12:46:54 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20260907124654-0015/0 is now RUNNING
+26/09/07 12:46:54 INFO BlockManagerMasterEndpoint: Registering block manager ip-172-31-6-161.ap-northeast-2.compute.internal:39409 with 434.4 MiB RAM, BlockManagerId(driver, ip-172-31-6-161.ap-northeast-2.compute.internal, 39409, None)
+26/09/07 12:46:54 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, ip-172-31-6-161.ap-northeast-2.compute.internal, 39409, None)
+26/09/07 12:46:54 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, ip-172-31-6-161.ap-northeast-2.compute.internal, 39409, None)
+26/09/07 12:46:54 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 스캔: dv.g.d610  (k01,k04, 배치 기본(5000), 셔플 없음 · 웜 캐시) ===
+[baseline_clscan_r4] master=spark://172.31.6.161:7077
+26/09/07 12:46:56 WARN MetricsConfig: Cannot locate configuration: tried hadoop-metrics2-s3a-file-system.properties,hadoop-metrics2.properties
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+[baseline_clscan_r4] 벡터화 리더: ON (추정)
+  warmup 1/2: 4.519s
+  warmup 2/2: 0.830s
+  iter   1/10: 0.569s
+  iter   2/10: 0.609s
+  iter   3/10: 0.641s
+  iter   4/10: 0.484s
+  iter   5/10: 0.449s
+  iter   6/10: 0.457s
+  iter   7/10: 0.494s
+  iter   8/10: 0.524s
+  iter   9/10: 0.444s
+  iter   10/10: 0.482s
+[baseline_clscan_r4] median=0.494s  min=0.444s  max=0.641s

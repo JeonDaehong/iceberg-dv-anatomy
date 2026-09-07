@@ -1,0 +1,19 @@
+{
+  "label": "baseline_clscan_r5",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 10,
+  "min_s": 0.45194085399998585,
+  "median_s": 0.49370715100008056,
+  "max_s": 0.5689804200000026,
+  "mean_s": 0.5045515910000177,
+  "is_deleted": false
+}
