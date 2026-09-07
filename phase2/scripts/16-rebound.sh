@@ -37,6 +37,14 @@
 #         `mapping[live++]` 쓰기가 줄어든다 — 명령어는 오히려 **줄어야** 한다.
 #         줄어드는데도 사이클이 늘면 그건 확실히 파이프라인 문제(= 분기)다.
 #
+#   Q_P8. [귀속 · 2단계에서 잰다] perf stat 은 쿼리 **전체**를 센다. 반등은 DV 체크 구간의
+#         이야기이므로 총량이 늘었다는 것만으로는 그게 DV 에서 났는지 알 수 없다.
+#         async-profiler 의 branch-misses 이벤트로 귀속해서:
+#         **DV 체크 구간이 차지하는 분기 실패 비중이 d=50% 에서 d=8% 보다 높다.**
+#         (총량 격차의 절반 이상이 DV 구간에서 났다면 반등의 기전은 확정된다.)
+#         깨져서 비중이 같거나 낮으면, 늘어난 실패는 DV 밖 — 살아남는 행 수가 바뀌면서
+#         달라진 다운스트림 코드 — 에서 난 것이고 반등은 여전히 미해결이다.
+#
 # ⚠️ 통제의 한계 (F-008 이 이미 안고 있던 것):
 #   d=8% 와 d=50% 는 살아남는 행 수가 다르다 (7.36M vs 4.0M). contains() 호출 횟수는
 #   8M 으로 같지만 그 뒤에 이어지는 작업량은 다르다. 이 축은 **완전 통제가 아니다.**
@@ -90,5 +98,30 @@ for R in $(seq 1 "$REPS"); do
   echo "  라운드 $R  순서: $ORDER"
   for T in $ORDER; do stat_one "$T" "$R"; done
 done
+echo
+echo "② 귀속 (async-profiler, branch-misses)"
+prof_one() {  # $1=tag $2=rep
+  local PROF="${RESULTS}/profiles/baseline__rb${1}_branch_misses_r${2}.collapsed"
+  [[ -s "$PROF" && "${FORCE:-0}" != "1" ]] && { echo "    skip ${1} r${2}"; return; }
+  spark-submit \
+    --master "local[${LOCAL_CORES}]" --driver-memory "${DRIVER_MEM}" \
+    --driver-java-options "-agentpath:${AP_LIB}=start,event=branch-misses,collapsed,file=${PROF}" \
+    --jars "$BASELINE_JAR" \
+    --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
+    ../phase0/spark/scan.py \
+      --warehouse "$WAREHOUSE" --table "dv.g.${1}" --label "rbp_${1}_r${2}" --cols "$RB_COLS" \
+      --warmup "$SCAN_WARMUP" --iters "$SCAN_ITERS" \
+      --cores "$LOCAL_CORES" --driver-mem "$DRIVER_MEM" \
+      --out-json "${RESULTS}/qperf/rbp_scan_${1}_r${2}.json" \
+    >/dev/null 2>&1 || true
+  [[ -s "$PROF" ]] || { echo "    *** 프로파일이 비었다 (${1} r${2})" >&2; return 1; }
+  echo "    ${1} r${2}: $(wc -l < "$PROF") 스택"
+}
+for R in $(seq 1 "$REPS"); do
+  if (( R % 2 == 1 )); then ORDER="$RB_TAGS"; else ORDER=$(echo "$RB_TAGS" | tr ' ' '\n' | tac | tr '\n' ' '); fi
+  echo "  라운드 $R  순서: $ORDER"
+  for T in $ORDER; do prof_one "$T" "$R" || true; done
+done
+
 echo
 echo "채점: python3 tools/rebound.py results"
