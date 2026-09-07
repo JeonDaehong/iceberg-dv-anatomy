@@ -41,3 +41,80 @@
       baseline r1 (c1k): [baseline_skc1k_r1] median=0.151s  min=0.122s  max=0.311s
       patched r1 (c1k): [patched_skc1k_r1] median=0.168s  min=0.126s  max=0.252s
   c1m  [순서: baseline patched]
+      baseline r1 (c1m): [baseline_skc1m_r1] median=0.186s  min=0.170s  max=0.284s
+      patched r1 (c1m): [patched_skc1m_r1] median=0.202s  min=0.139s  max=0.328s
+  c8m  [순서: baseline patched]
+      baseline r1 (c8m): [baseline_skc8m_r1] median=0.256s  min=0.197s  max=0.463s
+      patched r1 (c8m): [patched_skc8m_r1] median=0.193s  min=0.136s  max=0.303s
+
+### 라운드 2 / 6
+  uns  [순서: patched baseline]
+      patched r2 (uns): [patched_skuns_r2] median=0.149s  min=0.113s  max=0.228s
+      baseline r2 (uns): [baseline_skuns_r2] median=0.190s  min=0.156s  max=0.291s
+  c1k  [순서: patched baseline]
+      patched r2 (c1k): [patched_skc1k_r2] median=0.156s  min=0.123s  max=0.227s
+      baseline r2 (c1k): [baseline_skc1k_r2] median=0.150s  min=0.121s  max=0.290s
+  c1m  [순서: patched baseline]
+      patched r2 (c1m): [patched_skc1m_r2] median=0.156s  min=0.125s  max=0.239s
+      baseline r2 (c1m): [baseline_skc1m_r2] median=0.184s  min=0.151s  max=0.282s
+  c8m  [순서: patched baseline]
+      patched r2 (c8m): [patched_skc8m_r2] median=0.147s  min=0.115s  max=0.194s
+      baseline r2 (c8m): [baseline_skc8m_r2] median=0.220s  min=0.183s  max=0.326s
+
+### 라운드 3 / 6
+  uns  [순서: baseline patched]
+      baseline r3 (uns): [baseline_skuns_r3] median=0.188s  min=0.148s  max=0.247s
+      patched r3 (uns): [patched_skuns_r3] median=0.138s  min=0.114s  max=0.221s
+  c1k  [순서: baseline patched]
+      baseline r3 (c1k): [baseline_skc1k_r3] median=0.190s  min=0.145s  max=0.328s
+      patched r3 (c1k): [patched_skc1k_r3] median=0.157s  min=0.105s  max=0.235s
+  c1m  [순서: baseline patched]
+      baseline r3 (c1m): [baseline_skc1m_r3] median=0.211s  min=0.154s  max=0.320s
+      patched r3 (c1m): [patched_skc1m_r3] median=0.143s  min=0.117s  max=0.234s
+  c8m  [순서: baseline patched]
+      baseline r3 (c8m): [baseline_skc8m_r3] median=0.185s  min=0.152s  max=0.260s
+      patched r3 (c8m): [patched_skc8m_r3] median=0.147s  min=0.120s  max=0.261s
+
+### 라운드 4 / 6
+  uns  [순서: patched baseline]
+      patched r4 (uns): [patched_skuns_r4] median=0.141s  min=0.109s  max=0.228s
+      baseline r4 (uns): [baseline_skuns_r4] median=0.186s  min=0.149s  max=0.273s
+  c1k  [순서: patched baseline]
+      patched r4 (c1k): [patched_skc1k_r4] median=0.131s  min=0.110s  max=0.227s
+      baseline r4 (c1k): [baseline_skc1k_r4] median=0.146s  min=0.116s  max=0.233s
+  c1m  [순서: patched baseline]
+      patched r4 (c1m): [patched_skc1m_r4] median=0.146s  min=0.115s  max=0.244s
+      baseline r4 (c1m): [baseline_skc1m_r4] median=0.187s  min=0.157s  max=0.326s
+  c8m  [순서: patched baseline]
+      patched r4 (c8m): [patched_skc8m_r4] median=0.161s  min=0.126s  max=0.273s
+      baseline r4 (c8m): [baseline_skc8m_r4] median=0.197s  min=0.165s  max=0.321s
+
+### 라운드 5 / 6
+  uns  [순서: baseline patched]
+      baseline r5 (uns): [baseline_skuns_r5] median=0.205s  min=0.155s  max=0.310s
+      patched r5 (uns): [patched_skuns_r5] median=0.174s  min=0.132s  max=0.251s
+  c1k  [순서: baseline patched]
+      baseline r5 (c1k): [baseline_skc1k_r5] median=0.162s  min=0.123s  max=0.246s
+      patched r5 (c1k): [patched_skc1k_r5] median=0.326s  min=0.265s  max=0.541s
+  c1m  [순서: baseline patched]
+      baseline r5 (c1m): [baseline_skc1m_r5] median=0.181s  min=0.160s  max=0.301s
+      patched r5 (c1m): [patched_skc1m_r5] median=0.165s  min=0.129s  max=0.327s
+  c8m  [순서: baseline patched]
+      baseline r5 (c8m): [baseline_skc8m_r5] median=0.190s  min=0.161s  max=0.324s
+      patched r5 (c8m): [patched_skc8m_r5] median=0.148s  min=0.117s  max=0.256s
+
+### 라운드 6 / 6
+  uns  [순서: patched baseline]
+      patched r6 (uns): [patched_skuns_r6] median=0.140s  min=0.109s  max=0.216s
+      baseline r6 (uns): [baseline_skuns_r6] median=0.193s  min=0.163s  max=0.308s
+  c1k  [순서: patched baseline]
+      patched r6 (c1k): [patched_skc1k_r6] median=0.145s  min=0.111s  max=0.195s
+      baseline r6 (c1k): [baseline_skc1k_r6] median=0.148s  min=0.119s  max=0.244s
+  c1m  [순서: patched baseline]
+      patched r6 (c1m): [patched_skc1m_r6] median=0.146s  min=0.114s  max=0.214s
+      baseline r6 (c1m): [baseline_skc1m_r6] median=0.181s  min=0.157s  max=0.248s
+  c8m  [순서: patched baseline]
+      patched r6 (c8m): [patched_skc8m_r6] median=0.150s  min=0.122s  max=0.240s
+      baseline r6 (c8m): [baseline_skc8m_r6] median=0.190s  min=0.157s  max=0.293s
+
+✅ 완료 — 48회, 679초

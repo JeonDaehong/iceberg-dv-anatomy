@@ -1,0 +1,18 @@
+{
+  "label": "baseline_skc8m_r4",
+  "table": "dv.g.sk_c8m",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1652123910002956,
+  "median_s": 0.1967023010001867,
+  "max_s": 0.32050386499986416,
+  "mean_s": 0.21026814250003553,
+  "is_deleted": false
+}

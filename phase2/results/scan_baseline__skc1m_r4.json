@@ -1,0 +1,18 @@
+{
+  "label": "baseline_skc1m_r4",
+  "table": "dv.g.sk_c1m",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.15690401999972892,
+  "median_s": 0.18684387499979493,
+  "max_s": 0.3264432279997891,
+  "mean_s": 0.20083245563331123,
+  "is_deleted": false
+}

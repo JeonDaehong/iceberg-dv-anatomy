@@ -1,0 +1,18 @@
+{
+  "label": "patched_skc8m_r6",
+  "table": "dv.g.sk_c8m",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.12163243400027568,
+  "median_s": 0.1499996600000486,
+  "max_s": 0.23976438599993344,
+  "mean_s": 0.15307310986666683,
+  "is_deleted": false
+}
