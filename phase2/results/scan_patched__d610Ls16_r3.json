@@ -1,0 +1,18 @@
+{
+  "label": "patched_d610Ls16_r3",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "s09"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.2357853650000834,
+  "median_s": 0.28274551699996664,
+  "max_s": 0.39235382000015306,
+  "mean_s": 0.293412278133322,
+  "is_deleted": false
+}

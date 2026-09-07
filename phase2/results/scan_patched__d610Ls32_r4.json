@@ -1,0 +1,18 @@
+{
+  "label": "patched_d610Ls32_r4",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "s07"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.30835618599985537,
+  "median_s": 0.3803324979999161,
+  "max_s": 0.5193470899998829,
+  "mean_s": 0.39566287643336484,
+  "is_deleted": false
+}

@@ -1,0 +1,74 @@
+셔플 축 — 쿼리 3종 × 2 arm × 6회 = 36 프로파일
+  테이블 : dv.g.d610   투영 : k01,k04 (2컬럼, 전부 집계에 소비)
+  q0 scan : 셔플 없음
+  q1 aggS : GROUP BY k04 (고유값 1,000)
+  q2 aggL : GROUP BY k01 (고유값 ~800만)
+  SCAN_ITERS=30 SCAN_WARMUP=3 REPS=6
+
+### 라운드 1 / 6
+  scan  [순서: baseline patched]
+      baseline r1 (scan): [baseline_d610shfscan_r1] median=0.213s  min=0.180s  max=0.320s
+      patched r1 (scan): [patched_d610shfscan_r1] median=0.157s  min=0.121s  max=0.245s
+  aggS  [순서: baseline patched]
+      baseline r1 (aggS): [baseline_d610shfaggS_r1] median=0.458s  min=0.382s  max=0.699s
+      patched r1 (aggS): [patched_d610shfaggS_r1] median=0.367s  min=0.296s  max=1.031s
+  aggL  [순서: baseline patched]
+      baseline r1 (aggL): [baseline_d610shfaggL_r1] median=2.078s  min=1.972s  max=3.500s
+      patched r1 (aggL): [patched_d610shfaggL_r1] median=2.092s  min=1.952s  max=2.404s
+
+### 라운드 2 / 6
+  scan  [순서: patched baseline]
+      patched r2 (scan): [patched_d610shfscan_r2] median=0.191s  min=0.129s  max=0.444s
+      baseline r2 (scan): [baseline_d610shfscan_r2] median=0.213s  min=0.169s  max=0.321s
+  aggS  [순서: patched baseline]
+      patched r2 (aggS): [patched_d610shfaggS_r2] median=0.464s  min=0.335s  max=0.676s
+      baseline r2 (aggS): [baseline_d610shfaggS_r2] median=0.472s  min=0.313s  max=1.104s
+  aggL  [순서: patched baseline]
+      patched r2 (aggL): [patched_d610shfaggL_r2] median=2.443s  min=1.951s  max=3.081s
+      baseline r2 (aggL): [baseline_d610shfaggL_r2] median=2.174s  min=1.994s  max=2.691s
+
+### 라운드 3 / 6
+  scan  [순서: baseline patched]
+      baseline r3 (scan): [baseline_d610shfscan_r3] median=0.234s  min=0.159s  max=0.415s
+      patched r3 (scan): [patched_d610shfscan_r3] median=0.178s  min=0.126s  max=0.391s
+  aggS  [순서: baseline patched]
+      baseline r3 (aggS): [baseline_d610shfaggS_r3] median=0.507s  min=0.335s  max=0.961s
+      patched r3 (aggS): [patched_d610shfaggS_r3] median=0.405s  min=0.311s  max=1.025s
+  aggL  [순서: baseline patched]
+      baseline r3 (aggL): [baseline_d610shfaggL_r3] median=2.107s  min=1.963s  max=2.571s
+      patched r3 (aggL): [patched_d610shfaggL_r3] median=2.027s  min=1.917s  max=3.026s
+
+### 라운드 4 / 6
+  scan  [순서: patched baseline]
+      patched r4 (scan): [patched_d610shfscan_r4] median=0.192s  min=0.132s  max=0.278s
+      baseline r4 (scan): [baseline_d610shfscan_r4] median=0.227s  min=0.171s  max=0.345s
+  aggS  [순서: patched baseline]
+      patched r4 (aggS): [patched_d610shfaggS_r4] median=0.400s  min=0.318s  max=0.670s
+      baseline r4 (aggS): [baseline_d610shfaggS_r4] median=0.412s  min=0.314s  max=0.794s
+  aggL  [순서: patched baseline]
+      patched r4 (aggL): [patched_d610shfaggL_r4] median=2.445s  min=1.969s  max=7.618s
+      baseline r4 (aggL): [baseline_d610shfaggL_r4] median=2.103s  min=1.956s  max=2.609s
+
+### 라운드 5 / 6
+  scan  [순서: baseline patched]
+      baseline r5 (scan): [baseline_d610shfscan_r5] median=0.203s  min=0.155s  max=0.338s
+      patched r5 (scan): [patched_d610shfscan_r5] median=0.154s  min=0.120s  max=0.241s
+  aggS  [순서: baseline patched]
+      baseline r5 (aggS): [baseline_d610shfaggS_r5] median=0.419s  min=0.331s  max=0.646s
+      patched r5 (aggS): [patched_d610shfaggS_r5] median=0.370s  min=0.291s  max=0.594s
+  aggL  [순서: baseline patched]
+      baseline r5 (aggL): [baseline_d610shfaggL_r5] median=2.111s  min=1.937s  max=2.334s
+      patched r5 (aggL): [patched_d610shfaggL_r5] median=2.195s  min=2.028s  max=2.546s
+
+### 라운드 6 / 6
+  scan  [순서: patched baseline]
+      patched r6 (scan): [patched_d610shfscan_r6] median=0.183s  min=0.130s  max=0.323s
+      baseline r6 (scan): [baseline_d610shfscan_r6] median=0.216s  min=0.170s  max=0.389s
+  aggS  [순서: patched baseline]
+      patched r6 (aggS): [patched_d610shfaggS_r6] median=0.361s  min=0.279s  max=0.758s
+      baseline r6 (aggS): [baseline_d610shfaggS_r6] median=0.504s  min=0.371s  max=0.909s
+  aggL  [순서: patched baseline]
+      patched r6 (aggL): [patched_d610shfaggL_r6] median=2.334s  min=1.786s  max=3.032s
+      baseline r6 (aggL): [baseline_d610shfaggL_r6] median=2.049s  min=1.848s  max=2.391s
+
+✅ 완료 — 36회, 1715초
