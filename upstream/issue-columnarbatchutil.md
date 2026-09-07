@@ -255,7 +255,29 @@ gain drops from 2.78x to 1.58x once this patch is applied, since the patch has a
 of what sorting was saving.
 
 (Wall-clock differences on this axis did not clear my noise band, so the numbers above are CPU
-samples, where the repeat ranges are disjoint. I did not measure the cost of the sort itself.)
+samples, where the repeat ranges are disjoint.)
+
+**What the sort costs.** I measured that too, because advice that only prices the upside is not
+advice. Writing the same 8M-row table sorted rather than unsorted, four alternating rounds each:
+
+| | write wall clock | stored bytes |
+|---|---|---|
+| unsorted | 20.07s (16.31-20.84) | 857,294,068 |
+| **sorted** | **32.74s** (29.74-36.92) | **879,967,939** |
+
+Writing costs **63% more** (+12.67s, or +1.58 µs per row; the ranges are disjoint). Storage grows
+**2.6%**, which surprised me — I had predicted it would shrink. Per-column metrics explain it
+exactly: the sort key itself collapses from 10,051,608 to **25,151 bytes** (399x smaller, it becomes
+runs), but `id` doubles (8.2 MB to 16.9 MB) and an id-derived column doubles with it, because in the
+unsorted table those were perfectly sequential within each file and delta-encoded almost for free.
+The other 17 columns move by less than 0.1%. **Sorting by a delete key un-sorts whatever was
+naturally ordered** — usually an auto-increment id or a load timestamp.
+
+Putting cost and benefit together: at 0.042s saved per scan against 12.67s of extra write, the sort
+pays for itself after roughly **300 scans**. That ratio is fairly portable — both sides scale with
+row count, and the delete-check saving is independent of projection width — so the practical rule is
+*sort if the table is written once and read hundreds of times*, and don't if it is rewritten often
+by streaming upserts.
 
 ### Evidence — a distributed cluster
 
@@ -461,7 +483,7 @@ New coverage on the branch:
 - One table shape throughout: 8M rows, 4 files, 20 columns. File-skipping predicates, nested types and many-file tables are unmeasured.
 - The run-to-run spread of the same configuration is **9.7% median, 25.9% max** across 15 configurations × 3 runs. I report ranges and do not claim differences inside that band. The patched arm has larger *relative* spread (up to 59%) simply because its absolute sample counts are small (43–117).
 - Equality deletes were written on a single column (`id`). Multi-column equality deletes were not measured.
-- I ran the length-controlled axis afterwards (four md5-derived string columns of 8, 16, 24 and 32 characters, same type, one column projected at a time). Fitting scan samples against length gives **1,099 + 63.8 x length** (R² = 0.94), so it is neither purely "because it is a string" nor purely "because it is wide" — both terms are real. At 8 characters the fixed per-column term and the length term are about equal; at 32 characters length dominates 2:1. Against an integer column the same measurement gives 2.1x for an 8-char string and 4.2x for a 32-char one, so the "8-10 integer columns" figure above applies to full-length md5, not to short strings. One point (24 chars) sits well off the line and I have not explained it — Parquet page encoding is the obvious suspect and I did not inspect the page headers.
+- I ran the length-controlled axis afterwards (four md5-derived string columns of 8, 16, 24 and 32 characters, same type, one column projected at a time). Fitting scan samples against length gives **1,099 + 63.8 x length** (R² = 0.94), so it is neither purely "because it is a string" nor purely "because it is wide" — both terms are real. At 8 characters the fixed per-column term and the length term are about equal; at 32 characters length dominates 2:1. Against an integer column the same measurement gives 2.1x for an 8-char string and 4.2x for a 32-char one, so the "8-10 integer columns" figure above applies to full-length md5, not to short strings. One point (24 chars) appeared to sit off the line, but that was an artifact of my own aggregation: I had averaged six rounds, and one round was disturbed (three of the four string columns spiked 1.3-1.8x in it, and its wall clock spiked with them). Taking medians instead, as the rest of my tooling does, gives **1,808 + 61.6 x length** with R² = 0.95 and leaves the 24-char point 6% off the fit, inside my 9.7% noise band. There is no anomaly to explain.
 - The 0.53 sample-to-wall-clock slope is a fit to data I had already collected, not a prediction I tested. It is measured on one machine at `local[4]` with a warm page cache; I would expect a different slope at other parallelism or on other storage.
 - The 1-column wall-clock rows come from 3 repetitions; every other row from 6.
 - The `_deleted` projection emits every row rather than filtering, so its wall clock is not comparable to the plain scans above.

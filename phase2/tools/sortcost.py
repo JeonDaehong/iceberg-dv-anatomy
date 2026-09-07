@@ -76,18 +76,23 @@ else:
 p("")
 p("─ W2 ★판정용★  몇 번 읽어야 본전인가 (10회 미만이면 처방이 남는 장사)")
 p("   F-023 의 정렬 스캔 wall 절감률 %.1f%% 를 가져다 쓴다 (여기서 다시 재지 않는다)." % (SCAN_GAIN*100))
-scan_file = os.path.join(R, "scan_baseline__layunsc1_r1.json")
-scan_wall = None
-if os.path.exists(scan_file):
+# ⚠️ 라운드 하나만 쓰면 오염된 라운드에 끌려간다 (실제로 r1 이 다른 라운드의 1.5배였다).
+#    프로젝트 규칙대로 전 라운드의 **중앙값**을 쓴다.
+import glob as _g
+_walls = []
+for _f in sorted(_g.glob(os.path.join(R, "scan_baseline__layunsc1_r*.json"))):
     try:
-        d = json.load(open(scan_file, encoding="utf-8"))
-        scan_wall = d.get("median_s")   # scan.py 는 초 단위로 median_s 를 쓴다
-        if scan_wall: scan_wall = float(scan_wall)
+        _d = json.load(open(_f, encoding="utf-8"))
+        if _d.get("median_s"): _walls.append(float(_d["median_s"]))
     except Exception:
         pass
+scan_wall = med(_walls) if _walls else None
+if _walls:
+    p("   무정렬 스캔: %d라운드 중앙값 %.4f초  (범위 %.4f~%.4f)"
+      % (len(_walls), scan_wall, min(_walls), max(_walls)))
 if scan_wall:
     save = scan_wall * SCAN_GAIN
-    p("   무정렬 스캔 1회 %.3f초 (F-023 의 lay_uns 실측)  →  정렬 시 1회당 %.3f초 절감" % (scan_wall, save))
+    p("   → 정렬 시 스캔 1회당 %.4f초 절감" % save)
     if delta <= 0:
         p("   추가 쓰기 비용이 0 이하다 → 즉시 본전. 판정: 맞음")
     else:
