@@ -57,8 +57,10 @@ def cell(results, arm, name):
             w[int(re.search(r"_r(\d+)\.json$", path).group(1))] = float(d["median_s"])
     return dict(
         n=len(pr),
-        dv=st.mean(a["dv_union_samples"] for a in pr.values()),
-        scan=st.mean(a["scan_samples"] for a in pr.values()),
+        # ⚠️ 평균을 쓰면 오염된 한 라운드가 없는 현상을 만들어낸다 — 실제로 s24 '이상치'가
+        #    그렇게 생겼다 (F-030). 다른 채점 도구와 같이 중앙값으로 맞춘다.
+        dv=st.median([a["dv_union_samples"] for a in pr.values()]),
+        scan=st.median([a["scan_samples"] for a in pr.values()]),
         share=st.mean(a["dv_pct_of_scan"] for a in pr.values()),
         dv_rng=(min(a["dv_union_samples"] for a in pr.values()),
                 max(a["dv_union_samples"] for a in pr.values())),
