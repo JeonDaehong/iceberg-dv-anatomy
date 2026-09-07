@@ -1,0 +1,18 @@
+{
+  "label": "rbc_d5000_r4",
+  "table": "dv.g.d5000",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1339538160000302,
+  "median_s": 0.16929307500004143,
+  "max_s": 0.2530347829999755,
+  "mean_s": 0.17520964246668883,
+  "is_deleted": false
+}

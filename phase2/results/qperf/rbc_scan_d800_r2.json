@@ -1,0 +1,18 @@
+{
+  "label": "rbc_d800_r2",
+  "table": "dv.g.d800",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.16894261900006313,
+  "median_s": 0.21555213600004208,
+  "max_s": 0.298057770000014,
+  "mean_s": 0.22018536936664834,
+  "is_deleted": false
+}
