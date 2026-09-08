@@ -47,17 +47,21 @@ h1{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:clamp(28px,4
 .sub{color:var(--ink-2);margin:0;font-size:17px}
 .doc-m{display:flex;gap:18px;margin-top:14px;font-family:"JetBrains Mono",monospace;
   font-size:11.5px;color:var(--muted)}
-.doc-b{display:grid;grid-template-columns:1fr;gap:0}
-@media(min-width:1400px){.doc-b{grid-template-columns:1fr 230px;direction:rtl}
-  .doc-b>*{direction:ltr}}
+/* ⚠️ 처음에 direction:rtl 로 순서를 뒤집었더니 **목차가 1fr 을 먹고 본문이 230px** 가 됐다.
+      DOM 순서(nav → article)는 그대로 두고 grid-column 으로 자리만 지정한다. */
+.doc-b{display:grid;grid-template-columns:minmax(0,1fr);gap:0;max-width:1240px}
+@media(min-width:1280px){.doc-b{grid-template-columns:minmax(0,1fr) 220px}
+  .doc-b>article{grid-column:1;grid-row:1}
+  .doc-b>.dtoc{grid-column:2;grid-row:1}}
 .dtoc{display:none}
-@media(min-width:1400px){.dtoc{display:block;position:sticky;top:0;align-self:start;
-  max-height:100vh;overflow-y:auto;padding:34px 24px 40px}
+@media(min-width:1280px){.dtoc{display:block;position:sticky;top:0;align-self:start;
+  max-height:100vh;overflow-y:auto;padding:34px 22px 40px;min-width:0}
   .dtoc a{display:block;padding:3px 0 3px 10px;border-left:2px solid var(--rule-2);
-    color:var(--muted);text-decoration:none;font-size:12.5px;line-height:1.35}
+    color:var(--muted);text-decoration:none;font-size:12.5px;line-height:1.35;
+    overflow-wrap:break-word}
   .dtoc a.l1{font-weight:700;color:var(--ink-2);margin-top:8px}
   .dtoc a:hover{color:var(--teal);border-left-color:var(--teal)}}
-article{padding:30px;max-width:78ch;min-width:0;overflow-wrap:break-word}
+article{padding:30px;max-width:80ch;min-width:0;overflow-wrap:break-word}
 h2{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:clamp(23px,3vw,30px);
   margin:52px 0 16px;padding-top:22px;border-top:1px solid var(--rule);line-height:1.2;
   text-wrap:balance;scroll-margin-top:12px}
@@ -93,7 +97,7 @@ td strong{color:var(--ink)}
 
 <div class="app">
 <aside>
-  <div class="brand"><b>Deletion Vector Anatomy</b><i>11개 문서 · 발견 44개</i></div>
+  <div class="brand"><b>Deletion Vector Anatomy</b><i>13개 문서 · 발견 44개</i></div>
   <div class="ng">시작</div>
 <button data-go="d0"><b>README</b><i>프로젝트 지도 · 핵심 결과 · 설계 근거</i></button>
 <button data-go="d1"><b>STORY</b><i>서사 — 왜 했나부터 결론까지 12장</i></button>
@@ -110,6 +114,9 @@ td strong{color:var(--ink)}
 <div class="ng">재현</div>
 <button data-go="d9"><b>SETUP</b><i>환경 구축 상세</i></button>
 <button data-go="d10"><b>INSTALL</b><i>처음부터 설치</i></button>
+<div class="ng">단계별</div>
+<button data-go="d11"><b>phase0</b><i>게이트 — 이걸 계속할 가치가 있는가</i></button>
+<button data-go="d12"><b>phase1</b><i>격자 — 밀도·클러스터링·점유 축</i></button>
 </aside>
 <main><section class="doc" id="d0" hidden><div class="doc-h"><p class="kicker">시작</p><h1>README</h1><p class="sub">프로젝트 지도 · 핵심 결과 · 설계 근거</p><div class="doc-m"><span>README.md</span><span>586줄</span></div></div><div class="doc-b"><nav class="dtoc"><a href="#d0-0-tldr-검증-결과-요약" class="l2">0. TL;DR — 검증 결과 요약</a><a href="#d0-1-선행-연구-조사-내가-선두주자인가" class="l2">1. 선행 연구 조사 — 내가 선두주자인가?</a><a href="#d0-2-검증된-코드-레벨-사실-이-프로젝트의-기반" class="l2">2. 검증된 코드 레벨 사실 (이 프로젝트의 기반)</a><a href="#d0-3-배경-지식-최소한만" class="l2">3. 배경 지식 (최소한만)</a><a href="#d0-4-원안-대비-핵심-수정-사항" class="l2">4. 원안 대비 핵심 수정 사항</a><a href="#d0-5-실행-계획" class="l2">5. 실행 계획</a><a href="#d0-6-기대-효과-무엇을-얻는가" class="l2">6. 기대 효과 (무엇을 얻는가)</a><a href="#d0-7-업스트림-기여-후보-우선순위" class="l2">7. 업스트림 기여 후보 (우선순위)</a><a href="#d0-8-리스크-레지스터" class="l2">8. 리스크 레지스터</a><a href="#d0-9-일정-비용" class="l2">9. 일정 & 비용</a><a href="#d0-10-산출물" class="l2">10. 산출물</a><a href="#d0-11-확장-아이디어" class="l2">11. 확장 아이디어</a><a href="#d0-12-레퍼런스" class="l2">12. 레퍼런스</a></nav><article><blockquote>Apache Iceberg V3 Deletion Vector의 Roaring Bitmap <strong>컨테이너 타입</strong>이 삭제 워크로드에 의해 어떻게 결정되고, 그것이 MoR 스캔의 <strong>CPU 비용</strong>을 어떻게 가르는지 하드웨어 카운터로 측정하고, 테이블 레이아웃과 리더 코드 양쪽에서 회복시키는 프로젝트.</blockquote>
 <p><strong>Status</strong>: Phase 0·1 완료 + <strong>§7.1 업스트림 패치 구현·측정 완료</strong> (2026-08-18) · <strong>Target</strong>: Apache Iceberg 1.11.x / Spark 4.0 / JDK 17+21</p>
@@ -2645,7 +2652,104 @@ cd &lt;REPO&gt;/phase0
 <pre><code>scripts/
 ├── install-wsl.ps1      # 관리자 1회 실행 (영문 — PS 5.1 인코딩 문제 회피)
 └── provision-wsl.sh     # WSL 내부 자동 설치 + 스모크 테스트</code></pre>
-<blockquote><code>install-wsl.ps1</code>을 영문으로 쓴 이유: Windows PowerShell 5.1은 BOM 없는 UTF-8 스크립트를 ANSI로 읽어 한글 문자열이 깨집니다. 깨진 스크립트가 실행 중 오작동하는 것보다 영문이 안전합니다.</blockquote></article></div></section></main>
+<blockquote><code>install-wsl.ps1</code>을 영문으로 쓴 이유: Windows PowerShell 5.1은 BOM 없는 UTF-8 스크립트를 ANSI로 읽어 한글 문자열이 깨집니다. 깨진 스크립트가 실행 중 오작동하는 것보다 영문이 안전합니다.</blockquote></article></div></section>
+<section class="doc" id="d11" hidden><div class="doc-h"><p class="kicker">단계별</p><h1>phase0</h1><p class="sub">게이트 — 이걸 계속할 가치가 있는가</p><div class="doc-m"><span>phase0/README.md</span><span>145줄</span></div></div><div class="doc-b"><nav class="dtoc"><a href="#d11-왜-이게-먼저인가" class="l2">왜 이게 먼저인가</a><a href="#d11-무엇을-재는가" class="l2">무엇을 재는가</a><a href="#d11-판정-기준" class="l2">판정 기준</a><a href="#d11-실행" class="l2">실행</a><a href="#d11-실험-설계" class="l2">실험 설계</a><a href="#d11-출력물" class="l2">출력물</a><a href="#d11-결과-읽는-법" class="l2">결과 읽는 법</a><a href="#d11-알려진-한계" class="l2">알려진 한계</a><a href="#d11-다음-단계" class="l2">다음 단계</a></nav><article><blockquote><strong>목적: 이 주제에 4주를 쓸 가치가 있는지 2~3일 안에 판정한다.</strong></blockquote>
+<h2 id="d11-왜-이게-먼저인가">왜 이게 먼저인가</h2>
+<p>원안은 "플레임그래프로 실제 스캔에서의 비중 확인"을 Phase 1의 <strong>마지막 단계</strong>에 두었습니다. 문제는 암달의 법칙입니다.</p>
+<blockquote><code>contains()</code>가 마이크로벤치에서 5배 차이 나도, 전체 스캔 CPU의 1%밖에 안 차지하면 그 5배를 완전히 없애도 쿼리는 <strong>0.8%</strong> 빨라집니다.</blockquote>
+<p>3주를 다 쓰고 나서 "사실 의미 없었다"를 알게 되는 게 최악이라 순서를 뒤집었습니다.</p>
+<h2 id="d11-무엇을-재는가">무엇을 재는가</h2>
+<p><strong>단 하나의 숫자</strong>: 스캔 중 전체 CPU 샘플에서 아래 프레임이 스택에 포함된 비율.</p>
+<ul><li><code>org.apache.iceberg.spark.data.vectorized.ColumnarBatchUtil</code> — 배치당 행 단위 <code>isDeleted</code> 루프</li><li><code>org.apache.iceberg.deletes.*</code> — <code>PositionDeleteIndex</code> / <code>RoaringPositionBitmap</code></li><li><code>org.roaringbitmap.*</code> — Roaring 내부 (<code>contains</code>, <code>RoaringArray.binarySearch</code>, 컨테이너)</li></ul>
+<h2 id="d11-판정-기준">판정 기준</h2>
+<div class="tw"><table><thead><tr><th>DV 비중</th><th>판정</th><th>조치</th></tr></thead><tbody><tr><td><strong>≥ 5%</strong></td><td>🟢 GO</td><td>원안대로 전면 진행. 헤드라인 = "스캔 CPU의 X%를 차지하는 DV 체크"</td></tr><tr><td><strong>1 ~ 5%</strong></td><td>🟡 PIVOT</td><td>진행하되 무게중심 이동. 마이크로벤치는 유지, 헤드라인은 <a href="#" data-go="d0" data-frag="71--columnarbatchutil-배치-루프-최적화--성공-확률-최고">§7.1 <code>ColumnarBatchUtil</code> 개선</a>과 레이아웃 처방으로</td></tr><tr><td><strong>&lt; 1%</strong></td><td>🔴 STOP</td><td>방향 전환. "DV 읽기 비용은 무시 가능하다"를 짧은 글로 내고, 병목이 실제로 있는 곳(DV 파일 I/O, planning, Puffin 파싱)으로 이동</td></tr></tbody></table></div>
+<p><strong>STOP도 실패가 아닙니다.</strong> "무시 가능하다 — 근거는 이것"은 지금 웹에 없는 결과이고, 그 자체로 공개할 가치가 있습니다.</p>
+<h2 id="d11-실행">실행</h2>
+<pre><code>cd phase0
+./scripts/run-all.sh</code></pre>
+<p>개별 실행:</p>
+<pre><code>./scripts/00-check-env.sh      # 환경 점검 (여기서 실패하는 건 뒤에서 더 비싸게 실패함)
+./scripts/01-gen-tables.sh     # V3 테이블 3종 + DV 생성
+./scripts/02-profile-scans.sh  # 패턴 x 컬럼폭 = 6회 프로파일링
+./scripts/03-attribute.sh      # 귀속 + 게이트 판정</code></pre>
+<p>설정은 <code>config.env</code>에서 조정합니다. 값을 바꾸면 <code>results/</code>를 비우고 다시 돌리세요.</p>
+<h2 id="d11-실험-설계">실험 설계</h2>
+<h3 id="d11-조건-3종">조건 3종</h3>
+<div class="tw"><table><thead><tr><th>패턴</th><th>삭제</th><th>기대 컨테이너</th><th>역할</th></tr></thead><tbody><tr><td><code>none</code></td><td>없음</td><td>—</td><td><strong>대조군.</strong> DV 없는 테이블에서 분류기가 오탐하지 않는지 검증 + wall-clock 기준선</td></tr><tr><td><code>sparse</code></td><td><code>d=0.5%</code>, <code>C=1</code> (해시 분산)</td><td><strong>array</strong></td><td>이진 탐색 경로. 실무 CDC에 가장 가까움</td></tr><tr><td><code>run</code></td><td>파일당 position 35%~65% 연속</td><td><strong>run</strong></td><td>RLE 경로</td></tr></tbody></table></div>
+<blockquote>Phase 0은 양 극단 + 대조군만 봅니다. 밀도를 6.25% 경계 근처로 촘촘히 스윕하는 건 <a href="#" data-go="d0" data-frag="41--설계-결함-삭제-패턴-abc는-독립변수가-아니다">Phase 1의 (d, C, p) 격자</a>에서 합니다.</blockquote>
+<h3 id="d11-컬럼-폭-2종">컬럼 폭 2종</h3>
+<p>DV 체크 비용은 <strong>컬럼 수와 무관하게 행당 1회</strong>입니다. 따라서 비중은 컬럼 수에 반비례합니다.</p>
+<ul><li><code>narrow</code> (1컬럼) — DV 비중의 <strong>상한</strong></li><li><code>wide</code> (20컬럼) — DV 비중의 <strong>하한</strong></li></ul>
+<p>게이트 판정은 <strong>상한(narrow) 기준</strong>입니다. 상한조차 낮으면 주제가 성립하지 않기 때문입니다. 반대로 상한만 높고 하한이 0에 가까우면, 결론은 "1컬럼 스캔에서만 의미 있다"가 되어야 합니다.</p>
+<h3 id="d11-핵심-불변량">핵심 불변량</h3>
+<pre><code>파일 i 의 row position p  ↔  id = i * ROWS_PER_FILE + p     (즉 position = id % ROWS_PER_FILE)</code></pre>
+<p><code>spark.range(0, N, 1, NUM_FILES)</code>가 파티션당 연속 id를 담고, <code>write.distribution-mode=none</code>이 셔플 없이 파티션당 파일 1개를 쓰기 때문에 성립합니다. <strong>이게 깨지면 "id 조건으로 삭제" ≠ "position 패턴 제어"가 되어 모든 분석이 무의미해집니다.</strong> <code>gen_table.py</code>가 쓰기 직후 <code>assert_layout()</code>으로 검증하고, 위반 시 exit 2로 중단합니다.</p>
+<h3 id="d11-편향-통제">편향 통제</h3>
+<p>의도적으로 넣은 설계이니 바꾸지 마세요.</p>
+<div class="tw"><table><thead><tr><th>통제</th><th>이유</th></tr></thead><tbody><tr><td><strong>md5 기반 고엔트로피 데이터</strong></td><td>저엔트로피면 Parquet 디코드가 비현실적으로 싸져서 DV 비중이 <strong>과대</strong>평가됨 → 게이트 오판</td></tr><tr><td>**<code>count(*)</code> 대신 noop 싱크**</td><td><code>count(*)</code>는 메타데이터로 최적화되어 실제 물질화 비용이 안 잡힘</td></tr><tr><td><strong>JVM 기동이 분모에 포함</strong></td><td>DV 비중을 <strong>과소</strong>평가하는 방향. 게이트에서는 보수적인 쪽이 안전</td></tr><tr><td><strong><code>none</code> 대조군</strong></td><td>분류기 오탐 검출. 여기서 DV 샘플이 0.2% 넘게 잡히면 나머지 결과에서 빼고 해석</td></tr><tr><td><strong>폭마다 별도 JVM</strong></td><td>한 프로파일에 섞이면 narrow/wide 분리가 불가능</td></tr><tr><td><strong>AQE 비활성 + 고정 코어 수</strong></td><td>파일 1:1 불변량 보호 + 실행 결정론</td></tr></tbody></table></div>
+<h2 id="d11-출력물">출력물</h2>
+<pre><code>results/
+├── env.txt              # 버전/호스트/설정 (재현성)
+├── gen_&lt;pattern&gt;.json   # 파일 레이아웃, DV 카디널리티/바이트
+├── scan_&lt;label&gt;.json    # 반복별 스캔 시간
+├── profiles/*.collapsed # async-profiler 원시 스택
+├── attribution.txt      # ★ 게이트 판정
+└── attribution.json</code></pre>
+<h2 id="d11-결과-읽는-법">결과 읽는 법</h2>
+<pre><code>  DV 체크 (union)                    12,043     3.21%
+       └ 스캔 서브트리 대비:                      4.87%</code></pre>
+<ul><li><strong><code>DV/전체</code></strong> — 게이트 판정 기준. JVM 기동/JIT/GC가 분모에 섞인 보수적 수치.</li><li><strong><code>DV/스캔</code></strong> — 리더 내부에서의 비중. 참고치.</li><li><strong>그룹별 수치는 합산 금지.</strong> <code>ColumnarBatchUtil</code> → <code>deletes</code> → <code>roaringbitmap</code>이 같은 스택에서 중첩되므로 inclusive 집계가 겹칩니다. <code>union</code> 값을 쓰세요.</li></ul>
+<h3 id="d11-이런-경고가-뜨면">이런 경고가 뜨면</h3>
+<div class="tw"><table><thead><tr><th>경고</th><th>의미</th><th>대응</th></tr></thead><tbody><tr><td><code>행 기반 삭제 경로 샘플 감지</code></td><td>벡터화 리더가 꺼짐 → <code>ColumnarBatchUtil</code> 대신 <code>DeleteFilter</code> 경로</td><td>측정 대상이 다릅니다. <code>scan.py</code>의 벡터화 경고와 실행 계획을 확인</td></tr><tr><td><code>대조군에서 DV 샘플 검출</code></td><td>분류기 오탐 또는 잔여 delete 파일</td><td>그 값만큼 baseline noise로 빼고 해석</td></tr><tr><td><code>프로파일이 비었습니다</code></td><td>agent 미부착 또는 비정상 종료</td><td><code>--driver-java-options</code> 전달 여부, <code>AP_LIB</code> 경로 확인</td></tr><tr><td><code>레이아웃 불변량 위반</code></td><td>파일 1:1 매핑 깨짐</td><td>삭제 패턴 제어가 무의미. <code>write.distribution-mode</code>, AQE, target-file-size 확인</td></tr></tbody></table></div>
+<h2 id="d11-알려진-한계">알려진 한계</h2>
+<ul><li><code>ctimer</code> 이벤트로 CPU 시간 기반 샘플링을 씁니다. 상대 비중 귀속에는 이걸로 충분합니다.</li><li>~~<strong>WSL2/가상화 환경에서는 하드웨어 PMU가 없습니다.</strong>~~ → <strong>있습니다</strong> (F-028). WSL2 가 Hyper-V vPMU 를 노출해서 <code>branch-misses</code> 같은 마이크로아키텍처 지표를 로컬에서 잴 수 있습니다. <code>.metal</code> 인스턴스는 필요하지 않았습니다. 확인: <code>perf stat -e branch-misses sleep 1</code></li><li>이 수치는 <strong>"스캔 CPU 안에서의 비중"</strong>이지 "쿼리 시간 단축 가능폭"이 아닙니다. DV 체크를 0으로 만들어도 절감폭은 이 비중을 넘지 못합니다.</li><li>Spark <code>local</code> 모드는 단일 JVM이라 executor 격리가 없습니다. 절대 성능이 아니라 <strong>비중</strong>을 보는 용도로만 유효합니다.</li></ul>
+<h2 id="d11-다음-단계">다음 단계</h2>
+<p>판정 결과와 근거를 <code>docs/findings.md</code>에 기록한 뒤:</p>
+<ul><li><strong>GO</strong> → Phase 1. <code>tools/dv-inspect</code> (Puffin → 컨테이너 타입 덤퍼)부터 작성</li><li><strong>PIVOT</strong> → Phase 1 축소 + <a href="#" data-go="d0" data-frag="71--columnarbatchutil-배치-루프-최적화--성공-확률-최고">§7.1</a> 프로토타입 착수</li><li><strong>STOP</strong> → <a href="#" data-go="d0" data-frag="51-phase-0--gono-go-게이트-23일-">§5.1</a>의 방향 전환</li></ul></article></div></section>
+<section class="doc" id="d12" hidden><div class="doc-h"><p class="kicker">단계별</p><h1>phase1</h1><p class="sub">격자 — 밀도·클러스터링·점유 축</p><div class="doc-m"><span>phase1/README.md</span><span>105줄</span></div></div><div class="doc-b"><nav class="dtoc"><a href="#d12-왜-이게-필요한가" class="l2">왜 이게 필요한가</a><a href="#d12-반증-가능한-예측" class="l2">반증 가능한 예측</a><a href="#d12-실험-설계" class="l2">실험 설계</a><a href="#d12-실행" class="l2">실행</a><a href="#d12-산출물" class="l2">산출물</a><a href="#d12-읽는-법" class="l2">읽는 법</a><a href="#d12-다음" class="l2">다음</a></nav><article><blockquote><strong>검증 대상: F-001의 "경계에서 4배 점프"가 실제 테이블에서도 계단으로 보이는가?</strong></blockquote>
+<h2 id="d12-왜-이게-필요한가">왜 이게 필요한가</h2>
+<p><a href="#" data-go="d2" data-frag="">F-001</a>의 결과 — array 컨테이너 16.0ns/행 vs bitmap 4.0ns/행 — 은 <strong>단일 청크를 통제한 마이크로벤치 4개 점</strong>에서 나왔습니다.</p>
+<p>실제 테이블은 다릅니다:</p>
+<ul><li>파일 하나에 청크가 <strong>30개</strong></li><li>랜덤 삭제면 청크마다 카디널리티가 흔들림</li><li>경계 부근 밀도에서는 <strong>한 파일 안에 array와 bitmap이 섞임</strong></li></ul>
+<p>그러면 계단이 평균으로 뭉개져 <strong>완만한 경사</strong>가 될 수 있습니다. 그렇다면 "삭제율에 따라 비용이 불연속 점프한다"는 프로젝트의 중심 주장은 통제된 실험실에서만 참인 얘기가 됩니다.</p>
+<p><strong>지금 이 프로젝트에서 가장 검증 안 된 가정이고, 서사 전체가 여기 얹혀 있습니다.</strong></p>
+<h2 id="d12-반증-가능한-예측">반증 가능한 예측</h2>
+<p>청크당 카디널리티는 <code>Binomial(65536, d)</code> 를 따릅니다.</p>
+<div class="tw"><table><thead><tr><th>d</th><th>평균 카디널리티</th><th>표준편차</th><th>4096 대비</th></tr></thead><tbody><tr><td>5.00%</td><td>3,277</td><td>55.8</td><td>−14.7σ</td></tr><tr><td>5.90%</td><td>3,867</td><td>60.3</td><td>−3.8σ</td></tr><tr><td><strong>6.25%</strong></td><td><strong>4,096</strong></td><td><strong>61.9</strong></td><td><strong>0.0σ</strong></td></tr><tr><td>6.60%</td><td>4,325</td><td>63.5</td><td>+3.6σ</td></tr><tr><td>7.00%</td><td>4,588</td><td>65.3</td><td>+7.5σ</td></tr></tbody></table></div>
+<p>따라서:</p>
+<ol><li><strong>d = 6.25%에서 array:bitmap ≈ 50:50</strong> — 임계값이 정확히 평균에 걸림</li><li><strong>전이 구간은 d ∈ [5.9%, 6.6%], 폭 0.7%p로 매우 좁다</strong> (±3.6σ)</li><li>그 바깥은 거의 100% 단일 타입</li></ol>
+<p>이 예측이 맞으면 → <strong>계단은 살아남습니다.</strong> 전이 폭이 0.7%p밖에 안 되니 로그 스케일 밀도 축에서는 사실상 수직입니다. 틀리면 → 격자 설계와 F-001의 해석을 다시 봐야 합니다.</p>
+<p><code>tools/container_curve.py</code>가 정규근사로 예측값을 계산해 실측과 나란히 출력하고, 오차가 15%p를 넘으면 "모델 재검토 필요"로 표시합니다.</p>
+<h2 id="d12-실험-설계">실험 설계</h2>
+<h3 id="d12-밀도-축-d">밀도 축 (<code>d</code>)</h3>
+<p>삭제 술어: <code>pmod(hash(id, SEED), 10000) &lt; D</code></p>
+<p>경계(625bp) 주변을 촘촘히 잡았습니다:</p>
+<pre><code>5  50  300  500  550  590  610  [625]  640  660  700  800  1200  5000     (bp)
+0.05% 0.5% 3%  5%  5.5% 5.9% 6.1% 6.25% 6.4% 6.6% 7%  8%   12%   50%</code></pre>
+<h3 id="d12-왜-hash-분산인가">왜 hash 분산인가</h3>
+<p><code>F-006</code>에서 실측 확인: 목표 0.5%일 때 청크별 실제 밀도가 0.456~0.581%로 모였습니다. murmur3가 id에 대해 균일하므로 청크 단위 밀도도 목표 근처에 수렴합니다. <strong>격자의 전제 조건이 성립함을 이미 확인한 상태</strong>입니다.</p>
+<h3 id="d12-비용-측정의-설계-이점">비용 측정의 설계 이점</h3>
+<p><strong>밀도가 달라도 <code>contains()</code> 호출 횟수는 완전히 동일합니다.</strong> <code>buildRowIdMapping</code>은 배치마다 <code>batchSize</code>번 무조건 프로브하기 때문입니다.</p>
+<p>따라서 총 스캔 행 수를 고정(800만)하면:</p>
+<pre><code>DV 샘플 수  ∝  호출당 비용</code></pre>
+<p>분모가 설계상 동일하므로, 밀도 간 DV 샘플 수를 <strong>직접</strong> 비교할 수 있습니다. 별도 정규화가 필요 없습니다.</p>
+<h2 id="d12-실행">실행</h2>
+<pre><code>cd phase1
+./scripts/01-gen-grid.sh     # 14개 테이블 생성 (~15분)
+./scripts/02-inspect.sh      # 컨테이너 덤프 + 밀도 곡선</code></pre>
+<p><code>01</code>은 멱등입니다 — 이미 생성된 밀도는 건너뜁니다. 다시 만들려면 <code>FORCE=1</code>.</p>
+<h2 id="d12-산출물">산출물</h2>
+<pre><code>results/
+├── gen_&lt;bp&gt;.json            # 밀도별 삭제 행 수, DV 바이트
+├── containers_&lt;bp&gt;.csv      # 청크별 (컨테이너 타입, 카디널리티, run 수, 바이트)
+├── container_curve.txt      # ★ 밀도 -&gt; 혼합 비율, 예측 대비
+└── container_curve.json</code></pre>
+<h2 id="d12-읽는-법">읽는 법</h2>
+<pre><code>       d   청크수   array  bitmap   run   array%   예측%    평균카디널리티   표준편차
+   6.25%     122      61      61     0    50.0%   50.0%           4,096      62.1</code></pre>
+<ul><li><strong><code>array%</code> vs <code>예측%</code></strong> — 이항분포 모델이 맞는지. 크게 벌어지면 밀도가 청크에 균일하지 않다는 뜻이고, 그러면 hash 분산 가정을 재검토해야 합니다.</li><li><strong><code>표준편차</code></strong> — 예측(≈62)과 맞아야 합니다. 훨씬 크면 청크 간 밀도 편차가 이항분포보다 크다는 뜻입니다.</li><li><strong>전이 구간 폭</strong> — 이게 좁을수록 "계단"이라는 표현이 정당해집니다.</li></ul>
+<h2 id="d12-다음">다음</h2>
+<p>컨테이너 곡선이 예측과 맞으면 → 비용 프로파일링(<code>PROFILE_DENSITIES_BP</code> 8개 지점)으로 넘어가 <strong>밀도 → 비용 곡선</strong>을 얻습니다. 그게 이 프로젝트의 핵심 그래프입니다.</p></article></div></section></main>
 </div>
 
 <script>
