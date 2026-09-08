@@ -37,6 +37,8 @@ DOCS = [
     ("docs/LINKEDIN.md",                   "LinkedIn",      "3종 + 게시 전 점검표",                  "공개"),
     ("docs/SETUP.md",                      "SETUP",         "환경 구축 상세",                        "재현"),
     ("INSTALL.md",                         "INSTALL",       "처음부터 설치",                         "재현"),
+    ("phase0/README.md",                   "phase0",        "게이트 — 이걸 계속할 가치가 있는가",    "단계별"),
+    ("phase1/README.md",                   "phase1",        "격자 — 밀도·클러스터링·점유 축",        "단계별"),
 ]
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -235,17 +237,21 @@ h1{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:clamp(28px,4
 .sub{color:var(--ink-2);margin:0;font-size:17px}
 .doc-m{display:flex;gap:18px;margin-top:14px;font-family:"JetBrains Mono",monospace;
   font-size:11.5px;color:var(--muted)}
-.doc-b{display:grid;grid-template-columns:1fr;gap:0}
-@media(min-width:1400px){.doc-b{grid-template-columns:1fr 230px;direction:rtl}
-  .doc-b>*{direction:ltr}}
+/* ⚠️ 처음에 direction:rtl 로 순서를 뒤집었더니 **목차가 1fr 을 먹고 본문이 230px** 가 됐다.
+      DOM 순서(nav → article)는 그대로 두고 grid-column 으로 자리만 지정한다. */
+.doc-b{display:grid;grid-template-columns:minmax(0,1fr);gap:0;max-width:1240px}
+@media(min-width:1280px){.doc-b{grid-template-columns:minmax(0,1fr) 220px}
+  .doc-b>article{grid-column:1;grid-row:1}
+  .doc-b>.dtoc{grid-column:2;grid-row:1}}
 .dtoc{display:none}
-@media(min-width:1400px){.dtoc{display:block;position:sticky;top:0;align-self:start;
-  max-height:100vh;overflow-y:auto;padding:34px 24px 40px}
+@media(min-width:1280px){.dtoc{display:block;position:sticky;top:0;align-self:start;
+  max-height:100vh;overflow-y:auto;padding:34px 22px 40px;min-width:0}
   .dtoc a{display:block;padding:3px 0 3px 10px;border-left:2px solid var(--rule-2);
-    color:var(--muted);text-decoration:none;font-size:12.5px;line-height:1.35}
+    color:var(--muted);text-decoration:none;font-size:12.5px;line-height:1.35;
+    overflow-wrap:break-word}
   .dtoc a.l1{font-weight:700;color:var(--ink-2);margin-top:8px}
   .dtoc a:hover{color:var(--teal);border-left-color:var(--teal)}}
-article{padding:30px;max-width:78ch;min-width:0;overflow-wrap:break-word}
+article{padding:30px;max-width:80ch;min-width:0;overflow-wrap:break-word}
 h2{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:clamp(23px,3vw,30px);
   margin:52px 0 16px;padding-top:22px;border-top:1px solid var(--rule);line-height:1.2;
   text-wrap:balance;scroll-margin-top:12px}
