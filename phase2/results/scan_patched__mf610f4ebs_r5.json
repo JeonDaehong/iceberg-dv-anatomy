@@ -1,0 +1,18 @@
+{
+  "label": "patched_mf610f4ebs_r5",
+  "table": "dv.g.mf610f4",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 8,
+  "min_s": 0.473398082000017,
+  "median_s": 0.518590549999999,
+  "max_s": 0.702011342999981,
+  "mean_s": 0.5331909149999916,
+  "is_deleted": false
+}
