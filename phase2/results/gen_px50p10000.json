@@ -1,0 +1,20 @@
+{
+  "table": "dv.g.px50p10000",
+  "density_bp": 50,
+  "run_length": 1,
+  "sort_by": null,
+  "delete_key": null,
+  "occupancy_bp": 10000,
+  "target_density": 0.005,
+  "actual_density": 0.00501425,
+  "total_rows": 32000000,
+  "deleted_rows": 160456,
+  "dv_count": 4,
+  "dv_bytes": 326692,
+  "rows_per_file": 8000000,
+  "num_files": 4,
+  "write_secs": 52.139578342437744,
+  "data_bytes": 3429234291,
+  "chunks_per_file": 122.0703125,
+  "expected_chunk_cardinality": 327.68
+}
