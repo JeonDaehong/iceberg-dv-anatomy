@@ -1,0 +1,19 @@
+{
+  "label": "baseline_d610shfaggS_r5",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k04",
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.45119129899990185,
+  "median_s": 0.6209353750000446,
+  "max_s": 0.9986098920001041,
+  "mean_s": 0.6189820134333256,
+  "is_deleted": false
+}

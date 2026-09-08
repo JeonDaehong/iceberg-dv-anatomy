@@ -1,0 +1,19 @@
+{
+  "label": "patched_d610shfaggL_r2",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k01",
+  "cold": false,
+  "iters": 30,
+  "min_s": 2.397244876000059,
+  "median_s": 2.532317633000048,
+  "max_s": 2.965872033999972,
+  "mean_s": 2.550302042333336,
+  "is_deleted": false
+}

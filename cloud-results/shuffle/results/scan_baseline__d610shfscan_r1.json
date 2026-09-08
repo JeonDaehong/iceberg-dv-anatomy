@@ -1,0 +1,19 @@
+{
+  "label": "baseline_d610shfscan_r1",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.22438810099998818,
+  "median_s": 0.26073811300000216,
+  "max_s": 0.47801418500000636,
+  "mean_s": 0.28553390186666927,
+  "is_deleted": false
+}

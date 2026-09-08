@@ -1,0 +1,18 @@
+{
+  "label": "baseline_mf610f488s3_r4",
+  "table": "dv.g.mf610f488",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 8,
+  "min_s": 1.0958228120000513,
+  "median_s": 1.2615432600000531,
+  "max_s": 1.6721525640000436,
+  "mean_s": 1.334613694875003,
+  "is_deleted": false
+}

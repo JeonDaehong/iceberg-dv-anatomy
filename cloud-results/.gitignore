@@ -1,0 +1,18 @@
+# 클라우드 실행 결과 — 저장소에는 **이 축에 해당하는 것만** 남긴다.
+#
+# bootstrap 이 `aws s3 sync results/` 로 인스턴스의 결과 디렉터리를 통째로 올리는데,
+# 거기엔 저장소에 이미 있는 다른 축의 산출물이 전부 들어 있다(2,600개 넘는 파일).
+# 그대로 커밋하면 같은 내용을 경로만 바꿔 중복 저장하게 된다.
+#
+# 그래서 기본은 전부 무시하고, 이 실행에서 새로 나온 것만 화이트리스트로 되살린다.
+*
+!.gitignore
+!*/
+!*/lscpu.txt
+!*/summary.txt
+!*/scored.txt
+!*/results/gen_mf*.json
+!*/results/containers_mf*.csv
+!*/results/scan_*__mf610*.json
+!*/results/scan_*__d610shf*.json
+!*/results/shuffle.json

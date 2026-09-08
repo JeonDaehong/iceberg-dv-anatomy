@@ -1,0 +1,19 @@
+{
+  "label": "patched_d610shfscan_r11",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.15608926999993855,
+  "median_s": 0.2040478459998667,
+  "max_s": 0.33770564599990394,
+  "mean_s": 0.21923496706669235,
+  "is_deleted": false
+}
