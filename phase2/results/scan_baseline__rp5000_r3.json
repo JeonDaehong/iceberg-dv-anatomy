@@ -1,0 +1,18 @@
+{
+  "label": "baseline_rp5000_r3",
+  "table": "dv.g.d5000",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.133062572000199,
+  "median_s": 0.18095593800035203,
+  "max_s": 0.28877541300016674,
+  "mean_s": 0.1841024441667135,
+  "is_deleted": false
+}
