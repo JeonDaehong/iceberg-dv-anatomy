@@ -1,0 +1,19 @@
+{
+  "label": "sc_scan_cycles__r3",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 15,
+  "min_s": 0.17929898500000263,
+  "median_s": 0.2563720829999738,
+  "max_s": 0.3759566839999593,
+  "mean_s": 0.2687352267333267,
+  "is_deleted": false
+}

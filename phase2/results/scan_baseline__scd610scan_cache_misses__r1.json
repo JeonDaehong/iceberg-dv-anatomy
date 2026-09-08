@@ -1,0 +1,19 @@
+{
+  "label": "sc_scan_cache_misses__r1",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 15,
+  "min_s": 0.1830678720000094,
+  "median_s": 0.21772930800000267,
+  "max_s": 0.29305098599999724,
+  "mean_s": 0.23340757359999884,
+  "is_deleted": false
+}
