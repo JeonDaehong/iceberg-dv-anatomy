@@ -229,13 +229,40 @@ par)
     || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
   ;;
 
-*) die "모르는 MODE=$MODE (cpu|s3|par)" ;;
+s3many)
+  say "7a. S3A 의존성 해석 — 프로파일 밖에서 미리 받는다"
+  HV=$(ls "$SPARK_HOME"/jars/hadoop-client-api-*.jar 2>/dev/null | head -1        | sed 's|.*hadoop-client-api-||; s|\.jar$||')
+  [[ -n "$HV" ]] || die "Spark 의 hadoop 버전을 못 알아냈다"
+  printf '%s
+' 'from pyspark.sql import SparkSession'                  'SparkSession.builder.getOrCreate().stop()' > /root/noop.py
+  spark-submit --master "local[1]"     --packages "org.apache.hadoop:hadoop-aws:${HV}"     --conf spark.jars.ivy=/root/ivy     /root/noop.py > /root/ivy-resolve.log 2>&1 || { tail -30 /root/ivy-resolve.log; die "hadoop-aws 해석 실패"; }
+  S3_JARS=$(ls /root/ivy/jars/*.jar 2>/dev/null | tr '
+' ',' | sed 's|,$||')
+  [[ -n "$S3_JARS" ]] || die "ivy 가 jar 을 안 남겼다"
+
+  say "7b. 측정 [s3many] — 파일 4개 vs 488개 × EBS·S3 × arm 2 × 반복 6 = 48 프로파일"
+  # ⚠️ 테이블 두 개를 여기서 만든다 (warehouse-p1 의 기존 테이블과 태그가 다르다).
+  #    32M 행 × 2 = 약 6.6GB. 루트 볼륨이 그만큼 있어야 한다.
+  AVAIL=$(df -BG --output=avail / | tail -1 | tr -dc '0-9')
+  [[ "${AVAIL:-0}" -ge 30 ]] || die "루트 여유가 ${AVAIL}GB 뿐이다 (30GB 필요)"
+  BUCKET="$BUCKET" S3_JARS="$S3_JARS" MF_STORES="ebs s3" REPS=6 ./scripts/20-manyfiles.sh     || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
+  ;;
+
+shuffle)
+  say "7. 측정 [shuffle] — F-024 재측정. 전용 인스턴스 + 반복 12"
+  # 왜 다시 하나: F-024 는 WSL2(흩어짐 27%)에서 2.0~9.1% 짜리 효과를 재려 했다.
+  #   애초에 측정 불가능한 크기였다. 전용 인스턴스는 7~13% 다(F-020).
+  #   반복을 6 -> 12 로 올려 쌍 검정의 힘도 같이 올린다.
+  REPS=12 ./scripts/11-shuffle.sh     || echo "  (측정이 0이 아닌 코드로 끝났다 — 결과는 아래에서 센다)"
+  ;;
+
+*) die "모르는 MODE=$MODE (cpu|s3|par|s3many|shuffle)" ;;
 esac
 
 say "8. 결과 수집"
 cd /root/iceberg-dv-anatomy/phase2
 N=$(ls results/profiles/*.collapsed 2>/dev/null | wc -l)
-case "$MODE" in cpu) WANT=72 ;; s3) WANT=48 ;; par) WANT=96 ;; *) WANT=0 ;; esac
+case "$MODE" in cpu) WANT=72 ;; s3) WANT=48 ;; par) WANT=96 ;; s3many) WANT=48 ;; shuffle) WANT=72 ;; *) WANT=0 ;; esac
 echo "  프로파일 $N 개 (기대 $WANT)"
 [[ "$N" -ge "$WANT" ]] || echo "  ⚠️ 기대보다 적다. 로그를 확인할 것."
 if [[ "$MODE" == "cpu" ]]; then
