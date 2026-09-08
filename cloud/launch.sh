@@ -20,6 +20,12 @@
 #   MODE=cpu TYPE=m7g.xlarge ./launch.sh          # arm64 는 AMI 도 arm64 로 잡힌다
 set -euo pipefail
 
+# ⚠️ Git Bash(MSYS)는 `/` 로 시작하는 인자를 Windows 경로로 바꿔버린다.
+#    그래서 --block-device-mappings 의 `/dev/sda1` 이
+#    `C:/Program Files/Git/dev/sda1` 이 되어 InvalidBlockDeviceMapping 으로 죽었다.
+#    리눅스에서는 이 변수가 아무 일도 안 하므로 그냥 켜둔다.
+export MSYS_NO_PATHCONV=1
+
 MODE="${MODE:-cpu}"
 TYPE="${TYPE:-m7i.xlarge}"
 REGION="${AWS_REGION:-ap-northeast-2}"
@@ -108,10 +114,17 @@ fi
 [[ -n "$SUBNET" && "$SUBNET" != "None" ]] || { echo "서브넷을 못 찾았다" >&2; exit 1; }
 
 BRANCH="${BRANCH:-main}"
-UD=$(mktemp)
+# ⚠️ mktemp 을 쓰면 안 된다. Git Bash 에서 /tmp/... 를 만들면 Windows 의 aws.exe 가
+#    그 경로를 못 찾아 "Unable to load paramfile" 로 죽는다 (실제로 죽었다).
+#    스크립트 옆에 상대 경로로 만들면 리눅스·Git Bash 양쪽에서 다 열린다.
+UD="./.dv-userdata.$$"
+trap 'rm -f "$UD"' EXIT
+# ⚠️ user-data 는 ASCII 로만 쓴다. 한글 주석을 넣었더니 Windows 의 aws.exe 가
+#    cp949 로 디코드하려다 "text contents could not be decoded" 로 죽었다.
+#    (이 파일의 나머지 주석은 한글이어도 된다 — aws 에 넘어가는 건 이 heredoc 뿐이다.)
 cat > "$UD" <<EOF
 #!/bin/bash
-# 최종 안전망. bootstrap 이 어떻게 끝나든 4시간 뒤 인스턴스가 사라진다.
+# Safety net: the instance terminates itself in 4h no matter how bootstrap ends.
 shutdown -h +240
 export HOME=/root USER=root LANG=C.UTF-8
 export BUCKET="${BUCKET}" MODE="${MODE}" DV_TAG="${TAG}" AWS_REGION="${REGION}"
