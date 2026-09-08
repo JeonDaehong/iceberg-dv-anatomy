@@ -154,7 +154,7 @@ td code{font-size:12.4px}
   <h1>삭제를 더 많이 할수록 스캔이 싸진다</h1>
   <p class="sub">Roaring 컨테이너가 6.25% 에서 갈리고, 그 경계 바로 아래가 가장 비싸다. 찾고, 고치고, 15번 빗나간 기록.</p>
   <div class="meta">
-    <span>발견 <b>40</b>개</span>
+    <span>발견 <b>42</b>개</span>
     <span>측정 축 <b>27</b>개</span>
     <span>빗나간 예측 <b>15</b>개</span>
     <span>Spark <b>4.0.4</b> · Iceberg <b>1.11.0</b></span>
@@ -185,7 +185,12 @@ td code{font-size:12.4px}
 <p>그리고 축이 '컬럼 수' 가 아니라는 것도 재서 알았다. 정수 컬럼 10개(21.6%)가 문자열 컬럼 3개(10.6%)보다 비중이 높다. <strong>md5 문자열 컬럼 하나가 정수 컬럼 8~10개어치</strong>다. 진짜 축은 컬럼 수가 아니라 <strong>디코딩 비용</strong>이었고, 손익분기는 하나의 숫자로 수렴한다 — <strong>DV 가 스캔의 21% 를 넘느냐.</strong></p>
 <p>그 21% 는 환경에 잘 안 흔들린다:</p>
 <div class="tw"><table><thead><tr><th>바꾼 것</th><th>결과</th></tr></thead><tbody><tr><td>CPU (Zen 3 / Sapphire Rapids / Graviton3)</td><td>49% / 56% / 54% — ±7%p</td></tr><tr><td>스토리지 (웜 / 콜드 / EBS / S3)</td><td>51.2% / 52.0% / 56.2% / 58.0%</td></tr><tr><td>병렬도 (<code>local[1]</code> ~ <code>local[16]</code>)</td><td>보정비 <code>1.30 × N^0.141</code> — 16배에 1.5배</td></tr><tr><td>분산 클러스터</td><td><strong>42%</strong> — 여기서만 내려앉는다</td></tr></tbody></table></div>
-<p><strong>43~58% 는 단일 JVM 조건의 값이다.</strong> 분산 클러스터에서는 42% 로 떨어진다. 그리고 쿼리에 무거운 집계가 붙으면 <strong>쿼리 전체</strong> 대비로는 14% → 6.8% → 2.4% 로 밀려난다. 절감되는 CPU-초는 그대로지만, 지연시간으로 보일지는 자기 쿼리에서 재야 한다.</p>
+<p><strong>43~58% 는 단일 JVM 조건의 값이다.</strong> 분산 클러스터에서는 42% 로 떨어진다.</p>
+<p>쿼리에 무거운 집계가 붙으면 <strong>쿼리 전체</strong> 대비로는 빠르게 밀려난다 — 스캔만 하는 쿼리 19.7% → 작은 집계 10.5% → 큰 집계 3.4%. **그런데 스캔 <em>안</em>에서의 비중은 거의 안 움직인다**(59.6 / 58.0 / 55.6%, 폭 4.0%p).</p>
+<p>그래서 이런 그림이 된다:</p>
+<div class="tw"><table><thead><tr><th>쿼리</th><th>절감되는 절대 시간</th><th>전체 대비 단축</th></tr></thead><tbody><tr><td>스캔만</td><td><strong>+0.086초</strong></td><td>−29.3%</td></tr><tr><td>집계-소</td><td><strong>+0.065초</strong></td><td>−10.8%</td></tr><tr><td>집계-대</td><td><strong>+0.100초</strong></td><td>−3.7%</td></tr></tbody></table></div>
+<p><strong>절감되는 절대 시간은 쿼리 종류와 무관하게 상수다</strong>(세 범위가 전부 겹친다, 부호 12/12). 같은 행에 같은 DV 작업을 하니 당연한 결과인데, <strong>재보기 전까지는 확인도 반박도 못 했다.</strong> 달라지는 건 그게 전체에서 차지하는 <strong>비율</strong>뿐이다.</p>
+<blockquote>이 표는 두 번 잰 것이다. 처음엔 내 노트북(WSL2)에서 쟀고, 집계-대 쿼리에서 <strong>패치가 0.176초 느리다</strong>(6라운드 중 5라운드)는 결과가 나왔다. 판정 불가로 처리해뒀는데, 전용 인스턴스에서 12라운드를 다시 재니 <strong>0.100초 빠르다(12/12)</strong> 였다. <strong>없는 회귀를 보고 있었던 것이다.</strong></blockquote>
 <h2 id="4-고쳤다"><span class="num">4</span>4. 고쳤다</h2>
 <p>문제의 코드는 한 곳이다. <code>ColumnarBatchUtil.buildRowIdMapping</code>:</p>
 <pre><code>for (int rowId = 0; rowId &lt; batchSize; rowId++) {
@@ -210,6 +215,7 @@ td code{font-size:12.4px}
 <p><strong>배치 루프는 안 움직인다</strong> — 하는 일이 같으니 당연하다. 움직이는 건 <strong>파일당 고정비</strong>(Parquet 푸터 파싱, DV 하나 더 읽기)다.</p>
 <p>그래서 DV 비중이 <strong>56.2% → 45.5%</strong> 로 떨어지고, 패치 이득도 <strong>6.97배 → 3.43배</strong>로 준다. 패치가 나빠진 게 아니라, 패치가 못 건드리는 고정비가 분모를 지배하게 된 것이다.</p>
 <p>이건 내가 <strong>"파일이 많으면 요청 지연이 지배하는데 그건 대기라 비중은 안 변한다"</strong> 고 추측으로 적어뒀던 자리다. 틀렸고, <strong>S3 를 켜기도 전에 로컬 디스크에서 틀렸다.</strong></p>
+<p>S3 에서도 다시 쟀다. <strong>스토리지는 여전히 아무것도 안 바꾼다</strong> — 같은 파일 수에서 EBS 60.7% vs S3 61.1% 이고, 파일이 488개일 때도 49.7% vs 49.0% 다. 움직이는 건 <strong>파일 수뿐</strong>이고 그 크기도 두 스토리지에서 같다(−11.1%p / −12.1%p).</p>
 <h2 id="6-기전은-세-번-다-내-예상과-달랐다"><span class="num">6</span>6. 기전은 세 번 다 내 예상과 달랐다</h2>
 <p>처음에 나는 이렇게 적었다: <em>"array 컨테이너는 이진 탐색이라 <strong>분기 예측 실패</strong>가 많아 비싸다."</em></p>
 <p>근거는 비용 곡선의 모양뿐이었다. 8개월 동안 "WSL2 에는 하드웨어 PMU 가 없다" 고 <strong>여덟 군데에 적어두고</strong> 확인을 안 했다. 어느 날 확인해보니 <strong>있었다.</strong></p>
@@ -254,12 +260,14 @@ td code{font-size:12.4px}
 <p>한 번은 "총 추가 실패의 <strong>183.9%</strong>" 라는 값을 내고 <strong>그 상태로 "맞음" 판정이 났다.</strong> 분모가 섞여 있었다(스캔 서브트리 기준 비중에 프로세스 전체 기준 총량을 곱했다). 맞추니 34.9% 였고 판정이 "절반만 맞음" 으로 뒤집혔다.</p>
 <h2 id="9-아직-모르는-것"><span class="num">9</span>9. 아직 모르는 것</h2>
 <p>정직하게 적는다.</p>
-<ul><li><strong>파일 수천 개짜리 테이블의 S3.</strong> 로컬 디스크에서 488개까지는 쟀다(위). S3 에서는 파일당 고정비가 더 클 것으로 보지만 <strong>그건 아직 추측이다</strong> — 같은 자리에서 이미 한 번 추측이 틀렸으므로 잰 것과 안 잰 것을 나눠 적는다.</li><li><strong>더 큰 클러스터.</strong> 익스큐터 2개짜리에서 42% 였고, 이건 하한이다.</li><li><strong>조인이 붙은 쿼리.</strong> 집계 두 종만 쟀다.</li><li><strong><code>mapping[live++]</code> 의 저장 주소 의존.</strong> 살지도 죽지도 않았다 — 변형 하나가 두 가지를 같이 바꿔서 갈리지 않는다.</li><li><strong>샘플 → 벽시계 보정 0.53 의 나머지.</strong> 정체가 JIT 이라는 것까지는 밝혔다 (프로세스 CPU 의 41.6%). 즉 <strong>우리 벽시계 숫자는 실무에 대해 보수적이다</strong> — 오래 사는 익스큐터에서는 희석이 약하다.</li></ul>
+<ul><li><strong>파일 수천 개짜리 테이블.</strong> 488개까지 EBS·S3 양쪽에서 쟀다. 수천 개는 안 쟀다.</li><li><strong>크로스 리전 S3.</strong> 같은 리전에서만 쟀다. 대기가 훨씬 크겠지만 그건 CPU 시간이 아니므로 비중을 못 바꾼다는 게 이 축의 결론이다 — <strong>다만 안 쟀다.</strong></li><li><strong>더 큰 클러스터.</strong> 익스큐터 2개짜리에서 42% 였고, 이건 하한이다.</li><li><strong>조인이 붙은 쿼리.</strong> 집계 두 종만 쟀다.</li><li><strong><code>mapping[live++]</code> 의 저장 주소 의존.</strong> 살지도 죽지도 않았다 — 변형 하나가 두 가지를 같이 바꿔서 갈리지 않는다.</li><li><strong>샘플 → 벽시계 보정 0.53 의 나머지.</strong> 정체가 JIT 이라는 것까지는 밝혔다 (프로세스 CPU 의 41.6%). 즉 <strong>우리 벽시계 숫자는 실무에 대해 보수적이다</strong> — 오래 사는 익스큐터에서는 희석이 약하다.</li></ul>
 <hr>
 <h2 id="부록-측정-조건">부록 — 측정 조건</h2>
 <p>모든 수치는 <strong>설정당 3회 이상 반복</strong>의 중앙값이다. 반복 흩어짐은 중앙값 9.7%.</p>
 <ul><li>Ryzen 5 5600X (Zen 3) · WSL2 · Spark 4.0 <code>local[4]</code> · JDK 17</li><li>로컬 NVMe 웜 캐시 (825MB 테이블, 측정 중 I/O ≈ 0)</li><li>배치 크기 Iceberg 기본 5,000 · 1컬럼 좁은 투영 (달리 적지 않은 한)</li><li>클라우드 축은 <code>m7i.xlarge</code> (Sapphire Rapids) / <code>m7g.xlarge</code> (Graviton3) 전용 인스턴스</li><li>벤치는 JDK 21, Spark 측정은 JDK 17 — <strong>서로 다른 축이므로 섞어 읽으면 안 된다</strong></li></ul>
-<p><strong>노이즈 바닥 9.7% 는 측정 대상의 성질이 아니라 WSL2 의 성질이었다.</strong> 같은 측정이 전용 인스턴스에서는 7.0~12.7% 다. 로컬에서 "노이즈 안" 이라고 적은 것들은 조용한 기계에서 갈릴 수 있다.</p>
+<p><strong>노이즈 바닥 9.7% 는 측정 대상의 성질이 아니라 WSL2 의 성질이었다.</strong> 같은 테이블·같은 jar·같은 스크립트로 기계만 바꿔 재면 흩어짐이 <strong>49.4% → 15.0%</strong> 다.</p>
+<p>그리고 그게 실제로 한 축의 <strong>부호를 바꿨다</strong> — 집계-대 쿼리에서 노트북은 "패치가 느리다"(1/6)를, 전용 인스턴스는 "빠르다"(12/12)를 냈다. <strong>로컬에서 "노이즈 안" 이라고 적은 것들은 조용한 기계에서 갈릴 수 있다.</strong></p>
+<p>한 가지 덧붙이면, "조용하다"는 <strong>지표마다 다르다.</strong> 파일 수 축에서는 프로파일 샘플의 흩어짐이 3.3배 줄었는데, 셔플 축에서는 샘플 흩어짐이 거의 그대로였고(22.0 → 20.7%) 대신 <strong>wall-clock 쌍차</strong>가 조용해졌다. 무엇으로 판정하느냐에 따라 필요한 환경이 다르다.</p>
 <hr>
 <p><em>전체 측정 기록: <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref"><code>docs/findings.md</code></a> · 서사: <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/STORY.md"><code>docs/STORY.md</code></a> · 이 결과를 공격하는 방법과 방어 상태: <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/threats.md"><code>docs/threats.md</code></a></em></p>
 <p><em>읽기용 HTML: <code>docs/blog.built.html</code> (단독 실행 가능 — 메일 첨부용). 생성: <code>python3 tools/build_story_html.py docs/blog.built.html docs/BLOG.md</code></em></p>
