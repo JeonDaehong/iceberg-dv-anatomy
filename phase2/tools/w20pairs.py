@@ -27,6 +27,10 @@ import re
 import statistics as st
 import sys
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                "..", "..", "phase0", "tools"))
+from attribute import parse_collapsed, analyze  # noqa: E402
+
 OUT = io.open(1, "w", encoding="utf-8", closefd=False)
 def p(*a): OUT.write(" ".join(str(x) for x in a) + "\n")
 
@@ -55,6 +59,22 @@ def walls(tag, arm):
             continue
         if d.get("median_s"):
             out[int(m.group(1))] = float(d["median_s"])
+    return out
+
+
+def samples(tag, arm):
+    """라운드 -> (DV, 스캔, 비-DV 스캔) 샘플. 크기가 어디서 나는지 보려면 분모를 갈라야 한다."""
+    out = {}
+    for path in glob.glob(os.path.join(R, "profiles", "%s__%s_c*_r*.collapsed" % (arm, tag))):
+        m = re.search(r"_r(\d+)\.collapsed$", path)
+        if not m:
+            continue
+        stacks = parse_collapsed(path)
+        if not stacks:
+            continue
+        a = analyze(stacks)
+        out[int(m.group(1))] = (a["dv_union_samples"], a["scan_samples"],
+                                a["scan_samples"] - a["dv_union_samples"])
     return out
 
 
@@ -111,6 +131,26 @@ for tag in TAGS:
     old = block("r1~r6 (F-015, block)", lambda r: r <= 6)
     new = block("r7~ (신규, alternate)", lambda r: r >= 7)
     allb = block("전체", lambda r: True)
+
+    # 크기가 어디서 나는가 — wall 이 느려졌다면 어느 샘플이 늘었는지 본다.
+    sb, sq = samples(tag, "baseline"), samples(tag, "patched")
+    common = sorted(set(sb) & set(sq))
+    if common:
+        p("")
+        p("   ─ 어디서 나는가 (같은 라운드 안에서 샘플을 갈라 본다)")
+        p("   %5s %10s %10s %10s %10s %12s %12s"
+          % ("r", "DV(b)", "DV(p)", "scan(b)", "scan(p)", "비DV(b)", "비DV(p)"))
+        ddv, dnon = [], []
+        for r in common:
+            (d1, s1, n1), (d2, s2, n2) = sb[r], sq[r]
+            ddv.append(d2 / d1 - 1 if d1 else 0)
+            dnon.append(n2 / n1 - 1 if n1 else 0)
+            p("   %5d %10d %10d %10d %10d %12d %12d" % (r, d1, d2, s1, s2, n1, n2))
+        kd = sum(1 for v in dnon if v > 0)
+        p("   DV 샘플 변화 중앙값 %+.1f%%   비-DV 스캔 변화 중앙값 %+.1f%%  (patched 가 큰 라운드 %d/%d)"
+          % (st.median(ddv) * 100, st.median(dnon) * 100, kd, len(dnon)))
+        p("   해석: wall 이 느려진 만큼 **비-DV 스캔**이 늘었으면 패치 밖에서 값을 치르는 것이고,")
+        p("         비-DV 가 안 움직였으면 wall 차이는 스캔 밖(JIT·GC·기동)에서 온 것이다.")
 
     if new and allb:
         k, n, pv, lo, hi = new
