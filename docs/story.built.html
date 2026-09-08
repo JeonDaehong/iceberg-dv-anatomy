@@ -161,8 +161,7 @@ td code{font-size:12.4px}
     <span>최종 <b>2026-09-08</b></span>
   </div>
 </header>
-<h1 id="deletion-vector-anatomy-전체-이야기">Deletion Vector Anatomy — 전체 이야기</h1>
-<blockquote>Apache Iceberg V3 의 deletion vector 읽기 경로를 뜯어 <strong>문제를 찾고, 고치고, 그 결과가 내 노트북 밖에서도 성립하는지 확인한</strong> 기록.  이 문서는 <strong>서사</strong>다. 34개의 발견을 시간순으로 쌓아둔 <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref"><code>findings.md</code></a> 가 근거 원본이고, 여기서는 그것들을 "왜 했는가 → 무엇을 실험했는가 → 결과 → 개선 방법 → 어떻게 개선했는가 → 결과 → 결론" 순서로 다시 엮는다. <strong>빠뜨린 것 없이, 틀렸던 것까지 포함해서.</strong></blockquote>
+<blockquote>Apache Iceberg V3 의 deletion vector 읽기 경로를 뜯어 <strong>문제를 찾고, 고치고, 그 결과가 내 노트북 밖에서도 성립하는지 확인한</strong> 기록.  이 문서는 <strong>서사</strong>다. 40개의 발견을 시간순으로 쌓아둔 <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref"><code>findings.md</code></a> 가 근거 원본이고, 여기서는 그것들을 "왜 했는가 → 무엇을 실험했는가 → 결과 → 개선 방법 → 어떻게 개선했는가 → 결과 → 결론" 순서로 다시 엮는다. <strong>빠뜨린 것 없이, 틀렸던 것까지 포함해서.</strong></blockquote>
 <h3 id="이-문서의-상태-표시">이 문서의 상태 표시</h3>
 <div class="tw"><table><thead><tr><th>표시</th><th>뜻</th></tr></thead><tbody><tr><td>(표시 없음)</td><td><strong>측정 완료.</strong> 근거가 <code>findings.md</code> 에 있고 반복 측정을 통과했다</td></tr><tr><td>&lt;span class="chip unsure"&gt;미확정&lt;/span&gt;</td><td>측정은 했지만 <strong>범위가 겹치거나 기전을 모른다.</strong> 주장하지 않는다</td></tr><tr><td>&lt;span class="chip todo"&gt;예정&lt;/span&gt;</td><td><strong>아직 안 했다.</strong> 무엇을·왜·어떻게 할지만 적혀 있다</td></tr><tr><td>&lt;span class="chip blocked"&gt;막힘&lt;/span&gt;</td><td>돈이나 환경이 필요해 지금 못 한다</td></tr></tbody></table></div>
 <p><strong>아직 안 한 것 전부는 <a href="#12-예정--아직-안-한-것-전부">12장</a>에 모아뒀다.</strong> 본문에도 나오는 자리마다 🔜 로 표시했다.</p>

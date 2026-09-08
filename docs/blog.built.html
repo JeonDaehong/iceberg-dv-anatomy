@@ -147,7 +147,7 @@ td code{font-size:12.4px}
 </style>
 
 <div class="wrap">
-<nav class="toc"><a href="#apache-iceberg-v3-deletion-vector-를-컨테이너-단위로-해부한-기록">Apache Iceberg V3 Deletion Vector 를 컨테이너 단위로 해부한 기록</a><a href="#1-이상한-곡선에서-시작했다">1. 이상한 곡선에서 시작했다</a><a href="#2-왜-4096-이라는-숫자">2. 왜 — 4096 이라는 숫자</a><a href="#3-얼마나-비싼가-그리고-분모를-밝히는-법">3. 얼마나 비싼가 — 그리고 분모를 밝히는 법</a><a href="#4-고쳤다">4. 고쳤다</a><a href="#5-그런데-대부분의-쿼리에서는-안-보인다">5. 그런데 대부분의 쿼리에서는 안 보인다</a><a href="#6-기전은-세-번-다-내-예상과-달랐다">6. 기전은 세 번 다 내 예상과 달랐다</a><a href="#7-오늘-할-수-있는-것-정렬-조건-네-개">7. 오늘 할 수 있는 것 — 정렬. 조건 네 개.</a><a href="#8-이-프로젝트가-진짜-남기는-것">8. 이 프로젝트가 진짜 남기는 것</a><a href="#9-아직-모르는-것">9. 아직 모르는 것</a><a href="#부록-측정-조건">부록 — 측정 조건</a></nav>
+<nav class="toc"><a href="#1-이상한-곡선에서-시작했다">1. 이상한 곡선에서 시작했다</a><a href="#2-왜-4096-이라는-숫자">2. 왜 — 4096 이라는 숫자</a><a href="#3-얼마나-비싼가-그리고-분모를-밝히는-법">3. 얼마나 비싼가 — 그리고 분모를 밝히는 법</a><a href="#4-고쳤다">4. 고쳤다</a><a href="#5-그런데-대부분의-쿼리에서는-안-보인다">5. 그런데 대부분의 쿼리에서는 안 보인다</a><a href="#6-기전은-세-번-다-내-예상과-달랐다">6. 기전은 세 번 다 내 예상과 달랐다</a><a href="#7-오늘-할-수-있는-것-정렬-조건-네-개">7. 오늘 할 수 있는 것 — 정렬. 조건 네 개.</a><a href="#8-이-프로젝트가-진짜-남기는-것">8. 이 프로젝트가 진짜 남기는 것</a><a href="#9-아직-모르는-것">9. 아직 모르는 것</a><a href="#부록-측정-조건">부록 — 측정 조건</a></nav>
 <main>
 <header class="top">
   <p class="kicker">Apache Iceberg V3 · Deletion Vector</p>
@@ -161,8 +161,6 @@ td code{font-size:12.4px}
     <span>최종 <b>2026-09-08</b></span>
   </div>
 </header>
-<h1 id="삭제를-더-많이-할수록-스캔이-싸진다">삭제를 더 많이 할수록 스캔이 싸진다</h1>
-<h2 id="apache-iceberg-v3-deletion-vector-를-컨테이너-단위로-해부한-기록">Apache Iceberg V3 Deletion Vector 를 컨테이너 단위로 해부한 기록</h2>
 <hr>
 <blockquote><strong>한 문장으로</strong>: Iceberg V3 의 deletion vector 는 삭제율이 6.25% 를 넘는 순간 내부 자료구조가 바뀌고, 그 경계 <strong>바로 아래</strong>가 가장 비싸다. 좁은 스캔에서는 그 체크가 CPU 의 절반을 먹는다. 175줄을 고쳐 최악 지점에서 9.28배를 줄였다. 그리고 그 과정에서 내 예측이 <strong>15번 빗나갔다.</strong></blockquote>
 <p>이 글은 결과보다 <strong>어떻게 틀렸는지</strong>에 대한 이야기다. 숫자는 다 아래에 있고, <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">전체 측정 기록</a>과 <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/STORY.md">서사 문서</a>는 저장소에 있다.</p>

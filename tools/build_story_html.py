@@ -85,6 +85,7 @@ i = 0
 in_code = False
 code_buf = []
 toc = []
+seen_h1 = False
 
 while i < len(lines):
     L = lines[i]
@@ -120,6 +121,17 @@ while i < len(lines):
     m = re.match(r"^(#{1,4})\s+(.*)$", L)
     if m:
         lvl, txt = len(m.group(1)), m.group(2)
+        # 문서 첫 H1(과 바로 뒤따르는 부제 H2)은 버린다 — 위 header 가 이미 싣는다.
+        # 안 버리면 제목이 페이지에 두 번 나오고 목차에도 부제가 낀다.
+        if lvl == 1 and not seen_h1:
+            seen_h1 = True
+            i += 1
+            j = i
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            if j < len(lines) and re.match(r"^##\s+", lines[j]):
+                i = j + 1
+            continue
         sid = slug(txt)
         if lvl == 2 and not txt.startswith("목차"):
             toc.append((sid, txt))
