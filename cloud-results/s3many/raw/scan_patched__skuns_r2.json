@@ -1,0 +1,18 @@
+{
+  "label": "patched_skuns_r2",
+  "table": "dv.g.sk_uns",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.11343396999996003,
+  "median_s": 0.14912728799981778,
+  "max_s": 0.22751766600003975,
+  "mean_s": 0.15253661939996163,
+  "is_deleted": false
+}

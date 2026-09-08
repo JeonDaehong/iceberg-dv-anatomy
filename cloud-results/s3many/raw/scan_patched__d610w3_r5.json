@@ -1,0 +1,13 @@
+{
+  "label": "patched_d610w3_r5",
+  "table": "dv.g.d610",
+  "n_cols": 3,
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.17800404599995545,
+  "median_s": 0.21587984500001767,
+  "max_s": 0.39996702100006587,
+  "mean_s": 0.24276745529999363,
+  "is_deleted": false
+}

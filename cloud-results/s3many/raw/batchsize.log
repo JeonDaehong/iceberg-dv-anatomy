@@ -1,0 +1,63 @@
+설정 6개 × 2 arm × 3회 = 36 프로파일
+
+### 라운드 1 / 3
+  d610 batch=1000
+      baseline r1: [baseline_d610b1000_r1] median=0.234s  min=0.184s  max=0.410s
+      patched r1: [patched_d610b1000_r1] median=0.223s  min=0.126s  max=0.337s
+  d610 batch=5000
+      baseline r1: [baseline_d610b5000_r1] median=0.247s  min=0.193s  max=0.321s
+      patched r1: [patched_d610b5000_r1] median=0.193s  min=0.141s  max=0.306s
+  d610 batch=20000
+      baseline r1: [baseline_d610b20000_r1] median=0.268s  min=0.218s  max=0.341s
+      patched r1: [patched_d610b20000_r1] median=0.190s  min=0.153s  max=0.323s
+  d50 batch=1000
+      baseline r1: [baseline_d50b1000_r1] median=0.239s  min=0.183s  max=0.395s
+      patched r1: [patched_d50b1000_r1] median=0.177s  min=0.139s  max=0.541s
+  d50 batch=5000
+      baseline r1: [baseline_d50b5000_r1] median=0.209s  min=0.174s  max=0.322s
+      patched r1: [patched_d50b5000_r1] median=0.211s  min=0.147s  max=0.282s
+  d50 batch=20000
+      baseline r1: [baseline_d50b20000_r1] median=0.213s  min=0.161s  max=0.372s
+      patched r1: [patched_d50b20000_r1] median=0.169s  min=0.129s  max=0.296s
+
+### 라운드 2 / 3
+  d610 batch=1000
+      baseline r2: [baseline_d610b1000_r2] median=0.244s  min=0.188s  max=0.338s
+      patched r2: [patched_d610b1000_r2] median=0.175s  min=0.126s  max=0.357s
+  d610 batch=5000
+      baseline r2: [baseline_d610b5000_r2] median=0.251s  min=0.189s  max=0.393s
+      patched r2: [patched_d610b5000_r2] median=0.198s  min=0.139s  max=0.312s
+  d610 batch=20000
+      baseline r2: [baseline_d610b20000_r2] median=0.234s  min=0.175s  max=0.325s
+      patched r2: [patched_d610b20000_r2] median=0.207s  min=0.135s  max=0.343s
+  d50 batch=1000
+      baseline r2: [baseline_d50b1000_r2] median=0.256s  min=0.194s  max=0.431s
+      patched r2: [patched_d50b1000_r2] median=0.164s  min=0.137s  max=0.361s
+  d50 batch=5000
+      baseline r2: [baseline_d50b5000_r2] median=0.187s  min=0.161s  max=0.341s
+      patched r2: [patched_d50b5000_r2] median=0.199s  min=0.132s  max=0.428s
+  d50 batch=20000
+      baseline r2: [baseline_d50b20000_r2] median=0.223s  min=0.162s  max=0.383s
+      patched r2: [patched_d50b20000_r2] median=0.184s  min=0.127s  max=0.406s
+
+### 라운드 3 / 3
+  d610 batch=1000
+      baseline r3: [baseline_d610b1000_r3] median=0.238s  min=0.201s  max=0.412s
+      patched r3: [patched_d610b1000_r3] median=0.175s  min=0.137s  max=0.261s
+  d610 batch=5000
+      baseline r3: [baseline_d610b5000_r3] median=0.237s  min=0.190s  max=0.356s
+      patched r3: [patched_d610b5000_r3] median=0.201s  min=0.126s  max=0.317s
+  d610 batch=20000
+      baseline r3: [baseline_d610b20000_r3] median=0.212s  min=0.194s  max=0.409s
+      patched r3: [patched_d610b20000_r3] median=0.205s  min=0.157s  max=0.404s
+  d50 batch=1000
+      baseline r3: [baseline_d50b1000_r3] median=0.215s  min=0.158s  max=0.346s
+      patched r3: [patched_d50b1000_r3] median=0.170s  min=0.112s  max=0.286s
+  d50 batch=5000
+      baseline r3: [baseline_d50b5000_r3] median=0.203s  min=0.154s  max=0.309s
+      patched r3: [patched_d50b5000_r3] median=0.166s  min=0.118s  max=0.363s
+  d50 batch=20000
+      baseline r3: [baseline_d50b20000_r3] median=0.207s  min=0.161s  max=0.347s
+      patched r3: [patched_d50b20000_r3] median=0.153s  min=0.116s  max=0.236s
+
+✅ 완료 — 36회, 613초

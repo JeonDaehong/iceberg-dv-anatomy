@@ -1,0 +1,18 @@
+{
+  "label": "qp_baseline_ctimer__r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.150252351000006,
+  "median_s": 0.18339135000002216,
+  "max_s": 0.32765478600003917,
+  "mean_s": 0.18830855126666962,
+  "is_deleted": false
+}

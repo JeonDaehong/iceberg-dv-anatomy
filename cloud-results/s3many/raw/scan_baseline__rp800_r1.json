@@ -1,0 +1,18 @@
+{
+  "label": "baseline_rp800_r1",
+  "table": "dv.g.d800",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1450325780001549,
+  "median_s": 0.19086298299998816,
+  "max_s": 0.3759111020003729,
+  "mean_s": 0.22508025216666283,
+  "is_deleted": false
+}

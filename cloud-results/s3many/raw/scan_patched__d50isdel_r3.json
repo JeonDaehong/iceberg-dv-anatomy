@@ -1,0 +1,11 @@
+{
+  "label": "patched_d50isdel_r3",
+  "table": "dv.g.d50",
+  "n_cols": 1,
+  "iters": 30,
+  "min_s": 0.12200760499945318,
+  "median_s": 0.1599083890005204,
+  "max_s": 0.2700617929995133,
+  "mean_s": 0.16643611743323466,
+  "is_deleted": true
+}

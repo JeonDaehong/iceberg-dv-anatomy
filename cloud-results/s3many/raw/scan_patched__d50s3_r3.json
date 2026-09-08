@@ -1,0 +1,18 @@
+{
+  "label": "patched_d50s3_r3",
+  "table": "dv.g.d50",
+  "n_cols": 3,
+  "cols": [
+    "s07",
+    "s08",
+    "s09"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.8296359800001483,
+  "median_s": 0.9174109769999177,
+  "max_s": 1.2061345980000624,
+  "mean_s": 0.9498994964000076,
+  "is_deleted": false
+}

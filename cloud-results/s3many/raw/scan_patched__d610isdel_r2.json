@@ -1,0 +1,11 @@
+{
+  "label": "patched_d610isdel_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "iters": 30,
+  "min_s": 0.11978266300047835,
+  "median_s": 0.1593590669999685,
+  "max_s": 0.3917402549996041,
+  "mean_s": 0.18321198713332099,
+  "is_deleted": true
+}

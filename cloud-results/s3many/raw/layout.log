@@ -1,0 +1,61 @@
+Phase 3-A · 레이아웃 처방  (d=610bp, 정렬 컬럼 k04)
+  술어는 두 테이블에 동일 — 삭제되는 행이 같고 물리 배치만 다르다.
+  스캔 쿼리에 술어를 안 건다 — 파일 스킵을 원천 차단한다.
+
+① 테이블 생성
+  skip dv.g.lay_uns (테이블·결과 모두 있음)
+  skip dv.g.lay_srt (테이블·결과 모두 있음)
+  무정렬: 행 8,000,000, 삭제 430,575 (5.382%), DV 4개 863,982 B
+  정렬  : 행 8,000,000, 삭제 430,575 (5.382%), DV 4개 2,533 B
+  삭제 행 수 차이: 0 (0.00%)  ✅ 같다고 볼 수 있음
+
+② 측정 — 레이아웃 2 × arm 2 × 폭 1 × 6회
+### 라운드 1 / 6
+  uns 1컬럼  [순서: baseline patched]
+      baseline r1 (uns): [baseline_layunsc1_r1] median=0.313s  min=0.225s  max=0.433s
+      patched r1 (uns): [patched_layunsc1_r1] median=0.269s  min=0.186s  max=0.513s
+  srt 1컬럼  [순서: baseline patched]
+      baseline r1 (srt): [baseline_laysrtc1_r1] median=0.213s  min=0.161s  max=0.903s
+      patched r1 (srt): [patched_laysrtc1_r1] median=0.164s  min=0.131s  max=0.287s
+
+### 라운드 2 / 6
+  uns 1컬럼  [순서: patched baseline]
+      patched r2 (uns): [patched_layunsc1_r2] median=0.160s  min=0.122s  max=0.245s
+      baseline r2 (uns): [baseline_layunsc1_r2] median=0.201s  min=0.158s  max=0.376s
+  srt 1컬럼  [순서: patched baseline]
+      patched r2 (srt): [patched_laysrtc1_r2] median=0.154s  min=0.111s  max=0.269s
+      baseline r2 (srt): [baseline_laysrtc1_r2] median=0.161s  min=0.126s  max=0.287s
+
+### 라운드 3 / 6
+  uns 1컬럼  [순서: baseline patched]
+      baseline r3 (uns): [baseline_layunsc1_r3] median=0.210s  min=0.167s  max=0.273s
+      patched r3 (uns): [patched_layunsc1_r3] median=0.153s  min=0.112s  max=0.318s
+  srt 1컬럼  [순서: baseline patched]
+      baseline r3 (srt): [baseline_laysrtc1_r3] median=0.159s  min=0.123s  max=0.301s
+      patched r3 (srt): [patched_laysrtc1_r3] median=0.156s  min=0.117s  max=0.354s
+
+### 라운드 4 / 6
+  uns 1컬럼  [순서: patched baseline]
+      patched r4 (uns): [patched_layunsc1_r4] median=0.178s  min=0.123s  max=0.385s
+      baseline r4 (uns): [baseline_layunsc1_r4] median=0.198s  min=0.153s  max=0.331s
+  srt 1컬럼  [순서: patched baseline]
+      patched r4 (srt): [patched_laysrtc1_r4] median=0.152s  min=0.110s  max=0.308s
+      baseline r4 (srt): [baseline_laysrtc1_r4] median=0.164s  min=0.129s  max=0.245s
+
+### 라운드 5 / 6
+  uns 1컬럼  [순서: baseline patched]
+      baseline r5 (uns): [baseline_layunsc1_r5] median=0.191s  min=0.158s  max=0.344s
+      patched r5 (uns): [patched_layunsc1_r5] median=0.168s  min=0.132s  max=0.250s
+  srt 1컬럼  [순서: baseline patched]
+      baseline r5 (srt): [baseline_laysrtc1_r5] median=0.170s  min=0.126s  max=0.238s
+      patched r5 (srt): [patched_laysrtc1_r5] median=0.152s  min=0.110s  max=0.288s
+
+### 라운드 6 / 6
+  uns 1컬럼  [순서: patched baseline]
+      patched r6 (uns): [patched_layunsc1_r6] median=0.182s  min=0.127s  max=0.253s
+      baseline r6 (uns): [baseline_layunsc1_r6] median=0.222s  min=0.167s  max=0.324s
+  srt 1컬럼  [순서: patched baseline]
+      patched r6 (srt): [patched_laysrtc1_r6] median=0.201s  min=0.118s  max=0.384s
+      baseline r6 (srt): [baseline_laysrtc1_r6] median=0.176s  min=0.142s  max=0.291s
+
+✅ 완료 — 24회, 411초

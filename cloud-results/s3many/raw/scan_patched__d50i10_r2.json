@@ -1,0 +1,25 @@
+{
+  "label": "patched_d50i10_r2",
+  "table": "dv.g.d50",
+  "n_cols": 10,
+  "cols": [
+    "id",
+    "k01",
+    "k02",
+    "k03",
+    "k04",
+    "t11",
+    "t12",
+    "k13",
+    "k14",
+    "k15"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.3638119799999231,
+  "median_s": 0.4006091280000419,
+  "max_s": 0.9009744989999717,
+  "mean_s": 0.4427510277333378,
+  "is_deleted": false
+}

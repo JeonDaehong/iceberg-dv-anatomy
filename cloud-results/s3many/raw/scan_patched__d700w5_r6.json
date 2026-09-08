@@ -1,0 +1,13 @@
+{
+  "label": "patched_d700w5_r6",
+  "table": "dv.g.d700",
+  "n_cols": 5,
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.22436217899985422,
+  "median_s": 0.26337085799991655,
+  "max_s": 0.38306260700005623,
+  "mean_s": 0.28100977940000577,
+  "is_deleted": false
+}

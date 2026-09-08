@@ -1,0 +1,20 @@
+{
+  "table": "dv.g.mf610f488",
+  "density_bp": 610,
+  "run_length": 1,
+  "sort_by": null,
+  "delete_key": null,
+  "occupancy_bp": 10000,
+  "target_density": 0.061,
+  "actual_density": 0.06103243593309746,
+  "total_rows": 31981568,
+  "deleted_rows": 1951913,
+  "dv_count": 488,
+  "dv_bytes": 14352226,
+  "rows_per_file": 65536,
+  "num_files": 488,
+  "write_secs": 78.65702080726624,
+  "data_bytes": 3430964742,
+  "chunks_per_file": 1.0,
+  "expected_chunk_cardinality": 3997.696
+}

@@ -1,0 +1,18 @@
+{
+  "table": "dv.g.sk_c8m",
+  "density_bp": 610,
+  "run_length": 1,
+  "sort_by": "k01",
+  "delete_key": "k01",
+  "occupancy_bp": 10000,
+  "target_density": 0.061,
+  "actual_density": 0.06094125,
+  "total_rows": 8000000,
+  "deleted_rows": 487530,
+  "dv_count": 4,
+  "dv_bytes": 977386,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 3997.696
+}

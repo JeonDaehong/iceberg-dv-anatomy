@@ -1,0 +1,18 @@
+{
+  "label": "baseline_d700s3_r3",
+  "table": "dv.g.d700",
+  "n_cols": 3,
+  "cols": [
+    "s07",
+    "s08",
+    "s09"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.8807500230000187,
+  "median_s": 1.233713767999916,
+  "max_s": 2.9188320700000077,
+  "mean_s": 1.4697413041666703,
+  "is_deleted": false
+}

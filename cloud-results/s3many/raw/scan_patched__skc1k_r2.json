@@ -1,0 +1,18 @@
+{
+  "label": "patched_skc1k_r2",
+  "table": "dv.g.sk_c1k",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.12273357499998383,
+  "median_s": 0.15619203300002482,
+  "max_s": 0.22693222199995944,
+  "mean_s": 0.15596409926664212,
+  "is_deleted": false
+}

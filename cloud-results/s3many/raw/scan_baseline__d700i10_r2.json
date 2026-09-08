@@ -1,0 +1,25 @@
+{
+  "label": "baseline_d700i10_r2",
+  "table": "dv.g.d700",
+  "n_cols": 10,
+  "cols": [
+    "id",
+    "k01",
+    "k02",
+    "k03",
+    "k04",
+    "t11",
+    "t12",
+    "k13",
+    "k14",
+    "k15"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.4205376239999623,
+  "median_s": 0.543559289999962,
+  "max_s": 0.7449191590000055,
+  "mean_s": 0.533896121600003,
+  "is_deleted": false
+}

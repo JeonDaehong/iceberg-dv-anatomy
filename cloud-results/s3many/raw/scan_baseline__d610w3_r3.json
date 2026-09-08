@@ -1,0 +1,13 @@
+{
+  "label": "baseline_d610w3_r3",
+  "table": "dv.g.d610",
+  "n_cols": 3,
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.2149103680000053,
+  "median_s": 0.25559218400002237,
+  "max_s": 0.4511237259999916,
+  "mean_s": 0.2689125879666676,
+  "is_deleted": false
+}

@@ -1,0 +1,11 @@
+{
+  "label": "baseline_d50isdel_r3",
+  "table": "dv.g.d50",
+  "n_cols": 1,
+  "iters": 30,
+  "min_s": 0.15645365100044728,
+  "median_s": 0.1939008469998953,
+  "max_s": 0.27948573699995904,
+  "mean_s": 0.19825367659996118,
+  "is_deleted": true
+}

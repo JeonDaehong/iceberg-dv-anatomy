@@ -1,0 +1,25 @@
+{
+  "label": "patched_d700i10_r1",
+  "table": "dv.g.d700",
+  "n_cols": 10,
+  "cols": [
+    "id",
+    "k01",
+    "k02",
+    "k03",
+    "k04",
+    "t11",
+    "t12",
+    "k13",
+    "k14",
+    "k15"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.41773769000002403,
+  "median_s": 0.5257101790000434,
+  "max_s": 0.8766017630000533,
+  "mean_s": 0.556835262633344,
+  "is_deleted": false
+}

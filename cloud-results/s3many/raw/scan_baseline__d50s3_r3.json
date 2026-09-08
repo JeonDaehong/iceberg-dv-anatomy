@@ -1,0 +1,18 @@
+{
+  "label": "baseline_d50s3_r3",
+  "table": "dv.g.d50",
+  "n_cols": 3,
+  "cols": [
+    "s07",
+    "s08",
+    "s09"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.8828710069999488,
+  "median_s": 1.155046319000121,
+  "max_s": 1.622215376999975,
+  "mean_s": 1.140196118066668,
+  "is_deleted": false
+}

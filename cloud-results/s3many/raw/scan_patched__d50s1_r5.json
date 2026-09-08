@@ -1,0 +1,16 @@
+{
+  "label": "patched_d50s1_r5",
+  "table": "dv.g.d50",
+  "n_cols": 1,
+  "cols": [
+    "s07"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.3904891819997829,
+  "median_s": 0.5179253050000625,
+  "max_s": 0.8391631170002256,
+  "mean_s": 0.5433511280999785,
+  "is_deleted": false
+}

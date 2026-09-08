@@ -1,0 +1,11 @@
+{
+  "label": "patched_eq0_r1",
+  "table": "dv.g.eq0",
+  "n_cols": 1,
+  "iters": 30,
+  "min_s": 0.2880004179996831,
+  "median_s": 0.35255015100028686,
+  "max_s": 0.5326441790002718,
+  "mean_s": 0.36619725083331406,
+  "is_deleted": false
+}

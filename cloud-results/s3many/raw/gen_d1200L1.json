@@ -1,0 +1,20 @@
+{
+  "table": "dv.g.d1200L1",
+  "density_bp": 1200,
+  "run_length": 1,
+  "sort_by": null,
+  "delete_key": null,
+  "occupancy_bp": 10000,
+  "target_density": 0.12,
+  "actual_density": 0.119960625,
+  "total_rows": 8000000,
+  "deleted_rows": 959685,
+  "dv_count": 4,
+  "dv_bytes": 1018026,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "write_secs": 15.514254093170166,
+  "data_bytes": 857294068,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 7864.32
+}

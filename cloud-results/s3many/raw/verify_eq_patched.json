@@ -1,0 +1,19 @@
+{
+  "label": "patched_eq",
+  "tables": {
+    "dv.g.eq0": {
+      "count": 7960000,
+      "sum_id": 31840000000000,
+      "min_id": 1,
+      "max_id": 7999999,
+      "columnar": true
+    },
+    "dv.g.eq50": {
+      "count": 7920040,
+      "sum_id": 31680270852194,
+      "min_id": 1,
+      "max_id": 7999999,
+      "columnar": true
+    }
+  }
+}
