@@ -43,22 +43,60 @@ case "$TYPE" in
   *)          ARCH=amd64 ;;
 esac
 
+# AMI 는 Canonical 공식 계정(099720109477)에서 최신 24.04 를 직접 고른다.
+# ⚠️ 처음엔 SSM 별칭(/aws/service/canonical/...)을 썼는데 ParameterNotFound 로 죽었다 —
+#    Canonical 은 리전·배포마다 그 별칭 경로를 바꾼다. describe-images 는 안 바뀐다.
 AMI="${AMI:-}"
 if [[ -z "$AMI" ]]; then
-  AMI=$(aws ssm get-parameter --region "$REGION" \
-    --name "/aws/service/canonical/ubuntu/server/24.04/stable/current/${ARCH}/hvm/ebs-gp3/ami-id" \
-    --query 'Parameter.Value' --output text) || { echo "AMI 조회 실패" >&2; exit 1; }
+  AMI=$(aws ec2 describe-images --region "$REGION" --owners 099720109477 \
+    --filters "Name=name,Values=ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-${ARCH}-server-*" \
+              "Name=state,Values=available" \
+    --query 'reverse(sort_by(Images,&CreationDate))[0].ImageId' --output text)
 fi
+[[ -n "$AMI" && "$AMI" != "None" ]] || { echo "AMI 조회 실패 (arch=${ARCH})" >&2; exit 1; }
 
-# 인스턴스 프로파일: S3 읽기/쓰기 + SSM. 이름을 모르면 계정에서 찾는다.
+# 인스턴스 프로파일: SSM + 이 버킷에 대한 S3 읽기/쓰기.
+#
+# ⚠️ 이름으로 'dv' 를 찾게 해뒀다가 못 찾았다 — 이 계정의 프로파일 이름은
+#    EC2-SSM-Profile 이다. 이름 규칙에 기대지 말고 계정에 하나뿐이면 그걸 쓴다.
+#
+# ⚠️ 그리고 그 역할에는 **S3 권한이 기본으로 없다.** 붙이지 않으면 인스턴스가
+#    jar 다운로드 단계에서 죽는다. 한 번만 실행하면 된다 (버킷 하나로 제한된 정책):
+#      aws iam put-role-policy --role-name EC2-SSM-Role \
+#        --policy-name dv-anatomy-s3 \
+#        --policy-document file://cloud/iam-dv-anatomy-s3.json
+#    다 쓰고 나면:
+#      aws iam delete-role-policy --role-name EC2-SSM-Role --policy-name dv-anatomy-s3
 PROFILE="${IAM_PROFILE:-}"
 if [[ -z "$PROFILE" ]]; then
   PROFILE=$(aws iam list-instance-profiles \
     --query "InstanceProfiles[?contains(InstanceProfileName, 'dv')].InstanceProfileName | [0]" \
     --output text 2>/dev/null || true)
 fi
+if [[ -z "$PROFILE" || "$PROFILE" == "None" ]]; then
+  PROFILE=$(aws iam list-instance-profiles \
+    --query "InstanceProfiles[0].InstanceProfileName" --output text 2>/dev/null || true)
+fi
 [[ -n "$PROFILE" && "$PROFILE" != "None" ]] \
   || { echo "인스턴스 프로파일을 못 찾았다. IAM_PROFILE=... 로 지정하라." >&2; exit 1; }
+
+# S3 권한 게이트. 없는 채로 띄우면 인스턴스가 조용히 죽고 로그도 S3 에 안 올라온다
+# (로그 업로드 자체가 S3 를 쓴다). 띄우기 전에 여기서 잡는다.
+ROLE=$(aws iam get-instance-profile --instance-profile-name "$PROFILE" \
+  --query 'InstanceProfile.Roles[0].RoleName' --output text 2>/dev/null || true)
+if [[ -n "$ROLE" && "$ROLE" != "None" ]]; then
+  HAS_S3=$( { aws iam list-role-policies --role-name "$ROLE" --output text 2>/dev/null;
+              aws iam list-attached-role-policies --role-name "$ROLE" \
+                --query 'AttachedPolicies[].PolicyName' --output text 2>/dev/null; } \
+            | grep -ci 's3' || true)
+  if [[ "$HAS_S3" -eq 0 ]]; then
+    echo "역할 ${ROLE} 에 S3 권한이 없다. 아래를 먼저 실행하라 (버킷 하나로 제한됨):" >&2
+    echo "  aws iam put-role-policy --role-name ${ROLE} \\" >&2
+    echo "    --policy-name dv-anatomy-s3 \\" >&2
+    echo "    --policy-document file://cloud/iam-dv-anatomy-s3.json" >&2
+    exit 1
+  fi
+fi
 
 SUBNET="${SUBNET:-}"
 if [[ -z "$SUBNET" ]]; then
