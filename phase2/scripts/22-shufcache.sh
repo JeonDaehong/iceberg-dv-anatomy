@@ -51,8 +51,9 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 _REPS_CALLER="${REPS:-}"
+_ITERS_CALLER="${SCAN_ITERS:-}"
 source ./config.env
-REPS="${_REPS_CALLER:-4}"
+REPS="${_REPS_CALLER:-3}"
 
 SC_TABLE="${SC_TABLE:-dv.g.d610}"
 SC_TAG="${SC_TAG:-d610}"
@@ -60,8 +61,17 @@ SC_COLS="${SC_COLS:-k01,k04}"
 SC_EVENTS="${SC_EVENTS:-cycles instructions cache-misses}"
 PERF_DIR="${PERF_DIR:-/usr/lib/linux-tools-6.8.0-139}"
 export PATH="${PERF_DIR}:${PATH}"
-export SCAN_ITERS="${SCAN_ITERS:-10}"
+# ⚠️ config.env 가 이미 SCAN_ITERS=30 을 넣은 뒤이므로 여기서 `${SCAN_ITERS:-15}` 라고 쓰면
+#    기본값이 **죽은 코드**가 된다 (오버라이드 함정의 거울상 — 처음에 그렇게 써서 30 으로 돌았다).
+#    호출자 값을 source 앞에서 붙잡아 두고 여기서 되살린다.
+export SCAN_ITERS="${_ITERS_CALLER:-15}"
 export SCAN_WARMUP="${SCAN_WARMUP:-2}"
+
+# PMU 이벤트의 샘플링 주기. 안 주면 async-profiler 가 기본값을 쓰는데,
+# cache-misses 는 그게 너무 촘촘해서 **프로파일 하나가 7.5GB** 가 됐다
+# (cycles 326MB / instructions 232MB 대비 23배). 라운드 1 만에 13GB 를 쓰고
+# 라운드 2 에서 죽었다. 귀속 비율을 보는 데는 수십만 샘플이면 충분하므로 주기를 준다.
+SC_INTERVAL="${SC_INTERVAL:-2000000}"
 
 NCOL=$(echo "$SC_COLS" | tr ',' '\n' | wc -l)
 mkdir -p "$RESULTS/profiles"
@@ -75,14 +85,27 @@ echo
 
 # ── C1: 이벤트 지원을 본 측정 전에 확인한다 (15-qperf.sh 의 교훈) ──────────
 echo "① 이벤트 지원 확인"
+# ⚠️ 여기 있던 `java -e '...'` 는 유효한 JDK 플래그가 아니라 JVM 이 뜨지도 않았고,
+#    그래서 이 게이트는 **어떤 이벤트에도 항상 ❌ 를 냈다**(15-qperf.sh 에서 베껴온 버그).
+#    단일 파일 소스 런처로 바꾼다.
+PROBE_SRC="${RESULTS}/_ApProbe.java"
+cat > "$PROBE_SRC" <<'JAVA'
+public class _ApProbe {
+  public static void main(String[] a) {
+    long s = 0;
+    for (long i = 0; i < 400000000L; i++) { s += i; }
+    System.out.println(s);
+  }
+}
+JAVA
 for EV in $SC_EVENTS; do
   SAFE=$(echo "$EV" | tr -c 'a-zA-Z0-9' '_')
   T="${RESULTS}/profiles/_scprobe_${SAFE}.collapsed"
   rm -f "$T"
-  java -agentpath:"${AP_LIB}=start,event=${EV},collapsed,file=${T}" \
-       -e 'long s=0; for(long i=0;i<400000000L;i++) s+=i; System.out.println(s);' \
-       >/dev/null 2>&1 || true
-  if [[ -s "$T" ]]; then echo "   ✅ ${EV}"; else echo "   ❌ ${EV} — 프로파일이 비었다"; fi
+  java -agentpath:"${AP_LIB}=start,event=${EV},interval=${SC_INTERVAL},collapsed,file=${T}" \
+       "$PROBE_SRC" >/dev/null 2>&1 || true
+  if [[ -s "$T" ]]; then echo "   ✅ ${EV}"; else echo "   ❌ ${EV} — 프로파일이 비었다"; exit 1; fi
+  rm -f "$T"
 done
 echo
 
@@ -99,7 +122,7 @@ run_one() {   # $1=query(scan|aggL) $2=event $3=rep
 
   spark-submit \
     --master "local[${LOCAL_CORES}]" --driver-memory "${DRIVER_MEM}" \
-    --driver-java-options "-agentpath:${AP_LIB}=start,event=${2},collapsed,file=${PROF}" \
+    --driver-java-options "-agentpath:${AP_LIB}=start,event=${2},interval=${SC_INTERVAL},collapsed,file=${PROF}" \
     --jars "$BASELINE_JAR" \
     --conf spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions \
     ../phase0/spark/scan.py \

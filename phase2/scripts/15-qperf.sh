@@ -125,9 +125,23 @@ for EV in $EVENTS; do
   rm -f "$T"
   # 프로브 워크로드는 이벤트 성격에 맞아야 한다. `-version` 은 CPU 시간을 거의 안 써서
   # ctimer 가 빈 프로파일을 내고 **거짓 음성**이 뜬다 (실제로 그렇게 떴다).
+  #
+  # ⚠️ 2026-09-09 정정 — 여기 있던 `java -e '...'` 는 **유효한 JDK 플래그가 아니다.**
+  #    `Unrecognized option: -e` 로 JVM 이 뜨지도 않았고, 그래서 이 게이트는
+  #    **어떤 이벤트에도 항상 ❌ 를 냈다.** 위 주석("워크로드가 안 맞아서")은
+  #    그 ❌ 를 잘못 해석한 것이다. 진짜 원인은 플래그였다.
+  #    단일 파일 소스 런처(java Foo.java)로 바꾼다 — JDK 11+ 에서 동작한다.
+  cat > /tmp/_ApProbe.java <<'JAVA'
+public class _ApProbe {
+  public static void main(String[] a) {
+    long s = 0;
+    for (long i = 0; i < 400000000L; i++) { s += i; }
+    System.out.println(s);
+  }
+}
+JAVA
   java -agentpath:"${AP_LIB}=start,event=${EV},collapsed,file=${T}" \
-       -e 'long s=0; for(long i=0;i<400000000L;i++) s+=i; System.out.println(s);' \
-       >/dev/null 2>&1 || true
+       /tmp/_ApProbe.java >/dev/null 2>&1 || true
   if [[ -s "$T" ]]; then echo "   ✅ ${EV}"; else echo "   ❌ ${EV} — 프로파일이 비었다"; fi
 done
 echo
