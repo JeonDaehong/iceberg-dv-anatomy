@@ -1,0 +1,18 @@
+{
+  "label": "px_px50p2500_r1",
+  "table": "dv.g.px50p2500",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.4087833109999792,
+  "median_s": 0.48260399800000187,
+  "max_s": 0.6404648599999518,
+  "mean_s": 0.49597233970000426,
+  "is_deleted": false
+}
