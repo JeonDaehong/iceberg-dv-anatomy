@@ -10,8 +10,28 @@ import os
 import re
 import sys
 
-SRC = "docs/STORY.md"
+# 원래 STORY.md 전용이었다. BLOG.md 도 같은 문법만 쓰므로 소스를 인자로 받게 열었다.
+#   build_story_html.py [출력]            -> docs/STORY.md 변환 (기존 동작 유지)
+#   build_story_html.py [출력] [소스.md]
 DST = sys.argv[1] if len(sys.argv) > 1 else "story.html"
+SRC = sys.argv[2] if len(sys.argv) > 2 else "docs/STORY.md"
+
+# 문서마다 머리말이 다르다. 소스 파일명으로 고른다.
+HEADS = {
+    "STORY.md": (
+        "Apache Iceberg V3 · 읽기 경로 해부",
+        "Deletion Vector Anatomy",
+        "행마다 삭제 여부를 묻는 루프가 스캔 CPU 의 절반을 먹는다. 그걸 찾고, 고치고, "
+        "내 노트북 밖에서도 성립하는지 확인한 기록 — 틀렸던 것까지 포함해서.",
+    ),
+    "BLOG.md": (
+        "Apache Iceberg V3 · Deletion Vector",
+        "삭제를 더 많이 할수록 스캔이 싸진다",
+        "Roaring 컨테이너가 6.25% 에서 갈리고, 그 경계 바로 아래가 가장 비싸다. "
+        "찾고, 고치고, 15번 빗나간 기록.",
+    ),
+}
+KICKER, TITLE, SUB = HEADS.get(os.path.basename(SRC), HEADS["STORY.md"])
 
 md = io.open(SRC, encoding="utf-8").read()
 
@@ -156,7 +176,7 @@ while i < len(lines):
 body_html = "\n".join(out)
 toc_html = "".join('<a href="#%s">%s</a>' % (sid, re.sub(r"[`*]", "", t)) for sid, t in toc)
 
-HTML = """<title>Deletion Vector Anatomy</title>
+HTML = """<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
@@ -308,16 +328,15 @@ td code{font-size:12.4px}
 <nav class="toc">__TOC__</nav>
 <main>
 <header class="top">
-  <p class="kicker">Apache Iceberg V3 · 읽기 경로 해부</p>
-  <h1>Deletion Vector Anatomy</h1>
-  <p class="sub">행마다 삭제 여부를 묻는 루프가 스캔 CPU 의 절반을 먹는다. 그걸 찾고, 고치고,
-     내 노트북 밖에서도 성립하는지 확인한 기록 — 틀렸던 것까지 포함해서.</p>
+  <p class="kicker">__KICKER__</p>
+  <h1>__TITLE__</h1>
+  <p class="sub">__SUB__</p>
   <div class="meta">
     <span>발견 <b>__NF__</b>개</span>
     <span>측정 축 <b>__NAX__</b>개</span>
-    <span>빗나간 예측 <b>11</b>개</span>
+    <span>빗나간 예측 <b>15</b>개</span>
     <span>Spark <b>4.0.4</b> · Iceberg <b>1.11.0</b></span>
-    <span>최종 <b>2026-09-07</b></span>
+    <span>최종 <b>2026-09-08</b></span>
   </div>
 </header>
 __BODY__
@@ -330,6 +349,9 @@ nax = len([f for f in os.listdir("phase2/scripts") if re.match(r"^\d\d.*\.sh$", 
 
 HTML = (HTML.replace("__TOC__", toc_html)
             .replace("__BODY__", body_html)
+            .replace("__KICKER__", KICKER)
+            .replace("__TITLE__", TITLE)
+            .replace("__SUB__", SUB)
             .replace("__NF__", str(nf))
             .replace("__NAX__", str(nax)))
 # 오타로 들어간 잔여 토큰 정리
