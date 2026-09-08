@@ -1,0 +1,6 @@
+     12 baseline__d610shfaggL_c2
+     12 baseline__d610shfaggS_c2
+     12 baseline__d610shfscan_c2
+     12 patched__d610shfaggL_c2
+     12 patched__d610shfaggS_c2
+     12 patched__d610shfscan_c2
