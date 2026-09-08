@@ -166,8 +166,10 @@ footer b{color:var(--ink-2);font-weight:500}
       <span>Spark <b>4.0.4</b></span>
       <span>RoaringBitmap <b>1.6.14</b> (Iceberg 핀)</span>
       <span>JDK <b>17</b></span>
-      <span>WSL2 · async-profiler <b>4.5</b></span>
+      <span>WSL2 + EC2 <b>m7i·m7g</b> · async-profiler <b>4.5</b></span>
       <span>800만 행 / 4파일 / 파일당 30.5 청크</span>
+      <span>발견 <b>44</b>개 · 측정 축 <b>29</b>개 · 빗나간 예측 <b>17</b>개</span>
+      <span>최종 <b>2026-09-09</b></span>
     </div>
   </div>
 </header>
@@ -368,6 +370,13 @@ footer b{color:var(--ink-2);font-weight:500}
     </div>
 
     <figure>
+      <div class="fig-t">밀도 전 구간에서의 개선 배율</div>
+      <div class="fig-s">처음엔 경계 근처 세 점만 쟀습니다 · 반등 구간(d=8~50%)을 뒤에 채웠습니다</div>
+      <div class="tw" id="t-patchd"></div>
+      <figcaption id="cap-patchd"></figcaption>
+    </figure>
+
+    <figure>
       <div class="fig-t">패치가 건드린 나머지 경로들</div>
       <div class="fig-s">워크로드가 달라 위 차트와 같은 축에 못 올립니다 · 3회 반복</div>
       <div class="tw" id="t-extra"></div>
@@ -394,16 +403,167 @@ footer b{color:var(--ink-2);font-weight:500}
     </div>
   </section>
 
+  <!-- ═══════════════ 07 이식성 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">07</span><h2>내 노트북 밖에서도 같은가</h2></div>
+    <p class="lede">
+      위 수치가 전부 한 대에서 나왔다면 모든 문장에 <b>"내 기계에서는"</b>이 붙습니다.
+      그래서 바꿀 수 있는 것을 하나씩 바꿔가며 <b>DV의 스캔 내 비중</b>이 움직이는지 봤습니다.
+      일곱 축 중 <b>다섯은 안 움직이고 둘만 움직입니다.</b>
+    </p>
+
+    <figure>
+      <div class="fig-t">축을 바꿨을 때 DV/스캔 비중이 얼마나 움직이는가</div>
+      <div class="fig-s">막대는 변화폭(%p) · 회색은 안 움직인 축, 주황은 움직인 축</div>
+      <div class="chartbox" id="c-port"></div>
+      <details><summary>표로 보기</summary><div class="tw" id="t-port"></div></details>
+      <figcaption>
+        <code>ctimer</code>는 <b>CPU 시간</b>이라 I/O 대기가 분모에 안 들어옵니다.
+        콜드 캐시와 S3가 비중을 못 바꾸는 이유가 그것이고, 같은 이유로
+        <b>파일이 많아지는 것은 바꿉니다</b> — 그건 대기가 아니라 파일당 CPU 고정비
+        (푸터 파싱·DV 로드)이기 때문입니다.
+      </figcaption>
+    </figure>
+
+    <div class="note">
+      <span class="tag">예상 못 한 부수 결과</span>
+      노이즈 바닥 <b>9.7%</b>는 측정 대상의 성질이 아니라 <b>WSL2의 성질</b>이었습니다.
+      같은 테이블·같은 jar·같은 스크립트로 기계만 바꾸면 흩어짐이 <b>49.4% → 15.0%</b>입니다.
+      그리고 그게 실제로 한 축의 <b>부호를 바꿨습니다</b> — 집계-대 쿼리에서 노트북은
+      "패치가 느리다"(1/6)를, 전용 인스턴스는 "빠르다"(12/12)를 냈습니다.
+    </div>
+
+    <div class="note warn">
+      <span class="tag">분산 클러스터의 41.6%는 하한입니다</span>
+      익스큐터 2개(8코어)에 800만 행은 너무 작아서 <b>클러스터가 단일 JVM보다 2.3배 느렸습니다.</b>
+      익스큐터 기동·직렬화 같은 고정 오버헤드가 스캔 서브트리 분모에 섞인 결과이므로,
+      데이터를 키우면 단일 JVM 값(54%)에 가까워질 것으로 봅니다 — <b>미측정</b>입니다.
+    </div>
+  </section>
+
+  <!-- ═══════════════ 08 실용성의 경계 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">08</span><h2>그래서 실무에서 몇 % 빨라지나</h2></div>
+    <p class="lede">
+      가장 쓰기 싫었던 절입니다. <b>"스캔 CPU의 53%"는 그 자체로는 거의 거짓말입니다</b> —
+      분모(Parquet 디코딩)가 투영 폭만큼 커지기 때문입니다. 그래서 이 프로젝트는
+      큰 쪽만 인용하지 않고 <b>항상 범위로 적습니다.</b>
+    </p>
+
+    <figure>
+      <div class="fig-t">투영 폭에 따른 DV 비중</div>
+      <div class="fig-s">삭제율 6.1% · 1컬럼에서 20컬럼까지</div>
+      <div class="chartbox" id="c-width"></div>
+      <figcaption>
+        축은 컬럼 <b>수</b>가 아닙니다. 정수 컬럼 10개(21.6%)가 문자열 컬럼 3개(10.6%)보다
+        비중이 높습니다 — <b>md5 문자열 컬럼 하나가 정수 컬럼 8~10개어치</b>입니다(F-017).
+        진짜 축은 <b>디코딩 비용</b>이고, 손익분기는 하나의 숫자로 수렴합니다:
+        <b>DV가 스캔의 21%를 넘느냐</b>(F-018).
+      </figcaption>
+    </figure>
+
+    <figure>
+      <div class="fig-t">쿼리에 집계가 붙으면</div>
+      <div class="fig-s">전용 인스턴스 m7i.xlarge · 12라운드 · 같은 테이블에서 같은 두 컬럼</div>
+      <div class="tw" id="t-shuf"></div>
+      <figcaption id="cap-shuf"></figcaption>
+    </figure>
+
+    <div class="note">
+      <span class="tag">둘 다 사실입니다</span>
+      20컬럼 넓은 투영에서도 DV 체크 CPU는 <b>6.33배</b> 줄어듭니다. 그런데 그 CPU가
+      전체 스캔의 4.8%뿐이라 <b>전체 쿼리 시간으로는 측정되지 않습니다.</b>
+      절감되는 <b>CPU-초는 실재</b>하고(청구서는 CPU-초로 옵니다) 대시보드의 쿼리 시간은
+      안 움직입니다. 둘 다 말해야 합니다.
+    </div>
+  </section>
+
+  <!-- ═══════════════ 09 처방 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">09</span><h2>패치를 기다리는 동안 할 수 있는 것</h2></div>
+    <p class="lede">
+      <b>삭제 키로 정렬해서 쓰면</b> 삭제가 소수 청크에 몰리고 DV 체크가 <b>2.80배</b> 싸집니다.
+      패치가 와도 둘은 서로 대체하지 않습니다 — <b>둘 다 하면 12.39배</b>입니다(F-023).
+      그런데 조건이 넷 붙고, <b>전부 측정된 것</b>입니다.
+    </p>
+
+    <div class="tw" id="t-rx"></div>
+
+    <div class="note warn">
+      <span class="tag">정렬이 좋은 '이유'가 제 생각과 달랐습니다</span>
+      "정렬하면 run 컨테이너가 되어서 싸진다"고 1년 가까이 적어왔습니다. 그런데 정렬하면
+      컨테이너 <b>타입</b>(array→run)과 <b>개수</b>(124→12)가 <b>같이</b> 움직입니다.
+      타입은 그대로 두고 개수만 7.2배 줄이는 축을 따로 만들었더니 <b>2.22배</b>가 나왔습니다.
+      즉 3.53배 중 run 구조의 몫은 <b>≈1.59배</b>뿐이고, 나머지는
+      <b>삭제가 있는 청크를 비운 것</b>입니다(F-036). 조건 4와 같은 이야기입니다 —
+      run이 되는 것 자체는 이득이 아니었습니다.
+    </div>
+
+    <div class="note">
+      <span class="tag">아무도 말해주지 않는 청구서</span>
+      정렬하면 파일이 <b>작아질</b> 줄 알았는데 2.6% <b>커졌습니다</b>. 정렬 키는 399배
+      작아지는데, 원래 파일 안에서 완벽한 등차수열이던 <code>id</code>가 <b>2배</b>가 됩니다 —
+      델타 인코딩이 먹던 이득이 날아갑니다. 나머지 17개 컬럼은 ±0.1%로 안 움직였고,
+      그게 통제가 살아 있다는 증거입니다(F-029).
+    </div>
+  </section>
+
+  <!-- ═══════════════ 10 기전 ═══════════════ -->
+  <section>
+    <div class="sec-h"><span class="sec-id">10</span><h2>왜 비싼가 — 세 번 다 예상과 달랐다</h2></div>
+    <p class="lede">
+      처음에 이렇게 적었습니다: <i>"array 컨테이너는 이진 탐색이라 <b>분기 예측 실패</b>가
+      많아 비싸다."</i> 근거는 비용 곡선의 모양뿐이었고, 8개월 동안
+      <b>"WSL2에는 하드웨어 PMU가 없다"를 여덟 군데에 적어두고</b> 확인을 안 했습니다.
+      어느 날 확인해보니 <b>있었습니다.</b>
+    </p>
+
+    <figure>
+      <div class="fig-t">분기 예측 실패가 비용 차이를 얼마나 설명하는가</div>
+      <div class="fig-s">세 축에서 각각 측정 · vPMU</div>
+      <div class="chartbox" id="c-mech"></div>
+      <figcaption>
+        <b>세 축 중 고삭제율 반등에서만</b> 분기가 의미 있는 몫을 갖습니다. 20배 차이입니다.
+        나머지 둘에서 비싼 이유는 분기도 캐시도 아니라 <b>명령어 수</b>였고,
+        그건 컨테이너 타입이 아니라 <b>"행마다 호출한다"는 구조 자체</b>의 이야기입니다
+        (가장 싼 bitmap도 행당 86.5 명령어). <b>기전이 패치를 가리켰습니다.</b>
+      </figcaption>
+    </figure>
+
+    <div class="note">
+      <span class="tag">반등의 미상 55%에 이름이 붙었습니다</span>
+      루프 몸통을 변형 6종으로 잘랐더니 <b>분기를 지우면 반등이 100% 사라집니다.</b>
+      그런데 <code>branch-misses</code> 카운터가 세는 건 그중 33%뿐입니다 —
+      명령어는 +2.8%인데 IPC가 4.62 → 3.68로 떨어집니다.
+      <b>일이 늘어서가 아니라 파이프라인이 막혀서</b>이고, 그 정지는 오예측 카운터가 아니라
+      IPC로만 보입니다. 미상 55%는 새 범인이 아니라 <b>카운터가 3분의 1만 세고 있던
+      같은 비용</b>이었습니다(F-037).
+    </div>
+
+    <div class="note warn">
+      <span class="tag">그 숫자를 다시 정정했습니다</span>
+      F-037이 인용한 <b>+29.1%</b>는 fork 3 표본의 값입니다. 같은 코드를 fork 10으로 재면
+      <b>+4.5%</b>입니다 — 분기 있는 변형은 JIT이 포크마다 다르게 컴파일해
+      <b>이봉분포</b>를 이룹니다(~26.6이 6포크, ~34가 3포크). 기전 결론은 그대로 살지만
+      마이크로벤치의 <b>크기</b>는 죽습니다. <code>@Fork</code>는 노이즈 손잡이인 줄 알았는데
+      <b>평균 자체를 바꿉니다</b>(F-043).
+      <br><br>
+      그리고 <code>mapping[live++]</code>의 저장 주소 의존 가설은 2×2 요인 설계로
+      <b>죽었습니다</b> — 상호작용이 1.23배(예측 2배 이상)라, 주소 의존은 실재하되
+      <b>밀도를 안 타는 고정비</b>입니다.
+    </div>
+  </section>
+
   <!-- ═══════════════ chain ═══════════════ -->
   <section>
-    <div class="sec-h"><span class="sec-id">07</span><h2>측정된 사슬</h2></div>
+    <div class="sec-h"><span class="sec-id">11</span><h2>측정된 사슬</h2></div>
     <p class="lede">가설로 시작한 연결 고리가 전부 측정으로 채워졌습니다.</p>
     <div class="chain" id="chain"></div>
   </section>
 
   <!-- ═══════════════ limits ═══════════════ -->
   <section>
-    <div class="sec-h"><span class="sec-id">08</span><h2>이 수치를 어디까지 믿을 수 있나</h2></div>
+    <div class="sec-h"><span class="sec-id">12</span><h2>이 수치를 어디까지 믿을 수 있나</h2></div>
 
     <div class="note warn">
       <span class="tag">측정 조건</span>
@@ -425,6 +585,31 @@ footer b{color:var(--ink-2);font-weight:500}
       반면 <b>전이 경계 4096 · 컨테이너 분포 · 패치의 정확성</b>은 결정론적이라 환경과 무관하고,
       <b>패치의 개선 방향</b>은 행당 이진 탐색을 없앤 구조적 결과라 뒤집히지 않습니다
       (배율은 이동할 수 있습니다).
+      <br><br>
+      <b>2026-09 후속</b> — "S3 콜드 리드에서는 더 떨어질 것"은 <b>재보니 틀렸습니다</b>.
+      스토리지는 비중을 못 바꿉니다(§07). 대신 <b>파일 수</b>가 바꿉니다 —
+      예상 못 한 축이었고, 이번에도 <b>추측한 쪽이 틀렸습니다</b>.
+    </div>
+
+    <div class="note warn">
+      <span class="tag">노이즈 바닥은 이 기계의 성질이었습니다</span>
+      아래 9.7%는 <b>WSL2에서 잰 값</b>입니다. 같은 테이블·같은 jar·같은 스크립트로
+      기계만 전용 인스턴스로 바꾸면 흩어짐이 <b>49.4% → 15.0%</b>가 됩니다.
+      그래서 이 페이지에서 "노이즈 안"이라고 적힌 것들은 <b>조용한 기계에서 갈릴 수 있습니다</b> —
+      실제로 한 축(셔플)에서 부호가 뒤집혔습니다.
+      다만 <b>문턱을 결과에 맞춰 낮추지는 않았습니다.</b> 재보정은 환경별로 따로 잴 일이고,
+      그때까지 크기는 주장하지 않고 방향만 주장합니다.
+    </div>
+
+    <div class="note warn">
+      <span class="tag">도구가 거짓말한 것들</span>
+      이벤트 지원 게이트가 쓰던 <code>java -e '...'</code>는 <b>유효한 JDK 플래그가 아니어서</b>
+      JVM이 뜨지도 않았고, 그래서 그 게이트는 <b>어떤 이벤트에도 항상 실패를 냈습니다</b> —
+      그런데 주석은 그 실패를 "워크로드가 안 맞아서"로 해석해 뒀습니다.
+      <b>거짓 음성만 내는 게이트는 게이트가 없는 것보다 나쁩니다.</b>
+      그 밖에 PMU 이벤트에 주기를 안 줘서 프로파일 하나가 <b>7.5 GB</b>가 된 것,
+      <code>SCAN_ITERS</code> 기본값이 <code>config.env</code> 뒤에 있어 죽은 코드였던 것
+      (이 저장소에서 <b>여덟 번째</b>)도 같은 종류입니다.
     </div>
 
     <div class="note warn">
@@ -508,6 +693,61 @@ const JMH = [ /* F-002: us/op, batchSize 5000 */
   {name:"forAllInRange",           kind:"new",  v:{sparse:0.49,  medium:1.91,  dense:3.07}},
   {name:"forEachInRange + 채움",   kind:"new",  v:{sparse:0.45,  medium:1.87,  dense:4.16}},
   {name:"BatchIterator",           kind:"new",  v:{sparse:0.63,  medium:2.79,  dense:5.92}},
+];
+
+/* ── F-013~F-044 (2026-08-30 ~ 09-09). 위 네 개와 달리 빌더가 주입하지 않는다 —
+      각 축이 서로 다른 스크립트/채점기에서 나오므로 값을 여기 직접 적는다.
+      출처를 칸마다 달아 두었으니 docs/findings.md 와 대조할 것. ── */
+
+/* 이식성: 무엇을 바꿨을 때 DV 의 '스캔 내' 비중이 움직이는가 */
+const PORT = [
+  {axis:"페이지 캐시",  what:"웜 → 콜드",              a:51.2, b:52.0, f:"F-019", moved:false},
+  {axis:"CPU",         what:"Zen3 → Graviton3",       a:49.4, b:54.3, f:"F-020", moved:false},
+  {axis:"스토리지",     what:"EBS → S3",               a:56.2, b:58.0, f:"F-021", moved:false},
+  {axis:"스토리지(재확인)",what:"EBS → S3, 파일 488개",   a:49.7, b:49.0, f:"F-041", moved:false},
+  {axis:"셔플",        what:"스캔만 → GROUP BY(대)",   a:59.6, b:55.6, f:"F-042", moved:false},
+  {axis:"파일 수",      what:"4개 → 488개",            a:60.7, b:49.7, f:"F-041", moved:true},
+  {axis:"분산 클러스터", what:"단일 JVM → 3노드",        a:54.0, b:41.6, f:"F-027", moved:true},
+];
+
+/* 투영 폭 → DV 비중. 축은 컬럼 '수' 가 아니라 디코딩 비용이다 (F-016~F-018, F-025) */
+const WIDTH = [
+  {c:1,  share:53.2}, {c:3, share:24.0}, {c:5, share:16.0}, {c:10, share:8.5}, {c:20, share:3.75},
+];
+
+/* 밀도 전 구간의 패치 개선 배율 (F-011, F-039) */
+const PATCH_D = [
+  {d:"0.5%",  cont:"array",  base:674, pat:79,  x:8.56, f:"F-011"},
+  {d:"6.1%",  cont:"array",  base:873, pat:94,  x:9.28, f:"F-011"},
+  {d:"7.0%",  cont:"bitmap", base:420, pat:113, x:3.73, f:"F-011"},
+  {d:"8.0%",  cont:"bitmap", base:499, pat:142, x:3.51, f:"F-039"},
+  {d:"50%",   cont:"bitmap", base:584, pat:225, x:2.60, f:"F-039"},
+];
+
+/* 정렬 처방에 붙는 조건 넷 (F-023, F-026, F-029, F-035, F-036) */
+const RX = [
+  {n:1, cond:"삭제가 소수 키 값에 몰릴 때만",
+   bad:"고유값 ~1천 <b>2.78배</b> / ~100만 1.10배 / ~10억 <b>0.89배</b>(손해)", f:"F-026"},
+  {n:2, cond:"삭제율이 컨테이너 경계 아래일 때 크다",
+   bad:"경계 위(d=12%)에서는 <b>1.26배</b>로 준다 (아래는 3.53배)", f:"F-035"},
+  {n:3, cond:"한 번 쓰고 300번 이상 읽을 때만",
+   bad:"쓰기 <b>+63%</b>, 저장 <b>+2.6%</b> — 본전 회수 약 300회", f:"F-029"},
+  {n:4, cond:"어중간하게 뭉치면 오히려 손해",
+   bad:"run 컨테이너 nRuns 850 이면 bitmap 보다 <b>1.48배 비싸다</b>", f:"F-035"},
+];
+
+/* 셔플이 붙어도 절감되는 '절대 시간' 은 상수다 (F-042, m7i 전용 인스턴스 12라운드) */
+const SHUF = [
+  {q:"스캔만",   share:19.69, save:0.086, lo:0.039, hi:0.107, cut:29.3, sign:"12/12"},
+  {q:"집계-소",  share:10.54, save:0.065, lo:0.024, hi:0.117, cut:10.8, sign:"12/12"},
+  {q:"집계-대",  share: 3.36, save:0.100, lo:0.041, hi:0.117, cut: 3.7, sign:"12/12"},
+];
+
+/* 기전: 분기 예측 실패가 비용 차이를 얼마나 설명하는가 (F-028, F-031, F-032) */
+const MECH = [
+  {axis:"컨테이너 타입 차이 (마이크로벤치)", pct:1.4,  f:"F-028"},
+  {axis:"패치 전후 (실제 쿼리 경로)",        pct:0.2,  f:"F-031"},
+  {axis:"고삭제율 반등",                    pct:28.5, f:"F-032"},
 ];
 
 const SHARE = [ /* 스캔 서브트리 대비 DV 체크 비중 */
@@ -889,6 +1129,154 @@ function svgRoot(host,w,h){
     `실제로 두 경우 모두 범위가 겹쳐 차이를 주장할 수 없습니다. 회귀 없음.`;
 })();
 
+/* ---------- 6b. 밀도 전 구간 패치 표 ---------- */
+(function(){
+  const mx=PATCH_D.reduce((a,b)=>b.x>a.x?b:a), mn=PATCH_D.reduce((a,b)=>b.x<a.x?b:a);
+  document.getElementById("t-patchd").innerHTML=
+    "<table><thead><tr><th>삭제율</th><th>컨테이너</th><th>현행</th><th>패치본</th>"+
+    "<th>개선</th><th>출처</th></tr></thead><tbody>"+
+    PATCH_D.map(r=>`<tr><td>${r.d}</td><td>${r.cont}</td><td>${fmt(r.base)}</td>`+
+      `<td>${fmt(r.pat)}</td><td><b>${r.x.toFixed(2)}×</b></td><td>${r.f}</td></tr>`).join("")+
+    "</tbody></table>";
+  document.getElementById("cap-patchd").innerHTML=
+    `<b>어디서도 손해가 아니고, 최대 수혜 구간이 정확히 현행의 최악 지점(${mx.d})입니다.</b> `+
+    `고삭제율 쪽 하한은 <b>${mn.x.toFixed(2)}×</b>입니다 — 벌크 API의 이점은 `+
+    `"삭제 사이의 빈 구간을 한 번에 건너뛴다"에서 오는데, d=50%면 삭제 사이 간격이 `+
+    `평균 1행이라 건너뛸 게 없기 때문입니다. 그래도 2.60배가 남는 것은 `+
+    `<b>행마다의 조회와 분기가 사라지기 때문</b>입니다.`;
+})();
+
+/* ---------- 7. 이식성 : diverging bars (변화폭 %p) ---------- */
+(function(){
+  const W=980,H=300,L=170,R=70,T=18,B=44;
+  const s=svgRoot("c-port",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const rows=PORT.map(p=>({...p, d:p.b-p.a}));
+  const max=Math.max(...rows.map(r=>Math.abs(r.d)))*1.25;
+  const zero=L+pw/2;
+  const xOf=v=>zero+(pw/2)*v/max;
+  const bh=Math.min(22, ph/rows.length-8), step=ph/rows.length;
+
+  // 문턱(±5%p) 밴드 — 이 안이면 '안 움직인다' 로 읽는다
+  s.appendChild(el("rect",{x:xOf(-5),y:T,width:xOf(5)-xOf(-5),height:ph,
+    fill:"var(--s3-wash)"}));
+  const bt=el("text",{x:zero,y:T-5,class:"dlabel","text-anchor":"middle"});
+  bt.textContent="±5%p";s.appendChild(bt);
+  s.appendChild(el("line",{x1:zero,x2:zero,y1:T,y2:T+ph,class:"base"}));
+
+  rows.forEach((r,i)=>{
+    const y=T+step*i+(step-bh)/2;
+    const x0=Math.min(zero,xOf(r.d)), w=Math.abs(xOf(r.d)-zero);
+    s.appendChild(el("rect",{x:x0,y,width:Math.max(w,1.5),height:bh,
+      fill:r.moved?"var(--s2)":"var(--muted)",opacity:r.moved?1:.55,rx:3}));
+    const lab=el("text",{x:L-10,y:y+bh/2+4,class:"tick","text-anchor":"end"});
+    lab.textContent=r.axis;s.appendChild(lab);
+    const val=el("text",{x:r.d<0?x0-7:x0+w+7,y:y+bh/2+4,class:"dlabel",
+      "text-anchor":r.d<0?"end":"start"});
+    val.textContent=(r.d>0?"+":"")+r.d.toFixed(1)+"%p";s.appendChild(val);
+  });
+  const ax=el("text",{x:zero,y:H-10,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="DV/스캔 비중의 변화 (%p)";s.appendChild(ax);
+
+  document.getElementById("t-port").innerHTML=
+    "<table><thead><tr><th>축</th><th>무엇을 바꿨나</th><th>전</th><th>후</th><th>변화</th><th>판정</th><th>출처</th></tr></thead><tbody>"+
+    rows.map(r=>`<tr><td>${r.axis}</td><td>${r.what}</td><td>${r.a.toFixed(1)}%</td>`+
+      `<td>${r.b.toFixed(1)}%</td><td><b>${r.d>0?"+":""}${r.d.toFixed(1)}%p</b></td>`+
+      `<td>${r.moved?"<b>움직인다</b>":"안 움직인다"}</td><td>${r.f}</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 8a. 투영 폭 → 비중 ---------- */
+(function(){
+  const W=980,H=270,L=54,R=22,T=20,B=52;
+  const s=svgRoot("c-width",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const max=60;
+  const xOf=i=>L+pw*i/(WIDTH.length-1), yOf=v=>T+ph-ph*v/max;
+
+  for(let v=0;v<=60;v+=15){
+    const y=yOf(v);
+    s.appendChild(el("line",{x1:L,x2:W-R,y1:y,y2:y,class:v===0?"base":"gl"}));
+    const t=el("text",{x:L-9,y:y+3.5,class:"tick","text-anchor":"end"});
+    t.textContent=v+"%";s.appendChild(t);
+  }
+  // 손익분기 21% 선
+  const by=yOf(21);
+  s.appendChild(el("line",{x1:L,x2:W-R,y1:by,y2:by,stroke:"var(--s2)",
+    "stroke-width":1.5,"stroke-dasharray":"5 3"}));
+  const bl=el("text",{x:W-R,y:by-7,class:"dlabel","text-anchor":"end"});
+  bl.textContent="손익분기 21% — 이 위라야 벽시계로 보인다";
+  bl.setAttribute("fill","var(--s2)");s.appendChild(bl);
+
+  const pts=WIDTH.map((w,i)=>`${xOf(i)},${yOf(w.share)}`).join(" ");
+  s.appendChild(el("polyline",{points:pts,fill:"none",stroke:"var(--s1)","stroke-width":2.5}));
+  WIDTH.forEach((w,i)=>{
+    s.appendChild(el("circle",{cx:xOf(i),cy:yOf(w.share),r:4.5,fill:"var(--s1)"}));
+    const v=el("text",{x:xOf(i),y:yOf(w.share)-11,class:"dlabel","text-anchor":"middle"});
+    v.textContent=w.share.toFixed(w.share<10?2:1)+"%";s.appendChild(v);
+    const tk=el("text",{x:xOf(i),y:H-B+16,class:"tick","text-anchor":"middle"});
+    tk.textContent=w.c+"컬럼";s.appendChild(tk);
+  });
+  const ax=el("text",{x:L+pw/2,y:H-10,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="투영 폭";s.appendChild(ax);
+})();
+
+/* ---------- 8b. 셔플 표 ---------- */
+(function(){
+  document.getElementById("t-shuf").innerHTML=
+    "<table><thead><tr><th>쿼리</th><th>DV / 전체</th><th>절감 절대시간</th><th>라운드 범위</th>"+
+    "<th>전체 대비 단축</th><th>부호</th></tr></thead><tbody>"+
+    SHUF.map(q=>`<tr><td>${q.q}</td><td>${q.share.toFixed(2)}%</td>`+
+      `<td><b>+${q.save.toFixed(3)}초</b></td>`+
+      `<td class="mono">+${q.lo.toFixed(3)} ~ +${q.hi.toFixed(3)}</td>`+
+      `<td>−${q.cut.toFixed(1)}%</td><td>${q.sign}</td></tr>`).join("")+
+    "</tbody></table>";
+  document.getElementById("cap-shuf").innerHTML=
+    "<b>절감되는 절대 시간이 쿼리 종류와 무관하게 상수입니다</b> — 세 범위가 전부 겹칩니다. "+
+    "같은 행에 같은 DV 작업을 하니 당연한 결과인데, <b>재보기 전까지는 확인도 반박도 못 했습니다.</b> "+
+    "달라지는 건 그게 전체에서 차지하는 <b>비율</b>뿐입니다. "+
+    "이 표는 두 번 잰 것입니다 — 노트북에서는 집계-대 쿼리가 <b>−0.176초(패치가 느림, 1/6)</b>였고, "+
+    "전용 인스턴스에서 12라운드를 다시 재니 <b>+0.100초(12/12)</b>였습니다. "+
+    "<b>없는 회귀를 보고 있었습니다</b> (F-024 → F-042).";
+})();
+
+/* ---------- 9. 처방 조건 표 ---------- */
+(function(){
+  document.getElementById("t-rx").innerHTML=
+    "<table><thead><tr><th>조건</th><th>무엇을 지켜야 하나</th><th>안 지키면</th><th>출처</th></tr></thead><tbody>"+
+    RX.map(r=>`<tr><td><b>${r.n}</b></td><td>${r.cond}</td><td>${r.bad}</td><td>${r.f}</td></tr>`).join("")+
+    "</tbody></table>";
+})();
+
+/* ---------- 10. 기전 : 분기의 설명력 ---------- */
+(function(){
+  const W=980,H=210,L=250,R=90,T=18,B=42;
+  const s=svgRoot("c-mech",W,H);
+  const pw=W-L-R, ph=H-T-B;
+  const max=35;
+  const xOf=v=>L+pw*v/max;
+  const bh=Math.min(26, ph/MECH.length-10), step=ph/MECH.length;
+
+  for(let v=0;v<=35;v+=5){
+    const x=xOf(v);
+    s.appendChild(el("line",{x1:x,x2:x,y1:T,y2:T+ph,class:v===0?"base":"gl"}));
+    const t=el("text",{x,y:H-B+16,class:"tick","text-anchor":"middle"});
+    t.textContent=v+"%";s.appendChild(t);
+  }
+  MECH.forEach((m,i)=>{
+    const y=T+step*i+(step-bh)/2;
+    const big=m.pct>10;
+    s.appendChild(el("rect",{x:L,y,width:Math.max(xOf(m.pct)-L,2),height:bh,
+      fill:big?"var(--s2)":"var(--muted)",opacity:big?1:.55,rx:3}));
+    const lab=el("text",{x:L-10,y:y+bh/2+4,class:"tick","text-anchor":"end"});
+    lab.textContent=m.axis;s.appendChild(lab);
+    const val=el("text",{x:xOf(m.pct)+8,y:y+bh/2+4,class:"dlabel"});
+    val.textContent=m.pct.toFixed(1)+"%  ("+m.f+")";s.appendChild(val);
+  });
+  const ax=el("text",{x:L+pw/2,y:H-8,class:"axis-t","text-anchor":"middle"});
+  ax.textContent="분기 예측 실패로 설명되는 몫";s.appendChild(ax);
+})();
+
 /* ---------- stat tiles ---------- */
 (function(){
   const hi = COST.length?COST.reduce((a,b)=>b.mean>a.mean?b:a):null;
@@ -903,6 +1291,10 @@ function svgRoot(host,w,h){
     {k:"스캔 CPU 점유", v:"3.75~53.2%", s:"투영 폭의 함수 — 20컬럼 ↔ 1컬럼 · 삭제율 6.1%"},
     {k:"패치 후 개선", v: PATCH.length? PATCH.reduce((a,b)=>b.x>a.x?b:a).x.toFixed(2)+"×" : "—",
      s:"Iceberg를 실제로 고쳐 측정 · 최악 지점 · 정확성 검증 통과"},
+    {k:"이식성", v:"5 / 7 축 불변",
+     s:"캐시·CPU·스토리지·셔플은 안 움직이고, 파일 수와 분산만 움직인다"},
+    {k:"빗나간 예측", v:"17번",
+     s:"측정 전에 적었으므로 숨길 수 없었다 · 발견 44개"},
   ];
   document.getElementById("stats").innerHTML = tiles.map(t=>
     `<div class="stat"><div class="k">${t.k}</div><div class="v">${t.v}</div><div class="s">${t.s}</div></div>`
@@ -924,6 +1316,11 @@ function svgRoot(host,w,h){
     ["회복 ①",cf&&cl?`정렬로 <b>${(cf.mean/cl.mean).toFixed(2)}배</b> · DV 크기 1,115배 감소`:"—","F-009"],
     ["회복 ②","구간 API 마이크로벤치 <b>6~146배</b>","F-002"],
     ["회복 ② 실측", PATCH.length? `Iceberg를 실제로 고쳐 <b>${PATCH.reduce((a,b)=>b.x>a.x?b:a).x.toFixed(2)}배</b> · 결과 동일 검증 통과`:"—","F-011"],
+    ["실용성의 경계","20컬럼이면 DV가 분모의 4.8%라 <b>벽시계로는 측정 불가</b> · 손익분기는 DV 비중 <b>21%</b>","F-015·F-018"],
+    ["이식성","캐시·CPU·스토리지·셔플에서 <b>안 움직인다</b> · 파일 수(−11%p)와 분산(−12%p)만 움직인다","F-019~F-042"],
+    ["기전","분기도 캐시도 아니라 <b>명령어 수</b> — 컨테이너 타입이 아니라 '행마다 호출한다'는 구조","F-028·F-031"],
+    ["예외 하나","고삭제율 반등만 분기다 · <b>분기를 지우면 100% 사라진다</b>","F-032·F-037"],
+    ["처방 재해석","정렬 3.53배 중 run 구조 몫은 <b>≈1.59배</b> · 나머지는 청크를 비운 것","F-036"],
   ];
   document.getElementById("chain").innerHTML = links.map(([n,t,f])=>
     `<div class="link"><div class="n">${n}</div><div class="t">${t}</div><div class="f">${f}</div></div>`
