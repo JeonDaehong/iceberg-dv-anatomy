@@ -1,0 +1,18 @@
+{
+  "label": "patched_rp5000_r2",
+  "table": "dv.g.d5000",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.14032039299991084,
+  "median_s": 0.19611270299992611,
+  "max_s": 0.37239791299998615,
+  "mean_s": 0.20058349176670162,
+  "is_deleted": false
+}
