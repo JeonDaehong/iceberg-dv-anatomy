@@ -1,0 +1,2591 @@
+필터   : DvAddrBench
+패턴   : DENSE_8,DENSE_50
+perf   : perf version 6.8.12
+java   : openjdk version "21.0.12" 2026-07-21
+CPU    : AMD Ryzen 5 5600X 6-Core Processor
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.a_brLive
+# Parameters: (batchSize = 5000, pattern = DENSE_8)
+
+# Run progress: 0.00% complete, ETA 00:34:40
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.023 us/op
+# Warmup Iteration   2: 29.022 us/op
+# Warmup Iteration   3: 28.793 us/op
+# Warmup Iteration   4: 29.343 us/op
+# Warmup Iteration   5: 28.818 us/op
+Iteration   1: 29.295 us/op
+Iteration   2: 27.747 us/op
+Iteration   3: 26.179 us/op
+Iteration   4: 28.367 us/op
+Iteration   5: 28.846 us/op
+Iteration   6: 28.217 us/op
+Iteration   7: 29.295 us/op
+Iteration   8: 29.068 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 1.25% complete, ETA 00:35:50
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.704 us/op
+# Warmup Iteration   2: 27.729 us/op
+# Warmup Iteration   3: 28.222 us/op
+# Warmup Iteration   4: 29.092 us/op
+# Warmup Iteration   5: 28.689 us/op
+Iteration   1: 28.118 us/op
+Iteration   2: 28.459 us/op
+Iteration   3: 28.748 us/op
+Iteration   4: 28.234 us/op
+Iteration   5: 28.193 us/op
+Iteration   6: 28.166 us/op
+Iteration   7: 28.209 us/op
+Iteration   8: 28.509 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 2.50% complete, ETA 00:35:20
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.927 us/op
+# Warmup Iteration   2: 29.342 us/op
+# Warmup Iteration   3: 28.050 us/op
+# Warmup Iteration   4: 27.759 us/op
+# Warmup Iteration   5: 25.759 us/op
+Iteration   1: 27.367 us/op
+Iteration   2: 28.448 us/op
+Iteration   3: 28.632 us/op
+Iteration   4: 28.179 us/op
+Iteration   5: 27.837 us/op
+Iteration   6: 27.995 us/op
+Iteration   7: 28.447 us/op
+Iteration   8: 28.616 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 3.75% complete, ETA 00:34:53
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.465 us/op
+# Warmup Iteration   2: 28.405 us/op
+# Warmup Iteration   3: 27.332 us/op
+# Warmup Iteration   4: 27.034 us/op
+# Warmup Iteration   5: 27.229 us/op
+Iteration   1: 31.272 us/op
+Iteration   2: 28.980 us/op
+Iteration   3: 28.914 us/op
+Iteration   4: 30.151 us/op
+Iteration   5: 28.011 us/op
+Iteration   6: 26.027 us/op
+Iteration   7: 28.140 us/op
+Iteration   8: 29.917 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 5.00% complete, ETA 00:34:25
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.308 us/op
+# Warmup Iteration   2: 28.648 us/op
+# Warmup Iteration   3: 28.773 us/op
+# Warmup Iteration   4: 28.131 us/op
+# Warmup Iteration   5: 27.517 us/op
+Iteration   1: 27.709 us/op
+Iteration   2: 27.261 us/op
+Iteration   3: 29.894 us/op
+Iteration   4: 28.759 us/op
+Iteration   5: 28.191 us/op
+Iteration   6: 30.221 us/op
+Iteration   7: 28.543 us/op
+Iteration   8: 27.044 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 6.25% complete, ETA 00:34:04
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+27.962 us/op
+# Warmup Iteration   2: 27.755 us/op
+# Warmup Iteration   3: 27.594 us/op
+# Warmup Iteration   4: 26.973 us/op
+# Warmup Iteration   5: 27.379 us/op
+Iteration   1: 27.649 us/op
+Iteration   2: 26.841 us/op
+Iteration   3: 26.449 us/op
+Iteration   4: 27.096 us/op
+Iteration   5: 27.139 us/op
+Iteration   6: 27.016 us/op
+Iteration   7: 27.204 us/op
+Iteration   8: 27.009 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 7.50% complete, ETA 00:33:34
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.013 us/op
+# Warmup Iteration   2: 27.710 us/op
+# Warmup Iteration   3: 28.031 us/op
+# Warmup Iteration   4: 27.467 us/op
+# Warmup Iteration   5: 27.933 us/op
+Iteration   1: 28.114 us/op
+Iteration   2: 27.809 us/op
+Iteration   3: 27.846 us/op
+Iteration   4: 28.324 us/op
+Iteration   5: 27.952 us/op
+Iteration   6: 27.949 us/op
+Iteration   7: 27.973 us/op
+Iteration   8: 29.472 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 8.75% complete, ETA 00:33:06
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+31.306 us/op
+# Warmup Iteration   2: 28.348 us/op
+# Warmup Iteration   3: 28.613 us/op
+# Warmup Iteration   4: 28.287 us/op
+# Warmup Iteration   5: 28.212 us/op
+Iteration   1: 27.533 us/op
+Iteration   2: 28.073 us/op
+Iteration   3: 27.982 us/op
+Iteration   4: 28.443 us/op
+Iteration   5: 28.836 us/op
+Iteration   6: 28.320 us/op
+Iteration   7: 26.814 us/op
+Iteration   8: 25.959 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 10.00% complete, ETA 00:32:40
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.335 us/op
+# Warmup Iteration   2: 27.841 us/op
+# Warmup Iteration   3: 26.324 us/op
+# Warmup Iteration   4: 27.117 us/op
+# Warmup Iteration   5: 28.367 us/op
+Iteration   1: 27.794 us/op
+Iteration   2: 27.332 us/op
+Iteration   3: 27.755 us/op
+Iteration   4: 28.133 us/op
+Iteration   5: 28.030 us/op
+Iteration   6: 27.589 us/op
+Iteration   7: 27.687 us/op
+Iteration   8: 28.406 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 11.25% complete, ETA 00:32:12
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+27.504 us/op
+# Warmup Iteration   2: 25.322 us/op
+# Warmup Iteration   3: 27.503 us/op
+# Warmup Iteration   4: 28.136 us/op
+# Warmup Iteration   5: 25.833 us/op
+Iteration   1: 25.700 us/op
+Iteration   2: 27.749 us/op
+Iteration   3: 27.672 us/op
+Iteration   4: 26.630 us/op
+Iteration   5: 26.058 us/op
+Iteration   6: 27.353 us/op
+Iteration   7: 27.890 us/op
+Iteration   8: 27.243 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.a_brLive":
+  28.013 ±(99.9%) 0.379 us/op [Average]
+  (min, avg, max) = (25.700, 28.013, 31.272), stdev = 0.991
+  CI (99.9%): [27.634, 28.391] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:CPI":
+  0.214 ±(99.9%) 0.008 clks/insn [Average]
+  (min, avg, max) = (0.205, 0.214, 0.220), stdev = 0.005
+  CI (99.9%): [0.207, 0.222] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:IPC":
+  4.666 ±(99.9%) 0.168 insns/clk [Average]
+  (min, avg, max) = (4.550, 4.666, 4.869), stdev = 0.111
+  CI (99.9%): [4.498, 4.834] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-dcache-load-misses":
+  92.782 ±(99.9%) 242.473 #/op [Average]
+  (min, avg, max) = (30.645, 92.782, 548.883), stdev = 160.381
+  CI (99.9%): [≈ 0, 335.255] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-dcache-loads":
+  140985.826 ±(99.9%) 5435.461 #/op [Average]
+  (min, avg, max) = (137261.731, 140985.826, 145356.639), stdev = 3595.221
+  CI (99.9%): [135550.365, 146421.287] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-icache-load-misses":
+  0.443 ±(99.9%) 0.066 #/op [Average]
+  (min, avg, max) = (0.358, 0.443, 0.519), stdev = 0.043
+  CI (99.9%): [0.378, 0.509] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-icache-loads":
+  88.564 ±(99.9%) 19.625 #/op [Average]
+  (min, avg, max) = (71.537, 88.564, 110.221), stdev = 12.980
+  CI (99.9%): [68.940, 108.189] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:branch-misses":
+  412.683 ±(99.9%) 23.071 #/op [Average]
+  (min, avg, max) = (393.512, 412.683, 428.495), stdev = 15.260
+  CI (99.9%): [389.612, 435.754] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:branches":
+  138175.981 ±(99.9%) 5458.262 #/op [Average]
+  (min, avg, max) = (134046.803, 138175.981, 142259.724), stdev = 3610.303
+  CI (99.9%): [132717.719, 143634.244] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:cycles":
+  129559.965 ±(99.9%) 6340.094 #/op [Average]
+  (min, avg, max) = (122269.580, 129559.965, 134151.214), stdev = 4193.580
+  CI (99.9%): [123219.871, 135900.059] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:dTLB-load-misses":
+  0.351 ±(99.9%) 0.106 #/op [Average]
+  (min, avg, max) = (0.258, 0.351, 0.492), stdev = 0.070
+  CI (99.9%): [0.244, 0.457] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:dTLB-loads":
+  1.902 ±(99.9%) 0.459 #/op [Average]
+  (min, avg, max) = (1.337, 1.902, 2.481), stdev = 0.304
+  CI (99.9%): [1.443, 2.361] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:iTLB-load-misses":
+  0.330 ±(99.9%) 0.083 #/op [Average]
+  (min, avg, max) = (0.236, 0.330, 0.408), stdev = 0.055
+  CI (99.9%): [0.248, 0.413] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:iTLB-loads":
+  0.588 ±(99.9%) 0.076 #/op [Average]
+  (min, avg, max) = (0.529, 0.588, 0.672), stdev = 0.050
+  CI (99.9%): [0.512, 0.664] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:instructions":
+  604250.952 ±(99.9%) 21215.761 #/op [Average]
+  (min, avg, max) = (585570.505, 604250.952, 620965.186), stdev = 14032.913
+  CI (99.9%): [583035.191, 625466.714] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:stalled-cycles-frontend":
+  1783.312 ±(99.9%) 233.866 #/op [Average]
+  (min, avg, max) = (1557.419, 1783.312, 2075.624), stdev = 154.688
+  CI (99.9%): [1549.447, 2017.178] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.a_brLive
+# Parameters: (batchSize = 5000, pattern = DENSE_50)
+
+# Run progress: 12.50% complete, ETA 00:31:44
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.854 us/op
+# Warmup Iteration   2: 26.484 us/op
+# Warmup Iteration   3: 26.351 us/op
+# Warmup Iteration   4: 25.585 us/op
+# Warmup Iteration   5: 26.601 us/op
+Iteration   1: 27.160 us/op
+Iteration   2: 26.390 us/op
+Iteration   3: 26.308 us/op
+Iteration   4: 28.879 us/op
+Iteration   5: 28.138 us/op
+Iteration   6: 26.559 us/op
+Iteration   7: 25.951 us/op
+Iteration   8: 26.875 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 13.75% complete, ETA 00:31:19
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+30.775 us/op
+# Warmup Iteration   2: 28.007 us/op
+# Warmup Iteration   3: 30.200 us/op
+# Warmup Iteration   4: 30.715 us/op
+# Warmup Iteration   5: 31.308 us/op
+Iteration   1: 29.451 us/op
+Iteration   2: 31.139 us/op
+Iteration   3: 30.751 us/op
+Iteration   4: 31.350 us/op
+Iteration   5: 28.915 us/op
+Iteration   6: 30.173 us/op
+Iteration   7: 31.198 us/op
+Iteration   8: 30.873 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 15.00% complete, ETA 00:30:52
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.522 us/op
+# Warmup Iteration   2: 26.584 us/op
+# Warmup Iteration   3: 27.351 us/op
+# Warmup Iteration   4: 26.517 us/op
+# Warmup Iteration   5: 25.853 us/op
+Iteration   1: 27.173 us/op
+Iteration   2: 27.179 us/op
+Iteration   3: 25.900 us/op
+Iteration   4: 26.073 us/op
+Iteration   5: 27.030 us/op
+Iteration   6: 27.566 us/op
+Iteration   7: 25.364 us/op
+Iteration   8: 26.099 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 16.25% complete, ETA 00:30:25
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+28.080 us/op
+# Warmup Iteration   2: 26.402 us/op
+# Warmup Iteration   3: 26.088 us/op
+# Warmup Iteration   4: 27.255 us/op
+# Warmup Iteration   5: 27.813 us/op
+Iteration   1: 26.571 us/op
+Iteration   2: 26.614 us/op
+Iteration   3: 26.654 us/op
+Iteration   4: 27.254 us/op
+Iteration   5: 26.823 us/op
+Iteration   6: 25.321 us/op
+Iteration   7: 26.481 us/op
+Iteration   8: 26.846 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 17.50% complete, ETA 00:29:57
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+35.815 us/op
+# Warmup Iteration   2: 36.255 us/op
+# Warmup Iteration   3: 38.314 us/op
+# Warmup Iteration   4: 35.107 us/op
+# Warmup Iteration   5: 33.092 us/op
+Iteration   1: 33.326 us/op
+Iteration   2: 34.973 us/op
+Iteration   3: 34.784 us/op
+Iteration   4: 34.152 us/op
+Iteration   5: 34.776 us/op
+Iteration   6: 34.733 us/op
+Iteration   7: 34.308 us/op
+Iteration   8: 34.888 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 18.75% complete, ETA 00:29:30
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.964 us/op
+# Warmup Iteration   2: 25.607 us/op
+# Warmup Iteration   3: 26.334 us/op
+# Warmup Iteration   4: 25.857 us/op
+# Warmup Iteration   5: 26.740 us/op
+Iteration   1: 26.619 us/op
+Iteration   2: 26.052 us/op
+Iteration   3: 26.502 us/op
+Iteration   4: 26.548 us/op
+Iteration   5: 26.097 us/op
+Iteration   6: 25.644 us/op
+Iteration   7: 26.964 us/op
+Iteration   8: 26.176 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 20.00% complete, ETA 00:29:02
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+27.286 us/op
+# Warmup Iteration   2: 25.369 us/op
+# Warmup Iteration   3: 27.871 us/op
+# Warmup Iteration   4: 27.344 us/op
+# Warmup Iteration   5: 27.618 us/op
+Iteration   1: 26.455 us/op
+Iteration   2: 27.111 us/op
+Iteration   3: 26.804 us/op
+Iteration   4: 27.763 us/op
+Iteration   5: 27.734 us/op
+Iteration   6: 26.148 us/op
+Iteration   7: 26.042 us/op
+Iteration   8: 26.825 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 21.25% complete, ETA 00:28:35
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+34.563 us/op
+# Warmup Iteration   2: 34.124 us/op
+# Warmup Iteration   3: 33.395 us/op
+# Warmup Iteration   4: 34.809 us/op
+# Warmup Iteration   5: 34.288 us/op
+Iteration   1: 34.958 us/op
+Iteration   2: 34.641 us/op
+Iteration   3: 33.960 us/op
+Iteration   4: 34.099 us/op
+Iteration   5: 33.328 us/op
+Iteration   6: 33.474 us/op
+Iteration   7: 33.555 us/op
+Iteration   8: 34.439 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 22.50% complete, ETA 00:28:07
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+32.123 us/op
+# Warmup Iteration   2: 31.598 us/op
+# Warmup Iteration   3: 35.125 us/op
+# Warmup Iteration   4: 34.605 us/op
+# Warmup Iteration   5: 33.335 us/op
+Iteration   1: 34.266 us/op
+Iteration   2: 35.372 us/op
+Iteration   3: 35.675 us/op
+Iteration   4: 35.626 us/op
+Iteration   5: 33.842 us/op
+Iteration   6: 32.393 us/op
+Iteration   7: 31.202 us/op
+Iteration   8: 31.725 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 23.75% complete, ETA 00:27:40
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+27.538 us/op
+# Warmup Iteration   2: 25.952 us/op
+# Warmup Iteration   3: 27.042 us/op
+# Warmup Iteration   4: 26.075 us/op
+# Warmup Iteration   5: 26.328 us/op
+Iteration   1: 27.444 us/op
+Iteration   2: 26.649 us/op
+Iteration   3: 25.967 us/op
+Iteration   4: 26.778 us/op
+Iteration   5: 26.950 us/op
+Iteration   6: 27.425 us/op
+Iteration   7: 26.597 us/op
+Iteration   8: 25.814 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.a_brLive":
+  29.283 ±(99.9%) 1.328 us/op [Average]
+  (min, avg, max) = (25.321, 29.283, 35.675), stdev = 3.474
+  CI (99.9%): [27.956, 30.611] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:CPI":
+  0.223 ±(99.9%) 0.046 clks/insn [Average]
+  (min, avg, max) = (0.199, 0.223, 0.269), stdev = 0.030
+  CI (99.9%): [0.177, 0.269] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:IPC":
+  4.549 ±(99.9%) 0.865 insns/clk [Average]
+  (min, avg, max) = (3.715, 4.549, 5.030), stdev = 0.572
+  CI (99.9%): [3.684, 5.414] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-dcache-load-misses":
+  71.452 ±(99.9%) 247.190 #/op [Average]
+  (min, avg, max) = (14.878, 71.452, 536.667), stdev = 163.501
+  CI (99.9%): [≈ 0, 318.642] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-dcache-loads":
+  141292.695 ±(99.9%) 15142.566 #/op [Average]
+  (min, avg, max) = (130065.773, 141292.695, 160497.730), stdev = 10015.870
+  CI (99.9%): [126150.129, 156435.261] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-icache-load-misses":
+  0.493 ±(99.9%) 0.147 #/op [Average]
+  (min, avg, max) = (0.397, 0.493, 0.723), stdev = 0.097
+  CI (99.9%): [0.346, 0.640] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:L1-icache-loads":
+  80.452 ±(99.9%) 23.183 #/op [Average]
+  (min, avg, max) = (63.319, 80.452, 112.293), stdev = 15.334
+  CI (99.9%): [57.269, 103.635] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:branch-misses":
+  525.154 ±(99.9%) 680.375 #/op [Average]
+  (min, avg, max) = (156.997, 525.154, 1255.984), stdev = 450.026
+  CI (99.9%): [≈ 0, 1205.529] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:branches":
+  139114.654 ±(99.9%) 6841.265 #/op [Average]
+  (min, avg, max) = (134056.052, 139114.654, 144558.910), stdev = 4525.073
+  CI (99.9%): [132273.389, 145955.918] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:cycles":
+  137784.722 ±(99.9%) 27984.911 #/op [Average]
+  (min, avg, max) = (120330.807, 137784.722, 167511.901), stdev = 18510.286
+  CI (99.9%): [109799.811, 165769.634] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:dTLB-load-misses":
+  0.396 ±(99.9%) 0.122 #/op [Average]
+  (min, avg, max) = (0.317, 0.396, 0.552), stdev = 0.081
+  CI (99.9%): [0.273, 0.518] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:dTLB-loads":
+  1.913 ±(99.9%) 0.570 #/op [Average]
+  (min, avg, max) = (1.596, 1.913, 2.581), stdev = 0.377
+  CI (99.9%): [1.343, 2.483] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:iTLB-load-misses":
+  0.446 ±(99.9%) 0.125 #/op [Average]
+  (min, avg, max) = (0.352, 0.446, 0.584), stdev = 0.083
+  CI (99.9%): [0.321, 0.571] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:iTLB-loads":
+  0.772 ±(99.9%) 0.279 #/op [Average]
+  (min, avg, max) = (0.581, 0.772, 1.066), stdev = 0.185
+  CI (99.9%): [0.493, 1.050] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:instructions":
+  617702.911 ±(99.9%) 34655.933 #/op [Average]
+  (min, avg, max) = (587527.735, 617702.911, 647549.114), stdev = 22922.754
+  CI (99.9%): [583046.978, 652358.843] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.a_brLive:stalled-cycles-frontend":
+  1902.014 ±(99.9%) 2064.290 #/op [Average]
+  (min, avg, max) = (787.718, 1902.014, 3787.776), stdev = 1365.400
+  CI (99.9%): [≈ 0, 3966.305] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.b_brRow
+# Parameters: (batchSize = 5000, pattern = DENSE_8)
+
+# Run progress: 25.00% complete, ETA 00:27:13
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+27.341 us/op
+# Warmup Iteration   2: 26.605 us/op
+# Warmup Iteration   3: 25.076 us/op
+# Warmup Iteration   4: 25.134 us/op
+# Warmup Iteration   5: 25.283 us/op
+Iteration   1: 25.371 us/op
+Iteration   2: 25.782 us/op
+Iteration   3: 25.389 us/op
+Iteration   4: 25.526 us/op
+Iteration   5: 25.031 us/op
+Iteration   6: 25.466 us/op
+Iteration   7: 25.306 us/op
+Iteration   8: 25.229 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 26.25% complete, ETA 00:26:46
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.652 us/op
+# Warmup Iteration   2: 28.008 us/op
+# Warmup Iteration   3: 25.076 us/op
+# Warmup Iteration   4: 25.005 us/op
+# Warmup Iteration   5: 25.042 us/op
+Iteration   1: 25.502 us/op
+Iteration   2: 25.106 us/op
+Iteration   3: 25.629 us/op
+Iteration   4: 25.051 us/op
+Iteration   5: 25.126 us/op
+Iteration   6: 25.327 us/op
+Iteration   7: 25.286 us/op
+Iteration   8: 25.131 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 27.50% complete, ETA 00:26:19
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.953 us/op
+# Warmup Iteration   2: 27.715 us/op
+# Warmup Iteration   3: 25.608 us/op
+# Warmup Iteration   4: 25.129 us/op
+# Warmup Iteration   5: 25.138 us/op
+Iteration   1: 25.107 us/op
+Iteration   2: 25.293 us/op
+Iteration   3: 25.331 us/op
+Iteration   4: 24.965 us/op
+Iteration   5: 24.878 us/op
+Iteration   6: 24.971 us/op
+Iteration   7: 24.925 us/op
+Iteration   8: 24.853 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 28.75% complete, ETA 00:25:51
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.459 us/op
+# Warmup Iteration   2: 26.932 us/op
+# Warmup Iteration   3: 24.965 us/op
+# Warmup Iteration   4: 25.201 us/op
+# Warmup Iteration   5: 25.199 us/op
+Iteration   1: 25.115 us/op
+Iteration   2: 25.085 us/op
+Iteration   3: 24.883 us/op
+Iteration   4: 25.169 us/op
+Iteration   5: 25.162 us/op
+Iteration   6: 25.112 us/op
+Iteration   7: 25.056 us/op
+Iteration   8: 25.424 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 30.00% complete, ETA 00:25:24
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.266 us/op
+# Warmup Iteration   2: 28.055 us/op
+# Warmup Iteration   3: 24.994 us/op
+# Warmup Iteration   4: 25.823 us/op
+# Warmup Iteration   5: 25.142 us/op
+Iteration   1: 25.499 us/op
+Iteration   2: 25.303 us/op
+Iteration   3: 25.018 us/op
+Iteration   4: 25.114 us/op
+Iteration   5: 24.942 us/op
+Iteration   6: 25.205 us/op
+Iteration   7: 24.971 us/op
+Iteration   8: 25.032 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 31.25% complete, ETA 00:24:56
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.510 us/op
+# Warmup Iteration   2: 27.111 us/op
+# Warmup Iteration   3: 24.816 us/op
+# Warmup Iteration   4: 25.407 us/op
+# Warmup Iteration   5: 24.983 us/op
+Iteration   1: 25.070 us/op
+Iteration   2: 24.921 us/op
+Iteration   3: 26.378 us/op
+Iteration   4: 25.475 us/op
+Iteration   5: 25.267 us/op
+Iteration   6: 26.255 us/op
+Iteration   7: 25.772 us/op
+Iteration   8: 25.104 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 32.50% complete, ETA 00:24:29
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.914 us/op
+# Warmup Iteration   2: 26.970 us/op
+# Warmup Iteration   3: 24.743 us/op
+# Warmup Iteration   4: 24.753 us/op
+# Warmup Iteration   5: 25.310 us/op
+Iteration   1: 24.971 us/op
+Iteration   2: 24.912 us/op
+Iteration   3: 25.141 us/op
+Iteration   4: 24.761 us/op
+Iteration   5: 24.638 us/op
+Iteration   6: 24.967 us/op
+Iteration   7: 25.043 us/op
+Iteration   8: 25.300 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 33.75% complete, ETA 00:24:01
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.042 us/op
+# Warmup Iteration   2: 27.234 us/op
+# Warmup Iteration   3: 24.903 us/op
+# Warmup Iteration   4: 24.628 us/op
+# Warmup Iteration   5: 24.955 us/op
+Iteration   1: 24.830 us/op
+Iteration   2: 24.766 us/op
+Iteration   3: 24.619 us/op
+Iteration   4: 25.292 us/op
+Iteration   5: 24.795 us/op
+Iteration   6: 24.897 us/op
+Iteration   7: 25.027 us/op
+Iteration   8: 24.917 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 35.00% complete, ETA 00:23:34
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.319 us/op
+# Warmup Iteration   2: 26.811 us/op
+# Warmup Iteration   3: 25.357 us/op
+# Warmup Iteration   4: 24.683 us/op
+# Warmup Iteration   5: 24.863 us/op
+Iteration   1: 25.310 us/op
+Iteration   2: 25.540 us/op
+Iteration   3: 25.274 us/op
+Iteration   4: 24.892 us/op
+Iteration   5: 24.882 us/op
+Iteration   6: 25.475 us/op
+Iteration   7: 25.227 us/op
+Iteration   8: 26.370 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 36.25% complete, ETA 00:23:07
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.391 us/op
+# Warmup Iteration   2: 27.216 us/op
+# Warmup Iteration   3: 25.628 us/op
+# Warmup Iteration   4: 25.059 us/op
+# Warmup Iteration   5: 25.295 us/op
+Iteration   1: 24.907 us/op
+Iteration   2: 25.297 us/op
+Iteration   3: 25.077 us/op
+Iteration   4: 25.845 us/op
+Iteration   5: 25.165 us/op
+Iteration   6: 25.403 us/op
+Iteration   7: 25.367 us/op
+Iteration   8: 26.041 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.b_brRow":
+  25.211 ±(99.9%) 0.134 us/op [Average]
+  (min, avg, max) = (24.619, 25.211, 26.378), stdev = 0.351
+  CI (99.9%): [25.077, 25.345] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:CPI":
+  0.213 ±(99.9%) 0.003 clks/insn [Average]
+  (min, avg, max) = (0.211, 0.213, 0.216), stdev = 0.002
+  CI (99.9%): [0.210, 0.216] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:IPC":
+  4.687 ±(99.9%) 0.065 insns/clk [Average]
+  (min, avg, max) = (4.621, 4.687, 4.745), stdev = 0.043
+  CI (99.9%): [4.622, 4.753] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-dcache-load-misses":
+  82.054 ±(99.9%) 5.396 #/op [Average]
+  (min, avg, max) = (78.096, 82.054, 86.927), stdev = 3.569
+  CI (99.9%): [76.658, 87.449] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-dcache-loads":
+  147971.932 ±(99.9%) 7652.920 #/op [Average]
+  (min, avg, max) = (143428.242, 147971.932, 154716.882), stdev = 5061.933
+  CI (99.9%): [140319.012, 155624.852] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-icache-load-misses":
+  0.486 ±(99.9%) 0.077 #/op [Average]
+  (min, avg, max) = (0.404, 0.486, 0.559), stdev = 0.051
+  CI (99.9%): [0.410, 0.563] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-icache-loads":
+  96.363 ±(99.9%) 28.031 #/op [Average]
+  (min, avg, max) = (66.009, 96.363, 136.658), stdev = 18.541
+  CI (99.9%): [68.332, 124.394] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:branch-misses":
+  418.450 ±(99.9%) 20.651 #/op [Average]
+  (min, avg, max) = (405.321, 418.450, 435.489), stdev = 13.659
+  CI (99.9%): [397.799, 439.101] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:branches":
+  133910.668 ±(99.9%) 6761.069 #/op [Average]
+  (min, avg, max) = (130026.361, 133910.668, 139705.992), stdev = 4472.029
+  CI (99.9%): [127149.599, 140671.737] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:cycles":
+  117572.977 ±(99.9%) 5963.181 #/op [Average]
+  (min, avg, max) = (113417.276, 117572.977, 123082.294), stdev = 3944.275
+  CI (99.9%): [111609.796, 123536.157] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:dTLB-load-misses":
+  0.340 ±(99.9%) 0.082 #/op [Average]
+  (min, avg, max) = (0.269, 0.340, 0.409), stdev = 0.054
+  CI (99.9%): [0.258, 0.422] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:dTLB-loads":
+  1.867 ±(99.9%) 0.443 #/op [Average]
+  (min, avg, max) = (1.547, 1.867, 2.452), stdev = 0.293
+  CI (99.9%): [1.425, 2.310] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:iTLB-load-misses":
+  0.377 ±(99.9%) 0.044 #/op [Average]
+  (min, avg, max) = (0.324, 0.377, 0.413), stdev = 0.029
+  CI (99.9%): [0.332, 0.421] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:iTLB-loads":
+  0.651 ±(99.9%) 0.101 #/op [Average]
+  (min, avg, max) = (0.531, 0.651, 0.741), stdev = 0.066
+  CI (99.9%): [0.550, 0.751] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:instructions":
+  551106.733 ±(99.9%) 28173.922 #/op [Average]
+  (min, avg, max) = (532353.857, 551106.733, 574579.094), stdev = 18635.305
+  CI (99.9%): [522932.810, 579280.655] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:stalled-cycles-frontend":
+  1660.241 ±(99.9%) 271.192 #/op [Average]
+  (min, avg, max) = (1344.220, 1660.241, 1855.320), stdev = 179.377
+  CI (99.9%): [1389.049, 1931.433] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.b_brRow
+# Parameters: (batchSize = 5000, pattern = DENSE_50)
+
+# Run progress: 37.50% complete, ETA 00:22:39
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.968 us/op
+# Warmup Iteration   2: 24.153 us/op
+# Warmup Iteration   3: 23.060 us/op
+# Warmup Iteration   4: 22.470 us/op
+# Warmup Iteration   5: 22.528 us/op
+Iteration   1: 23.033 us/op
+Iteration   2: 22.690 us/op
+Iteration   3: 23.426 us/op
+Iteration   4: 22.835 us/op
+Iteration   5: 23.051 us/op
+Iteration   6: 22.354 us/op
+Iteration   7: 22.670 us/op
+Iteration   8: 24.580 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 38.75% complete, ETA 00:22:13
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.928 us/op
+# Warmup Iteration   2: 24.174 us/op
+# Warmup Iteration   3: 22.466 us/op
+# Warmup Iteration   4: 23.608 us/op
+# Warmup Iteration   5: 23.013 us/op
+Iteration   1: 23.221 us/op
+Iteration   2: 25.217 us/op
+Iteration   3: 22.496 us/op
+Iteration   4: 24.695 us/op
+Iteration   5: 24.163 us/op
+Iteration   6: 22.568 us/op
+Iteration   7: 24.729 us/op
+Iteration   8: 22.525 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 40.00% complete, ETA 00:21:46
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+29.505 us/op
+# Warmup Iteration   2: 32.903 us/op
+# Warmup Iteration   3: 26.022 us/op
+# Warmup Iteration   4: 29.544 us/op
+# Warmup Iteration   5: 27.821 us/op
+Iteration   1: 28.328 us/op
+Iteration   2: 28.200 us/op
+Iteration   3: 25.878 us/op
+Iteration   4: 26.535 us/op
+Iteration   5: 26.006 us/op
+Iteration   6: 26.634 us/op
+Iteration   7: 25.701 us/op
+Iteration   8: 26.481 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 41.25% complete, ETA 00:21:19
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+29.411 us/op
+# Warmup Iteration   2: 28.618 us/op
+# Warmup Iteration   3: 26.842 us/op
+# Warmup Iteration   4: 26.621 us/op
+# Warmup Iteration   5: 26.501 us/op
+Iteration   1: 26.924 us/op
+Iteration   2: 27.181 us/op
+Iteration   3: 26.789 us/op
+Iteration   4: 26.685 us/op
+Iteration   5: 26.775 us/op
+Iteration   6: 26.669 us/op
+Iteration   7: 26.676 us/op
+Iteration   8: 27.075 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 42.50% complete, ETA 00:20:51
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+32.091 us/op
+# Warmup Iteration   2: 29.972 us/op
+# Warmup Iteration   3: 26.005 us/op
+# Warmup Iteration   4: 27.022 us/op
+# Warmup Iteration   5: 25.751 us/op
+Iteration   1: 25.212 us/op
+Iteration   2: 26.400 us/op
+Iteration   3: 25.205 us/op
+Iteration   4: 25.719 us/op
+Iteration   5: 25.312 us/op
+Iteration   6: 25.620 us/op
+Iteration   7: 25.169 us/op
+Iteration   8: 25.571 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 43.75% complete, ETA 00:20:24
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+28.977 us/op
+# Warmup Iteration   2: 28.966 us/op
+# Warmup Iteration   3: 26.182 us/op
+# Warmup Iteration   4: 26.611 us/op
+# Warmup Iteration   5: 27.903 us/op
+Iteration   1: 29.027 us/op
+Iteration   2: 28.543 us/op
+Iteration   3: 25.978 us/op
+Iteration   4: 26.895 us/op
+Iteration   5: 27.001 us/op
+Iteration   6: 25.383 us/op
+Iteration   7: 27.877 us/op
+Iteration   8: 25.917 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 45.00% complete, ETA 00:19:57
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.585 us/op
+# Warmup Iteration   2: 24.364 us/op
+# Warmup Iteration   3: 22.516 us/op
+# Warmup Iteration   4: 22.814 us/op
+# Warmup Iteration   5: 23.835 us/op
+Iteration   1: 23.815 us/op
+Iteration   2: 22.653 us/op
+Iteration   3: 22.592 us/op
+Iteration   4: 22.627 us/op
+Iteration   5: 22.834 us/op
+Iteration   6: 23.824 us/op
+Iteration   7: 22.803 us/op
+Iteration   8: 21.994 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 46.25% complete, ETA 00:19:30
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+30.120 us/op
+# Warmup Iteration   2: 31.606 us/op
+# Warmup Iteration   3: 28.714 us/op
+# Warmup Iteration   4: 27.446 us/op
+# Warmup Iteration   5: 27.616 us/op
+Iteration   1: 27.627 us/op
+Iteration   2: 26.370 us/op
+Iteration   3: 27.060 us/op
+Iteration   4: 26.539 us/op
+Iteration   5: 26.710 us/op
+Iteration   6: 26.605 us/op
+Iteration   7: 28.130 us/op
+Iteration   8: 28.948 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 47.50% complete, ETA 00:19:02
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+38.276 us/op
+# Warmup Iteration   2: 36.614 us/op
+# Warmup Iteration   3: 34.714 us/op
+# Warmup Iteration   4: 36.364 us/op
+# Warmup Iteration   5: 36.526 us/op
+Iteration   1: 35.619 us/op
+Iteration   2: 34.807 us/op
+Iteration   3: 34.307 us/op
+Iteration   4: 34.191 us/op
+Iteration   5: 36.241 us/op
+Iteration   6: 35.551 us/op
+Iteration   7: 34.018 us/op
+Iteration   8: 34.638 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 48.75% complete, ETA 00:18:35
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+27.870 us/op
+# Warmup Iteration   2: 24.039 us/op
+# Warmup Iteration   3: 21.877 us/op
+# Warmup Iteration   4: 22.873 us/op
+# Warmup Iteration   5: 22.254 us/op
+Iteration   1: 21.692 us/op
+Iteration   2: 22.200 us/op
+Iteration   3: 21.820 us/op
+Iteration   4: 22.445 us/op
+Iteration   5: 22.549 us/op
+Iteration   6: 22.867 us/op
+Iteration   7: 22.664 us/op
+Iteration   8: 22.784 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.b_brRow":
+  26.039 ±(99.9%) 1.366 us/op [Average]
+  (min, avg, max) = (21.692, 26.039, 36.241), stdev = 3.575
+  CI (99.9%): [24.673, 27.406] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:CPI":
+  0.216 ±(99.9%) 0.046 clks/insn [Average]
+  (min, avg, max) = (0.186, 0.216, 0.288), stdev = 0.030
+  CI (99.9%): [0.170, 0.261] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:IPC":
+  4.711 ±(99.9%) 0.878 insns/clk [Average]
+  (min, avg, max) = (3.467, 4.711, 5.381), stdev = 0.581
+  CI (99.9%): [3.833, 5.589] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-dcache-load-misses":
+  86.032 ±(99.9%) 14.427 #/op [Average]
+  (min, avg, max) = (71.842, 86.032, 98.638), stdev = 9.543
+  CI (99.9%): [71.605, 100.459] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-dcache-loads":
+  144785.284 ±(99.9%) 10889.399 #/op [Average]
+  (min, avg, max) = (131384.008, 144785.284, 155513.607), stdev = 7202.663
+  CI (99.9%): [133895.886, 155674.683] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-icache-load-misses":
+  0.535 ±(99.9%) 0.251 #/op [Average]
+  (min, avg, max) = (0.358, 0.535, 0.941), stdev = 0.166
+  CI (99.9%): [0.284, 0.787] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:L1-icache-loads":
+  76.308 ±(99.9%) 21.275 #/op [Average]
+  (min, avg, max) = (54.261, 76.308, 102.937), stdev = 14.072
+  CI (99.9%): [55.033, 97.583] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:branch-misses":
+  444.656 ±(99.9%) 515.375 #/op [Average]
+  (min, avg, max) = (154.634, 444.656, 1279.507), stdev = 340.889
+  CI (99.9%): [≈ 0, 960.031] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:branches":
+  138168.195 ±(99.9%) 7223.284 #/op [Average]
+  (min, avg, max) = (132272.588, 138168.195, 143353.063), stdev = 4777.755
+  CI (99.9%): [130944.912, 145391.479] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:cycles":
+  122868.204 ±(99.9%) 27574.489 #/op [Average]
+  (min, avg, max) = (104324.449, 122868.204, 168666.736), stdev = 18238.817
+  CI (99.9%): [95293.715, 150442.692] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:dTLB-load-misses":
+  0.368 ±(99.9%) 0.095 #/op [Average]
+  (min, avg, max) = (0.279, 0.368, 0.466), stdev = 0.063
+  CI (99.9%): [0.273, 0.462] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:dTLB-loads":
+  2.109 ±(99.9%) 0.530 #/op [Average]
+  (min, avg, max) = (1.496, 2.109, 2.765), stdev = 0.351
+  CI (99.9%): [1.579, 2.639] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:iTLB-load-misses":
+  0.401 ±(99.9%) 0.176 #/op [Average]
+  (min, avg, max) = (0.269, 0.401, 0.670), stdev = 0.116
+  CI (99.9%): [0.225, 0.577] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:iTLB-loads":
+  0.717 ±(99.9%) 0.196 #/op [Average]
+  (min, avg, max) = (0.577, 0.717, 1.018), stdev = 0.130
+  CI (99.9%): [0.521, 0.913] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:instructions":
+  569877.982 ±(99.9%) 29769.604 #/op [Average]
+  (min, avg, max) = (542496.951, 569877.982, 592955.105), stdev = 19690.750
+  CI (99.9%): [540108.378, 599647.586] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.b_brRow:stalled-cycles-frontend":
+  1778.695 ±(99.9%) 1881.169 #/op [Average]
+  (min, avg, max) = (687.940, 1778.695, 4920.769), stdev = 1244.277
+  CI (99.9%): [≈ 0, 3659.864] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.c_noBrLive
+# Parameters: (batchSize = 5000, pattern = DENSE_8)
+
+# Run progress: 50.00% complete, ETA 00:18:08
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+31.782 us/op
+# Warmup Iteration   2: 28.880 us/op
+# Warmup Iteration   3: 27.591 us/op
+# Warmup Iteration   4: 27.496 us/op
+# Warmup Iteration   5: 28.057 us/op
+Iteration   1: 30.550 us/op
+Iteration   2: 27.301 us/op
+Iteration   3: 26.953 us/op
+Iteration   4: 29.343 us/op
+Iteration   5: 27.434 us/op
+Iteration   6: 28.405 us/op
+Iteration   7: 29.033 us/op
+Iteration   8: 28.353 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 51.25% complete, ETA 00:17:41
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+31.307 us/op
+# Warmup Iteration   2: 30.815 us/op
+# Warmup Iteration   3: 29.705 us/op
+# Warmup Iteration   4: 28.494 us/op
+# Warmup Iteration   5: 28.167 us/op
+Iteration   1: 28.089 us/op
+Iteration   2: 28.235 us/op
+Iteration   3: 28.017 us/op
+Iteration   4: 29.127 us/op
+Iteration   5: 29.560 us/op
+Iteration   6: 28.149 us/op
+Iteration   7: 26.773 us/op
+Iteration   8: 28.118 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 52.50% complete, ETA 00:17:14
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.356 us/op
+# Warmup Iteration   2: 29.316 us/op
+# Warmup Iteration   3: 27.681 us/op
+# Warmup Iteration   4: 28.188 us/op
+# Warmup Iteration   5: 28.189 us/op
+Iteration   1: 28.088 us/op
+Iteration   2: 28.930 us/op
+Iteration   3: 27.793 us/op
+Iteration   4: 28.062 us/op
+Iteration   5: 27.639 us/op
+Iteration   6: 30.379 us/op
+Iteration   7: 28.114 us/op
+Iteration   8: 28.108 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 53.75% complete, ETA 00:16:46
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.922 us/op
+# Warmup Iteration   2: 28.522 us/op
+# Warmup Iteration   3: 29.722 us/op
+# Warmup Iteration   4: 31.093 us/op
+# Warmup Iteration   5: 32.226 us/op
+Iteration   1: 31.042 us/op
+Iteration   2: 29.364 us/op
+Iteration   3: 31.796 us/op
+Iteration   4: 59.992 us/op
+Iteration   5: 77.702 us/op
+Iteration   6: 64.628 us/op
+Iteration   7: 75.752 us/op
+Iteration   8: 73.227 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 55.00% complete, ETA 00:16:19
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+33.092 us/op
+# Warmup Iteration   2: 32.572 us/op
+# Warmup Iteration   3: 28.051 us/op
+# Warmup Iteration   4: 28.898 us/op
+# Warmup Iteration   5: 28.335 us/op
+Iteration   1: 28.229 us/op
+Iteration   2: 28.435 us/op
+Iteration   3: 27.903 us/op
+Iteration   4: 27.753 us/op
+Iteration   5: 27.707 us/op
+Iteration   6: 27.992 us/op
+Iteration   7: 27.671 us/op
+Iteration   8: 28.013 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 56.25% complete, ETA 00:15:54
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.692 us/op
+# Warmup Iteration   2: 31.499 us/op
+# Warmup Iteration   3: 28.790 us/op
+# Warmup Iteration   4: 27.930 us/op
+# Warmup Iteration   5: 29.579 us/op
+Iteration   1: 28.589 us/op
+Iteration   2: 28.183 us/op
+Iteration   3: 28.617 us/op
+Iteration   4: 27.957 us/op
+Iteration   5: 29.105 us/op
+Iteration   6: 28.656 us/op
+Iteration   7: 27.875 us/op
+Iteration   8: 27.714 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 57.50% complete, ETA 00:15:27
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.473 us/op
+# Warmup Iteration   2: 28.905 us/op
+# Warmup Iteration   3: 27.805 us/op
+# Warmup Iteration   4: 27.257 us/op
+# Warmup Iteration   5: 28.103 us/op
+Iteration   1: 27.097 us/op
+Iteration   2: 26.994 us/op
+Iteration   3: 29.591 us/op
+Iteration   4: 27.334 us/op
+Iteration   5: 27.208 us/op
+Iteration   6: 26.965 us/op
+Iteration   7: 26.953 us/op
+Iteration   8: 27.663 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 58.75% complete, ETA 00:14:59
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.126 us/op
+# Warmup Iteration   2: 30.036 us/op
+# Warmup Iteration   3: 28.267 us/op
+# Warmup Iteration   4: 28.403 us/op
+# Warmup Iteration   5: 27.460 us/op
+Iteration   1: 28.528 us/op
+Iteration   2: 27.874 us/op
+Iteration   3: 27.512 us/op
+Iteration   4: 28.790 us/op
+Iteration   5: 28.032 us/op
+Iteration   6: 28.365 us/op
+Iteration   7: 27.913 us/op
+Iteration   8: 28.022 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 60.00% complete, ETA 00:14:32
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.519 us/op
+# Warmup Iteration   2: 28.519 us/op
+# Warmup Iteration   3: 27.735 us/op
+# Warmup Iteration   4: 27.978 us/op
+# Warmup Iteration   5: 27.956 us/op
+Iteration   1: 27.529 us/op
+Iteration   2: 28.198 us/op
+Iteration   3: 28.179 us/op
+Iteration   4: 27.996 us/op
+Iteration   5: 28.105 us/op
+Iteration   6: 28.005 us/op
+Iteration   7: 28.868 us/op
+Iteration   8: 28.007 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 61.25% complete, ETA 00:14:04
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.664 us/op
+# Warmup Iteration   2: 28.828 us/op
+# Warmup Iteration   3: 47.571 us/op
+# Warmup Iteration   4: 47.470 us/op
+# Warmup Iteration   5: 47.482 us/op
+Iteration   1: 47.501 us/op
+Iteration   2: 47.465 us/op
+Iteration   3: 47.823 us/op
+Iteration   4: 47.920 us/op
+Iteration   5: 47.484 us/op
+Iteration   6: 47.626 us/op
+Iteration   7: 47.656 us/op
+Iteration   8: 47.572 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive":
+  32.815 ±(99.9%) 4.395 us/op [Average]
+  (min, avg, max) = (26.773, 32.815, 77.702), stdev = 11.502
+  CI (99.9%): [28.420, 37.211] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:CPI":
+  0.233 ±(99.9%) 0.074 clks/insn [Average]
+  (min, avg, max) = (0.206, 0.233, 0.361), stdev = 0.049
+  CI (99.9%): [0.158, 0.307] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:IPC":
+  4.427 ±(99.9%) 1.021 insns/clk [Average]
+  (min, avg, max) = (2.769, 4.427, 4.852), stdev = 0.676
+  CI (99.9%): [3.405, 5.448] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-dcache-load-misses":
+  643.670 ±(99.9%) 2779.843 #/op [Average]
+  (min, avg, max) = (38.955, 643.670, 5874.853), stdev = 1838.694
+  CI (99.9%): [≈ 0, 3423.513] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-dcache-loads":
+  142098.332 ±(99.9%) 7349.928 #/op [Average]
+  (min, avg, max) = (137874.337, 142098.332, 148221.130), stdev = 4861.522
+  CI (99.9%): [134748.405, 149448.260] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-icache-load-misses":
+  0.593 ±(99.9%) 0.268 #/op [Average]
+  (min, avg, max) = (0.450, 0.593, 0.943), stdev = 0.177
+  CI (99.9%): [0.325, 0.860] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-icache-loads":
+  101.263 ±(99.9%) 66.654 #/op [Average]
+  (min, avg, max) = (70.427, 101.263, 190.715), stdev = 44.087
+  CI (99.9%): [34.610, 167.917] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:branch-misses":
+  420.115 ±(99.9%) 24.992 #/op [Average]
+  (min, avg, max) = (403.100, 420.115, 441.335), stdev = 16.530
+  CI (99.9%): [395.123, 445.107] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:branches":
+  139101.777 ±(99.9%) 7473.620 #/op [Average]
+  (min, avg, max) = (134955.975, 139101.777, 145192.880), stdev = 4943.337
+  CI (99.9%): [131628.157, 146575.397] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:cycles":
+  145101.729 ±(99.9%) 52180.218 #/op [Average]
+  (min, avg, max) = (124268.992, 145101.729, 233450.136), stdev = 34513.984
+  CI (99.9%): [92921.511, 197281.947] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:dTLB-load-misses":
+  0.514 ±(99.9%) 0.539 #/op [Average]
+  (min, avg, max) = (0.289, 0.514, 1.497), stdev = 0.356
+  CI (99.9%): [≈ 0, 1.052] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:dTLB-loads":
+  2.726 ±(99.9%) 2.670 #/op [Average]
+  (min, avg, max) = (1.483, 2.726, 7.522), stdev = 1.766
+  CI (99.9%): [0.056, 5.396] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:iTLB-load-misses":
+  0.513 ±(99.9%) 0.300 #/op [Average]
+  (min, avg, max) = (0.356, 0.513, 0.970), stdev = 0.198
+  CI (99.9%): [0.213, 0.813] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:iTLB-loads":
+  0.881 ±(99.9%) 0.341 #/op [Average]
+  (min, avg, max) = (0.623, 0.881, 1.298), stdev = 0.225
+  CI (99.9%): [0.540, 1.222] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:instructions":
+  621567.529 ±(99.9%) 33824.203 #/op [Average]
+  (min, avg, max) = (602909.241, 621567.529, 649254.560), stdev = 22372.616
+  CI (99.9%): [587743.326, 655391.731] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:stalled-cycles-frontend":
+  2563.394 ±(99.9%) 2709.646 #/op [Average]
+  (min, avg, max) = (1635.317, 2563.394, 7605.860), stdev = 1792.263
+  CI (99.9%): [≈ 0, 5273.040] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.c_noBrLive
+# Parameters: (batchSize = 5000, pattern = DENSE_50)
+
+# Run progress: 62.50% complete, ETA 00:13:37
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+24.905 us/op
+# Warmup Iteration   2: 23.967 us/op
+# Warmup Iteration   3: 27.157 us/op
+# Warmup Iteration   4: 27.184 us/op
+# Warmup Iteration   5: 26.821 us/op
+Iteration   1: 27.070 us/op
+Iteration   2: 27.365 us/op
+Iteration   3: 28.080 us/op
+Iteration   4: 29.122 us/op
+Iteration   5: 28.630 us/op
+Iteration   6: 27.620 us/op
+Iteration   7: 29.178 us/op
+Iteration   8: 27.789 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 63.75% complete, ETA 00:13:10
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+27.265 us/op
+# Warmup Iteration   2: 25.606 us/op
+# Warmup Iteration   3: 30.114 us/op
+# Warmup Iteration   4: 29.466 us/op
+# Warmup Iteration   5: 31.128 us/op
+Iteration   1: 30.560 us/op
+Iteration   2: 29.400 us/op
+Iteration   3: 30.195 us/op
+Iteration   4: 29.850 us/op
+Iteration   5: 29.376 us/op
+Iteration   6: 29.319 us/op
+Iteration   7: 29.317 us/op
+Iteration   8: 28.810 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 65.00% complete, ETA 00:12:43
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.231 us/op
+# Warmup Iteration   2: 23.466 us/op
+# Warmup Iteration   3: 25.273 us/op
+# Warmup Iteration   4: 25.130 us/op
+# Warmup Iteration   5: 26.112 us/op
+Iteration   1: 25.253 us/op
+Iteration   2: 25.017 us/op
+Iteration   3: 24.950 us/op
+Iteration   4: 24.911 us/op
+Iteration   5: 24.752 us/op
+Iteration   6: 24.656 us/op
+Iteration   7: 24.725 us/op
+Iteration   8: 24.690 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 66.25% complete, ETA 00:12:15
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.680 us/op
+# Warmup Iteration   2: 24.070 us/op
+# Warmup Iteration   3: 27.851 us/op
+# Warmup Iteration   4: 27.130 us/op
+# Warmup Iteration   5: 27.133 us/op
+Iteration   1: 27.300 us/op
+Iteration   2: 26.869 us/op
+Iteration   3: 26.859 us/op
+Iteration   4: 27.157 us/op
+Iteration   5: 27.140 us/op
+Iteration   6: 26.657 us/op
+Iteration   7: 26.611 us/op
+Iteration   8: 26.993 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 67.50% complete, ETA 00:11:48
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.055 us/op
+# Warmup Iteration   2: 23.841 us/op
+# Warmup Iteration   3: 24.599 us/op
+# Warmup Iteration   4: 25.041 us/op
+# Warmup Iteration   5: 25.109 us/op
+Iteration   1: 24.877 us/op
+Iteration   2: 25.588 us/op
+Iteration   3: 25.564 us/op
+Iteration   4: 24.673 us/op
+Iteration   5: 24.686 us/op
+Iteration   6: 25.179 us/op
+Iteration   7: 24.944 us/op
+Iteration   8: 25.086 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 68.75% complete, ETA 00:11:21
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.347 us/op
+# Warmup Iteration   2: 24.689 us/op
+# Warmup Iteration   3: 27.472 us/op
+# Warmup Iteration   4: 27.643 us/op
+# Warmup Iteration   5: 27.447 us/op
+Iteration   1: 27.301 us/op
+Iteration   2: 27.356 us/op
+Iteration   3: 28.015 us/op
+Iteration   4: 29.180 us/op
+Iteration   5: 27.262 us/op
+Iteration   6: 27.717 us/op
+Iteration   7: 27.730 us/op
+Iteration   8: 27.662 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 70.00% complete, ETA 00:10:54
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.343 us/op
+# Warmup Iteration   2: 24.138 us/op
+# Warmup Iteration   3: 26.752 us/op
+# Warmup Iteration   4: 27.248 us/op
+# Warmup Iteration   5: 28.307 us/op
+Iteration   1: 27.846 us/op
+Iteration   2: 27.973 us/op
+Iteration   3: 28.056 us/op
+Iteration   4: 27.022 us/op
+Iteration   5: 26.750 us/op
+Iteration   6: 27.241 us/op
+Iteration   7: 27.139 us/op
+Iteration   8: 26.549 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 71.25% complete, ETA 00:10:26
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+24.680 us/op
+# Warmup Iteration   2: 23.333 us/op
+# Warmup Iteration   3: 24.783 us/op
+# Warmup Iteration   4: 24.796 us/op
+# Warmup Iteration   5: 24.738 us/op
+Iteration   1: 24.665 us/op
+Iteration   2: 25.088 us/op
+Iteration   3: 24.877 us/op
+Iteration   4: 24.681 us/op
+Iteration   5: 24.726 us/op
+Iteration   6: 24.541 us/op
+Iteration   7: 24.631 us/op
+Iteration   8: 24.820 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 72.50% complete, ETA 00:09:59
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+24.811 us/op
+# Warmup Iteration   2: 23.251 us/op
+# Warmup Iteration   3: 24.786 us/op
+# Warmup Iteration   4: 24.530 us/op
+# Warmup Iteration   5: 24.778 us/op
+Iteration   1: 24.511 us/op
+Iteration   2: 24.770 us/op
+Iteration   3: 24.591 us/op
+Iteration   4: 24.809 us/op
+Iteration   5: 24.842 us/op
+Iteration   6: 24.823 us/op
+Iteration   7: 24.973 us/op
+Iteration   8: 25.695 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 73.75% complete, ETA 00:09:32
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.080 us/op
+# Warmup Iteration   2: 24.327 us/op
+# Warmup Iteration   3: 26.658 us/op
+# Warmup Iteration   4: 26.335 us/op
+# Warmup Iteration   5: 26.176 us/op
+Iteration   1: 26.621 us/op
+Iteration   2: 26.192 us/op
+Iteration   3: 27.326 us/op
+Iteration   4: 27.110 us/op
+Iteration   5: 27.359 us/op
+Iteration   6: 27.673 us/op
+Iteration   7: 27.542 us/op
+Iteration   8: 27.402 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive":
+  26.649 ±(99.9%) 0.636 us/op [Average]
+  (min, avg, max) = (24.511, 26.649, 30.560), stdev = 1.663
+  CI (99.9%): [26.013, 27.284] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:CPI":
+  0.197 ±(99.9%) 0.013 clks/insn [Average]
+  (min, avg, max) = (0.188, 0.197, 0.216), stdev = 0.009
+  CI (99.9%): [0.184, 0.210] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:IPC":
+  5.082 ±(99.9%) 0.334 insns/clk [Average]
+  (min, avg, max) = (4.638, 5.082, 5.317), stdev = 0.221
+  CI (99.9%): [4.748, 5.415] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-dcache-load-misses":
+  26.246 ±(99.9%) 26.959 #/op [Average]
+  (min, avg, max) = (16.934, 26.246, 74.993), stdev = 17.832
+  CI (99.9%): [≈ 0, 53.205] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-dcache-loads":
+  130564.495 ±(99.9%) 7051.296 #/op [Average]
+  (min, avg, max) = (124951.124, 130564.495, 134520.451), stdev = 4663.996
+  CI (99.9%): [123513.199, 137615.791] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-icache-load-misses":
+  0.506 ±(99.9%) 0.074 #/op [Average]
+  (min, avg, max) = (0.424, 0.506, 0.579), stdev = 0.049
+  CI (99.9%): [0.432, 0.580] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:L1-icache-loads":
+  83.242 ±(99.9%) 17.892 #/op [Average]
+  (min, avg, max) = (67.345, 83.242, 106.708), stdev = 11.835
+  CI (99.9%): [65.349, 101.134] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:branch-misses":
+  4.856 ±(99.9%) 0.502 #/op [Average]
+  (min, avg, max) = (4.377, 4.856, 5.329), stdev = 0.332
+  CI (99.9%): [4.354, 5.358] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:branches":
+  135490.492 ±(99.9%) 7282.778 #/op [Average]
+  (min, avg, max) = (129645.139, 135490.492, 139636.366), stdev = 4817.107
+  CI (99.9%): [128207.714, 142773.269] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:cycles":
+  126367.866 ±(99.9%) 13434.868 #/op [Average]
+  (min, avg, max) = (114196.242, 126367.866, 144093.751), stdev = 8886.334
+  CI (99.9%): [112932.998, 139802.735] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:dTLB-load-misses":
+  0.383 ±(99.9%) 0.065 #/op [Average]
+  (min, avg, max) = (0.348, 0.383, 0.473), stdev = 0.043
+  CI (99.9%): [0.317, 0.448] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:dTLB-loads":
+  1.947 ±(99.9%) 0.348 #/op [Average]
+  (min, avg, max) = (1.751, 1.947, 2.533), stdev = 0.230
+  CI (99.9%): [1.599, 2.296] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:iTLB-load-misses":
+  0.419 ±(99.9%) 0.112 #/op [Average]
+  (min, avg, max) = (0.291, 0.419, 0.512), stdev = 0.074
+  CI (99.9%): [0.307, 0.531] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:iTLB-loads":
+  0.726 ±(99.9%) 0.124 #/op [Average]
+  (min, avg, max) = (0.613, 0.726, 0.906), stdev = 0.082
+  CI (99.9%): [0.602, 0.849] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:instructions":
+  640589.277 ±(99.9%) 34625.720 #/op [Average]
+  (min, avg, max) = (599693.404, 640589.277, 671363.260), stdev = 22902.770
+  CI (99.9%): [605963.556, 675214.997] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.c_noBrLive:stalled-cycles-frontend":
+  394.029 ±(99.9%) 174.934 #/op [Average]
+  (min, avg, max) = (295.056, 394.029, 681.698), stdev = 115.708
+  CI (99.9%): [219.095, 568.963] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.d_noBrRow
+# Parameters: (batchSize = 5000, pattern = DENSE_8)
+
+# Run progress: 75.00% complete, ETA 00:09:05
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.999 us/op
+# Warmup Iteration   2: 27.597 us/op
+# Warmup Iteration   3: 26.667 us/op
+# Warmup Iteration   4: 27.505 us/op
+# Warmup Iteration   5: 27.438 us/op
+Iteration   1: 26.242 us/op
+Iteration   2: 23.578 us/op
+Iteration   3: 24.313 us/op
+Iteration   4: 28.532 us/op
+Iteration   5: 25.591 us/op
+Iteration   6: 26.340 us/op
+Iteration   7: 26.824 us/op
+Iteration   8: 28.767 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 76.25% complete, ETA 00:08:37
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+30.664 us/op
+# Warmup Iteration   2: 31.862 us/op
+# Warmup Iteration   3: 28.304 us/op
+# Warmup Iteration   4: 26.308 us/op
+# Warmup Iteration   5: 27.150 us/op
+Iteration   1: 29.236 us/op
+Iteration   2: 29.382 us/op
+Iteration   3: 28.088 us/op
+Iteration   4: 27.159 us/op
+Iteration   5: 26.027 us/op
+Iteration   6: 25.990 us/op
+Iteration   7: 28.708 us/op
+Iteration   8: 26.028 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 77.50% complete, ETA 00:08:10
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.342 us/op
+# Warmup Iteration   2: 27.389 us/op
+# Warmup Iteration   3: 26.071 us/op
+# Warmup Iteration   4: 26.238 us/op
+# Warmup Iteration   5: 26.292 us/op
+Iteration   1: 29.362 us/op
+Iteration   2: 27.303 us/op
+Iteration   3: 25.690 us/op
+Iteration   4: 26.594 us/op
+Iteration   5: 27.875 us/op
+Iteration   6: 28.232 us/op
+Iteration   7: 27.522 us/op
+Iteration   8: 26.061 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 78.75% complete, ETA 00:07:43
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.345 us/op
+# Warmup Iteration   2: 26.989 us/op
+# Warmup Iteration   3: 25.410 us/op
+# Warmup Iteration   4: 25.802 us/op
+# Warmup Iteration   5: 27.542 us/op
+Iteration   1: 29.229 us/op
+Iteration   2: 30.504 us/op
+Iteration   3: 30.556 us/op
+Iteration   4: 29.000 us/op
+Iteration   5: 30.978 us/op
+Iteration   6: 31.713 us/op
+Iteration   7: 65.489 us/op
+Iteration   8: 80.557 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 80.00% complete, ETA 00:07:16
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+73.020 us/op
+# Warmup Iteration   2: 65.407 us/op
+# Warmup Iteration   3: 30.204 us/op
+# Warmup Iteration   4: 33.521 us/op
+# Warmup Iteration   5: 26.161 us/op
+Iteration   1: 25.775 us/op
+Iteration   2: 25.904 us/op
+Iteration   3: 26.012 us/op
+Iteration   4: 26.166 us/op
+Iteration   5: 26.126 us/op
+Iteration   6: 28.518 us/op
+Iteration   7: 28.149 us/op
+Iteration   8: 27.733 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 81.25% complete, ETA 00:06:49
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.213 us/op
+# Warmup Iteration   2: 28.013 us/op
+# Warmup Iteration   3: 25.446 us/op
+# Warmup Iteration   4: 26.983 us/op
+# Warmup Iteration   5: 24.550 us/op
+Iteration   1: 25.168 us/op
+Iteration   2: 24.273 us/op
+Iteration   3: 25.263 us/op
+Iteration   4: 25.175 us/op
+Iteration   5: 25.339 us/op
+Iteration   6: 26.621 us/op
+Iteration   7: 26.374 us/op
+Iteration   8: 25.774 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 82.50% complete, ETA 00:06:22
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+29.223 us/op
+# Warmup Iteration   2: 27.804 us/op
+# Warmup Iteration   3: 25.439 us/op
+# Warmup Iteration   4: 24.060 us/op
+# Warmup Iteration   5: 23.883 us/op
+Iteration   1: 24.679 us/op
+Iteration   2: 26.688 us/op
+Iteration   3: 26.256 us/op
+Iteration   4: 25.434 us/op
+Iteration   5: 25.983 us/op
+Iteration   6: 25.726 us/op
+Iteration   7: 25.780 us/op
+Iteration   8: 26.906 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 83.75% complete, ETA 00:05:54
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+31.776 us/op
+# Warmup Iteration   2: 29.567 us/op
+# Warmup Iteration   3: 26.649 us/op
+# Warmup Iteration   4: 26.563 us/op
+# Warmup Iteration   5: 25.612 us/op
+Iteration   1: 27.097 us/op
+Iteration   2: 25.720 us/op
+Iteration   3: 24.991 us/op
+Iteration   4: 26.840 us/op
+Iteration   5: 26.413 us/op
+Iteration   6: 24.459 us/op
+Iteration   7: 27.342 us/op
+Iteration   8: 25.347 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 85.00% complete, ETA 00:05:27
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+28.300 us/op
+# Warmup Iteration   2: 27.834 us/op
+# Warmup Iteration   3: 25.637 us/op
+# Warmup Iteration   4: 26.172 us/op
+# Warmup Iteration   5: 26.955 us/op
+Iteration   1: 26.254 us/op
+Iteration   2: 26.000 us/op
+Iteration   3: 25.462 us/op
+Iteration   4: 25.274 us/op
+Iteration   5: 26.302 us/op
+Iteration   6: 26.283 us/op
+Iteration   7: 25.302 us/op
+Iteration   8: 24.617 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 86.25% complete, ETA 00:05:00
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_8   deletedInBatch=412/5000 (8.2%)
+27.782 us/op
+# Warmup Iteration   2: 26.981 us/op
+# Warmup Iteration   3: 25.891 us/op
+# Warmup Iteration   4: 25.842 us/op
+# Warmup Iteration   5: 26.968 us/op
+Iteration   1: 27.442 us/op
+Iteration   2: 27.264 us/op
+Iteration   3: 26.646 us/op
+Iteration   4: 26.123 us/op
+Iteration   5: 25.637 us/op
+Iteration   6: 25.297 us/op
+Iteration   7: 25.088 us/op
+Iteration   8: 25.394 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow":
+  27.824 ±(99.9%) 2.888 us/op [Average]
+  (min, avg, max) = (23.578, 27.824, 80.557), stdev = 7.557
+  CI (99.9%): [24.936, 30.711] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:CPI":
+  0.229 ±(99.9%) 0.021 clks/insn [Average]
+  (min, avg, max) = (0.220, 0.229, 0.268), stdev = 0.014
+  CI (99.9%): [0.208, 0.251] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:IPC":
+  4.375 ±(99.9%) 0.364 insns/clk [Average]
+  (min, avg, max) = (3.738, 4.375, 4.540), stdev = 0.241
+  CI (99.9%): [4.011, 4.739] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-dcache-load-misses":
+  101.378 ±(99.9%) 42.748 #/op [Average]
+  (min, avg, max) = (83.337, 101.378, 178.680), stdev = 28.275
+  CI (99.9%): [58.630, 144.126] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-dcache-loads":
+  150289.696 ±(99.9%) 9052.265 #/op [Average]
+  (min, avg, max) = (143395.926, 150289.696, 157130.252), stdev = 5987.513
+  CI (99.9%): [141237.431, 159341.961] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-icache-load-misses":
+  0.536 ±(99.9%) 0.161 #/op [Average]
+  (min, avg, max) = (0.390, 0.536, 0.796), stdev = 0.106
+  CI (99.9%): [0.375, 0.697] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-icache-loads":
+  93.771 ±(99.9%) 32.958 #/op [Average]
+  (min, avg, max) = (72.860, 93.771, 147.403), stdev = 21.800
+  CI (99.9%): [60.813, 126.729] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:branch-misses":
+  423.434 ±(99.9%) 26.874 #/op [Average]
+  (min, avg, max) = (400.838, 423.434, 445.420), stdev = 17.775
+  CI (99.9%): [396.560, 450.308] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:branches":
+  135521.374 ±(99.9%) 8399.168 #/op [Average]
+  (min, avg, max) = (129508.252, 135521.374, 141781.127), stdev = 5555.530
+  CI (99.9%): [127122.206, 143920.542] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:cycles":
+  127553.811 ±(99.9%) 17179.854 #/op [Average]
+  (min, avg, max) = (118184.607, 127553.811, 156508.158), stdev = 11363.410
+  CI (99.9%): [110373.958, 144733.665] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:dTLB-load-misses":
+  0.506 ±(99.9%) 0.596 #/op [Average]
+  (min, avg, max) = (0.252, 0.506, 1.577), stdev = 0.394
+  CI (99.9%): [≈ 0, 1.103] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:dTLB-loads":
+  2.440 ±(99.9%) 1.804 #/op [Average]
+  (min, avg, max) = (1.455, 2.440, 5.567), stdev = 1.193
+  CI (99.9%): [0.635, 4.244] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:iTLB-load-misses":
+  0.436 ±(99.9%) 0.240 #/op [Average]
+  (min, avg, max) = (0.263, 0.436, 0.829), stdev = 0.159
+  CI (99.9%): [0.197, 0.676] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:iTLB-loads":
+  0.701 ±(99.9%) 0.199 #/op [Average]
+  (min, avg, max) = (0.581, 0.701, 1.039), stdev = 0.131
+  CI (99.9%): [0.502, 0.900] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:instructions":
+  555861.385 ±(99.9%) 35511.946 #/op [Average]
+  (min, avg, max) = (529107.829, 555861.385, 585057.274), stdev = 23488.954
+  CI (99.9%): [520349.438, 591373.331] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:stalled-cycles-frontend":
+  2390.776 ±(99.9%) 2525.415 #/op [Average]
+  (min, avg, max) = (1410.311, 2390.776, 7005.643), stdev = 1670.406
+  CI (99.9%): [≈ 0, 4916.192] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.12, OpenJDK 64-Bit Server VM, 21.0.12+8-1-24.04-Ubuntu
+# VM invoker: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+# VM options: -Xms2g -Xmx2g
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 2 s each
+# Measurement: 8 iterations, 2 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.apache.iceberg.deletes.DvAddrBench.d_noBrRow
+# Parameters: (batchSize = 5000, pattern = DENSE_50)
+
+# Run progress: 87.50% complete, ETA 00:04:32
+# Fork: 1 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.047 us/op
+# Warmup Iteration   2: 22.691 us/op
+# Warmup Iteration   3: 21.839 us/op
+# Warmup Iteration   4: 22.803 us/op
+# Warmup Iteration   5: 22.474 us/op
+Iteration   1: 22.232 us/op
+Iteration   2: 22.305 us/op
+Iteration   3: 22.097 us/op
+Iteration   4: 22.628 us/op
+Iteration   5: 22.947 us/op
+Iteration   6: 22.588 us/op
+Iteration   7: 22.237 us/op
+Iteration   8: 21.692 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 88.75% complete, ETA 00:04:05
+# Fork: 2 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.254 us/op
+# Warmup Iteration   2: 23.592 us/op
+# Warmup Iteration   3: 21.595 us/op
+# Warmup Iteration   4: 21.324 us/op
+# Warmup Iteration   5: 21.406 us/op
+Iteration   1: 21.272 us/op
+Iteration   2: 22.118 us/op
+Iteration   3: 22.169 us/op
+Iteration   4: 22.018 us/op
+Iteration   5: 21.999 us/op
+Iteration   6: 22.755 us/op
+Iteration   7: 22.643 us/op
+Iteration   8: 22.577 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 90.00% complete, ETA 00:03:38
+# Fork: 3 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.766 us/op
+# Warmup Iteration   2: 23.599 us/op
+# Warmup Iteration   3: 21.024 us/op
+# Warmup Iteration   4: 22.189 us/op
+# Warmup Iteration   5: 21.201 us/op
+Iteration   1: 21.236 us/op
+Iteration   2: 20.913 us/op
+Iteration   3: 21.172 us/op
+Iteration   4: 21.505 us/op
+Iteration   5: 21.530 us/op
+Iteration   6: 22.063 us/op
+Iteration   7: 21.909 us/op
+Iteration   8: 21.492 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 91.25% complete, ETA 00:03:11
+# Fork: 4 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+27.216 us/op
+# Warmup Iteration   2: 24.291 us/op
+# Warmup Iteration   3: 21.622 us/op
+# Warmup Iteration   4: 21.934 us/op
+# Warmup Iteration   5: 21.872 us/op
+Iteration   1: 21.565 us/op
+Iteration   2: 21.504 us/op
+Iteration   3: 21.488 us/op
+Iteration   4: 21.636 us/op
+Iteration   5: 21.641 us/op
+Iteration   6: 21.386 us/op
+Iteration   7: 21.572 us/op
+Iteration   8: 21.493 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 92.50% complete, ETA 00:02:43
+# Fork: 5 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.664 us/op
+# Warmup Iteration   2: 22.939 us/op
+# Warmup Iteration   3: 22.157 us/op
+# Warmup Iteration   4: 21.928 us/op
+# Warmup Iteration   5: 21.821 us/op
+Iteration   1: 21.628 us/op
+Iteration   2: 21.771 us/op
+Iteration   3: 21.757 us/op
+Iteration   4: 21.781 us/op
+Iteration   5: 22.132 us/op
+Iteration   6: 21.854 us/op
+Iteration   7: 21.932 us/op
+Iteration   8: 21.964 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 93.75% complete, ETA 00:02:16
+# Fork: 6 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.398 us/op
+# Warmup Iteration   2: 23.882 us/op
+# Warmup Iteration   3: 22.332 us/op
+# Warmup Iteration   4: 22.259 us/op
+# Warmup Iteration   5: 22.398 us/op
+Iteration   1: 22.605 us/op
+Iteration   2: 22.426 us/op
+Iteration   3: 22.436 us/op
+Iteration   4: 22.628 us/op
+Iteration   5: 22.733 us/op
+Iteration   6: 22.270 us/op
+Iteration   7: 22.468 us/op
+Iteration   8: 22.396 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 95.00% complete, ETA 00:01:49
+# Fork: 7 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.641 us/op
+# Warmup Iteration   2: 23.052 us/op
+# Warmup Iteration   3: 21.919 us/op
+# Warmup Iteration   4: 22.038 us/op
+# Warmup Iteration   5: 22.234 us/op
+Iteration   1: 21.811 us/op
+Iteration   2: 21.964 us/op
+Iteration   3: 22.509 us/op
+Iteration   4: 21.824 us/op
+Iteration   5: 21.875 us/op
+Iteration   6: 21.825 us/op
+Iteration   7: 22.059 us/op
+Iteration   8: 22.144 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 96.25% complete, ETA 00:01:21
+# Fork: 8 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+26.531 us/op
+# Warmup Iteration   2: 23.694 us/op
+# Warmup Iteration   3: 22.346 us/op
+# Warmup Iteration   4: 22.105 us/op
+# Warmup Iteration   5: 22.747 us/op
+Iteration   1: 22.261 us/op
+Iteration   2: 21.906 us/op
+Iteration   3: 22.858 us/op
+Iteration   4: 22.099 us/op
+Iteration   5: 22.470 us/op
+Iteration   6: 22.215 us/op
+Iteration   7: 21.879 us/op
+Iteration   8: 22.348 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 97.50% complete, ETA 00:00:54
+# Fork: 9 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.035 us/op
+# Warmup Iteration   2: 23.255 us/op
+# Warmup Iteration   3: 22.021 us/op
+# Warmup Iteration   4: 22.022 us/op
+# Warmup Iteration   5: 21.858 us/op
+Iteration   1: 21.912 us/op
+Iteration   2: 21.925 us/op
+Iteration   3: 21.935 us/op
+Iteration   4: 22.070 us/op
+Iteration   5: 21.920 us/op
+Iteration   6: 21.817 us/op
+Iteration   7: 22.270 us/op
+Iteration   8: 22.026 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+# Run progress: 98.75% complete, ETA 00:00:27
+# Fork: 10 of 10
+# Preparing profilers: LinuxPerfNormProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 
+  [setup] DENSE_50  deletedInBatch=2,460/5000 (49.2%)
+25.630 us/op
+# Warmup Iteration   2: 23.091 us/op
+# Warmup Iteration   3: 22.325 us/op
+# Warmup Iteration   4: 22.313 us/op
+# Warmup Iteration   5: 22.175 us/op
+Iteration   1: 22.185 us/op
+Iteration   2: 22.227 us/op
+Iteration   3: 22.320 us/op
+Iteration   4: 21.935 us/op
+Iteration   5: 21.957 us/op
+Iteration   6: 21.925 us/op
+Iteration   7: 21.750 us/op
+Iteration   8: 22.071 us/op
+# Processing profiler results: LinuxPerfNormProfiler 
+
+
+Result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow":
+  22.018 ±(99.9%) 0.157 us/op [Average]
+  (min, avg, max) = (20.913, 22.018, 22.947), stdev = 0.410
+  CI (99.9%): [21.862, 22.175] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:CPI":
+  0.181 ±(99.9%) 0.004 clks/insn [Average]
+  (min, avg, max) = (0.176, 0.181, 0.185), stdev = 0.003
+  CI (99.9%): [0.177, 0.185] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:IPC":
+  5.533 ±(99.9%) 0.130 insns/clk [Average]
+  (min, avg, max) = (5.400, 5.533, 5.685), stdev = 0.086
+  CI (99.9%): [5.403, 5.663] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-dcache-load-misses":
+  74.902 ±(99.9%) 18.314 #/op [Average]
+  (min, avg, max) = (65.335, 74.902, 106.132), stdev = 12.114
+  CI (99.9%): [56.589, 93.216] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-dcache-loads":
+  135572.067 ±(99.9%) 8616.746 #/op [Average]
+  (min, avg, max) = (129898.679, 135572.067, 141102.165), stdev = 5699.444
+  CI (99.9%): [126955.321, 144188.814] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-icache-load-misses":
+  0.415 ±(99.9%) 0.109 #/op [Average]
+  (min, avg, max) = (0.322, 0.415, 0.520), stdev = 0.072
+  CI (99.9%): [0.305, 0.524] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:L1-icache-loads":
+  65.819 ±(99.9%) 21.542 #/op [Average]
+  (min, avg, max) = (52.634, 65.819, 95.640), stdev = 14.249
+  CI (99.9%): [44.277, 87.361] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:branch-misses":
+  4.299 ±(99.9%) 0.255 #/op [Average]
+  (min, avg, max) = (4.118, 4.299, 4.599), stdev = 0.169
+  CI (99.9%): [4.043, 4.554] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:branches":
+  130191.465 ±(99.9%) 8311.417 #/op [Average]
+  (min, avg, max) = (124741.084, 130191.465, 135761.512), stdev = 5497.487
+  CI (99.9%): [121880.049, 138502.882] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:cycles":
+  105211.014 ±(99.9%) 8195.777 #/op [Average]
+  (min, avg, max) = (98704.032, 105211.014, 112173.603), stdev = 5420.999
+  CI (99.9%): [97015.237, 113406.791] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:dTLB-load-misses":
+  0.250 ±(99.9%) 0.064 #/op [Average]
+  (min, avg, max) = (0.178, 0.250, 0.303), stdev = 0.043
+  CI (99.9%): [0.186, 0.314] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:dTLB-loads":
+  1.596 ±(99.9%) 0.372 #/op [Average]
+  (min, avg, max) = (1.245, 1.596, 1.965), stdev = 0.246
+  CI (99.9%): [1.223, 1.968] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:iTLB-load-misses":
+  0.313 ±(99.9%) 0.057 #/op [Average]
+  (min, avg, max) = (0.243, 0.313, 0.359), stdev = 0.037
+  CI (99.9%): [0.256, 0.370] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:iTLB-loads":
+  0.563 ±(99.9%) 0.090 #/op [Average]
+  (min, avg, max) = (0.497, 0.563, 0.672), stdev = 0.059
+  CI (99.9%): [0.473, 0.653] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:instructions":
+  581945.422 ±(99.9%) 41398.853 #/op [Average]
+  (min, avg, max) = (545162.391, 581945.422, 609805.213), stdev = 27382.778
+  CI (99.9%): [540546.570, 623344.275] (assumes normal distribution)
+
+Secondary result "org.apache.iceberg.deletes.DvAddrBench.d_noBrRow:stalled-cycles-frontend":
+  289.570 ±(99.9%) 69.866 #/op [Average]
+  (min, avg, max) = (222.389, 289.570, 354.715), stdev = 46.212
+  CI (99.9%): [219.704, 359.436] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:36:22
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                       (batchSize)  (pattern)  Mode  Cnt       Score       Error      Units
+DvAddrBench.a_brLive                                   5000    DENSE_8  avgt   80      28.013 ±     0.379      us/op
+DvAddrBench.a_brLive:CPI                               5000    DENSE_8  avgt   10       0.214 ±     0.008  clks/insn
+DvAddrBench.a_brLive:IPC                               5000    DENSE_8  avgt   10       4.666 ±     0.168  insns/clk
+DvAddrBench.a_brLive:L1-dcache-load-misses             5000    DENSE_8  avgt   10      92.782 ±   242.473       #/op
+DvAddrBench.a_brLive:L1-dcache-loads                   5000    DENSE_8  avgt   10  140985.826 ±  5435.461       #/op
+DvAddrBench.a_brLive:L1-icache-load-misses             5000    DENSE_8  avgt   10       0.443 ±     0.066       #/op
+DvAddrBench.a_brLive:L1-icache-loads                   5000    DENSE_8  avgt   10      88.564 ±    19.625       #/op
+DvAddrBench.a_brLive:branch-misses                     5000    DENSE_8  avgt   10     412.683 ±    23.071       #/op
+DvAddrBench.a_brLive:branches                          5000    DENSE_8  avgt   10  138175.981 ±  5458.262       #/op
+DvAddrBench.a_brLive:cycles                            5000    DENSE_8  avgt   10  129559.965 ±  6340.094       #/op
+DvAddrBench.a_brLive:dTLB-load-misses                  5000    DENSE_8  avgt   10       0.351 ±     0.106       #/op
+DvAddrBench.a_brLive:dTLB-loads                        5000    DENSE_8  avgt   10       1.902 ±     0.459       #/op
+DvAddrBench.a_brLive:iTLB-load-misses                  5000    DENSE_8  avgt   10       0.330 ±     0.083       #/op
+DvAddrBench.a_brLive:iTLB-loads                        5000    DENSE_8  avgt   10       0.588 ±     0.076       #/op
+DvAddrBench.a_brLive:instructions                      5000    DENSE_8  avgt   10  604250.952 ± 21215.761       #/op
+DvAddrBench.a_brLive:stalled-cycles-frontend           5000    DENSE_8  avgt   10    1783.312 ±   233.866       #/op
+DvAddrBench.a_brLive                                   5000   DENSE_50  avgt   80      29.283 ±     1.328      us/op
+DvAddrBench.a_brLive:CPI                               5000   DENSE_50  avgt   10       0.223 ±     0.046  clks/insn
+DvAddrBench.a_brLive:IPC                               5000   DENSE_50  avgt   10       4.549 ±     0.865  insns/clk
+DvAddrBench.a_brLive:L1-dcache-load-misses             5000   DENSE_50  avgt   10      71.452 ±   247.190       #/op
+DvAddrBench.a_brLive:L1-dcache-loads                   5000   DENSE_50  avgt   10  141292.695 ± 15142.566       #/op
+DvAddrBench.a_brLive:L1-icache-load-misses             5000   DENSE_50  avgt   10       0.493 ±     0.147       #/op
+DvAddrBench.a_brLive:L1-icache-loads                   5000   DENSE_50  avgt   10      80.452 ±    23.183       #/op
+DvAddrBench.a_brLive:branch-misses                     5000   DENSE_50  avgt   10     525.154 ±   680.375       #/op
+DvAddrBench.a_brLive:branches                          5000   DENSE_50  avgt   10  139114.654 ±  6841.265       #/op
+DvAddrBench.a_brLive:cycles                            5000   DENSE_50  avgt   10  137784.722 ± 27984.911       #/op
+DvAddrBench.a_brLive:dTLB-load-misses                  5000   DENSE_50  avgt   10       0.396 ±     0.122       #/op
+DvAddrBench.a_brLive:dTLB-loads                        5000   DENSE_50  avgt   10       1.913 ±     0.570       #/op
+DvAddrBench.a_brLive:iTLB-load-misses                  5000   DENSE_50  avgt   10       0.446 ±     0.125       #/op
+DvAddrBench.a_brLive:iTLB-loads                        5000   DENSE_50  avgt   10       0.772 ±     0.279       #/op
+DvAddrBench.a_brLive:instructions                      5000   DENSE_50  avgt   10  617702.911 ± 34655.933       #/op
+DvAddrBench.a_brLive:stalled-cycles-frontend           5000   DENSE_50  avgt   10    1902.014 ±  2064.290       #/op
+DvAddrBench.b_brRow                                    5000    DENSE_8  avgt   80      25.211 ±     0.134      us/op
+DvAddrBench.b_brRow:CPI                                5000    DENSE_8  avgt   10       0.213 ±     0.003  clks/insn
+DvAddrBench.b_brRow:IPC                                5000    DENSE_8  avgt   10       4.687 ±     0.065  insns/clk
+DvAddrBench.b_brRow:L1-dcache-load-misses              5000    DENSE_8  avgt   10      82.054 ±     5.396       #/op
+DvAddrBench.b_brRow:L1-dcache-loads                    5000    DENSE_8  avgt   10  147971.932 ±  7652.920       #/op
+DvAddrBench.b_brRow:L1-icache-load-misses              5000    DENSE_8  avgt   10       0.486 ±     0.077       #/op
+DvAddrBench.b_brRow:L1-icache-loads                    5000    DENSE_8  avgt   10      96.363 ±    28.031       #/op
+DvAddrBench.b_brRow:branch-misses                      5000    DENSE_8  avgt   10     418.450 ±    20.651       #/op
+DvAddrBench.b_brRow:branches                           5000    DENSE_8  avgt   10  133910.668 ±  6761.069       #/op
+DvAddrBench.b_brRow:cycles                             5000    DENSE_8  avgt   10  117572.977 ±  5963.181       #/op
+DvAddrBench.b_brRow:dTLB-load-misses                   5000    DENSE_8  avgt   10       0.340 ±     0.082       #/op
+DvAddrBench.b_brRow:dTLB-loads                         5000    DENSE_8  avgt   10       1.867 ±     0.443       #/op
+DvAddrBench.b_brRow:iTLB-load-misses                   5000    DENSE_8  avgt   10       0.377 ±     0.044       #/op
+DvAddrBench.b_brRow:iTLB-loads                         5000    DENSE_8  avgt   10       0.651 ±     0.101       #/op
+DvAddrBench.b_brRow:instructions                       5000    DENSE_8  avgt   10  551106.733 ± 28173.922       #/op
+DvAddrBench.b_brRow:stalled-cycles-frontend            5000    DENSE_8  avgt   10    1660.241 ±   271.192       #/op
+DvAddrBench.b_brRow                                    5000   DENSE_50  avgt   80      26.039 ±     1.366      us/op
+DvAddrBench.b_brRow:CPI                                5000   DENSE_50  avgt   10       0.216 ±     0.046  clks/insn
+DvAddrBench.b_brRow:IPC                                5000   DENSE_50  avgt   10       4.711 ±     0.878  insns/clk
+DvAddrBench.b_brRow:L1-dcache-load-misses              5000   DENSE_50  avgt   10      86.032 ±    14.427       #/op
+DvAddrBench.b_brRow:L1-dcache-loads                    5000   DENSE_50  avgt   10  144785.284 ± 10889.399       #/op
+DvAddrBench.b_brRow:L1-icache-load-misses              5000   DENSE_50  avgt   10       0.535 ±     0.251       #/op
+DvAddrBench.b_brRow:L1-icache-loads                    5000   DENSE_50  avgt   10      76.308 ±    21.275       #/op
+DvAddrBench.b_brRow:branch-misses                      5000   DENSE_50  avgt   10     444.656 ±   515.375       #/op
+DvAddrBench.b_brRow:branches                           5000   DENSE_50  avgt   10  138168.195 ±  7223.284       #/op
+DvAddrBench.b_brRow:cycles                             5000   DENSE_50  avgt   10  122868.204 ± 27574.489       #/op
+DvAddrBench.b_brRow:dTLB-load-misses                   5000   DENSE_50  avgt   10       0.368 ±     0.095       #/op
+DvAddrBench.b_brRow:dTLB-loads                         5000   DENSE_50  avgt   10       2.109 ±     0.530       #/op
+DvAddrBench.b_brRow:iTLB-load-misses                   5000   DENSE_50  avgt   10       0.401 ±     0.176       #/op
+DvAddrBench.b_brRow:iTLB-loads                         5000   DENSE_50  avgt   10       0.717 ±     0.196       #/op
+DvAddrBench.b_brRow:instructions                       5000   DENSE_50  avgt   10  569877.982 ± 29769.604       #/op
+DvAddrBench.b_brRow:stalled-cycles-frontend            5000   DENSE_50  avgt   10    1778.695 ±  1881.169       #/op
+DvAddrBench.c_noBrLive                                 5000    DENSE_8  avgt   80      32.815 ±     4.395      us/op
+DvAddrBench.c_noBrLive:CPI                             5000    DENSE_8  avgt   10       0.233 ±     0.074  clks/insn
+DvAddrBench.c_noBrLive:IPC                             5000    DENSE_8  avgt   10       4.427 ±     1.021  insns/clk
+DvAddrBench.c_noBrLive:L1-dcache-load-misses           5000    DENSE_8  avgt   10     643.670 ±  2779.843       #/op
+DvAddrBench.c_noBrLive:L1-dcache-loads                 5000    DENSE_8  avgt   10  142098.332 ±  7349.928       #/op
+DvAddrBench.c_noBrLive:L1-icache-load-misses           5000    DENSE_8  avgt   10       0.593 ±     0.268       #/op
+DvAddrBench.c_noBrLive:L1-icache-loads                 5000    DENSE_8  avgt   10     101.263 ±    66.654       #/op
+DvAddrBench.c_noBrLive:branch-misses                   5000    DENSE_8  avgt   10     420.115 ±    24.992       #/op
+DvAddrBench.c_noBrLive:branches                        5000    DENSE_8  avgt   10  139101.777 ±  7473.620       #/op
+DvAddrBench.c_noBrLive:cycles                          5000    DENSE_8  avgt   10  145101.729 ± 52180.218       #/op
+DvAddrBench.c_noBrLive:dTLB-load-misses                5000    DENSE_8  avgt   10       0.514 ±     0.539       #/op
+DvAddrBench.c_noBrLive:dTLB-loads                      5000    DENSE_8  avgt   10       2.726 ±     2.670       #/op
+DvAddrBench.c_noBrLive:iTLB-load-misses                5000    DENSE_8  avgt   10       0.513 ±     0.300       #/op
+DvAddrBench.c_noBrLive:iTLB-loads                      5000    DENSE_8  avgt   10       0.881 ±     0.341       #/op
+DvAddrBench.c_noBrLive:instructions                    5000    DENSE_8  avgt   10  621567.529 ± 33824.203       #/op
+DvAddrBench.c_noBrLive:stalled-cycles-frontend         5000    DENSE_8  avgt   10    2563.394 ±  2709.646       #/op
+DvAddrBench.c_noBrLive                                 5000   DENSE_50  avgt   80      26.649 ±     0.636      us/op
+DvAddrBench.c_noBrLive:CPI                             5000   DENSE_50  avgt   10       0.197 ±     0.013  clks/insn
+DvAddrBench.c_noBrLive:IPC                             5000   DENSE_50  avgt   10       5.082 ±     0.334  insns/clk
+DvAddrBench.c_noBrLive:L1-dcache-load-misses           5000   DENSE_50  avgt   10      26.246 ±    26.959       #/op
+DvAddrBench.c_noBrLive:L1-dcache-loads                 5000   DENSE_50  avgt   10  130564.495 ±  7051.296       #/op
+DvAddrBench.c_noBrLive:L1-icache-load-misses           5000   DENSE_50  avgt   10       0.506 ±     0.074       #/op
+DvAddrBench.c_noBrLive:L1-icache-loads                 5000   DENSE_50  avgt   10      83.242 ±    17.892       #/op
+DvAddrBench.c_noBrLive:branch-misses                   5000   DENSE_50  avgt   10       4.856 ±     0.502       #/op
+DvAddrBench.c_noBrLive:branches                        5000   DENSE_50  avgt   10  135490.492 ±  7282.778       #/op
+DvAddrBench.c_noBrLive:cycles                          5000   DENSE_50  avgt   10  126367.866 ± 13434.868       #/op
+DvAddrBench.c_noBrLive:dTLB-load-misses                5000   DENSE_50  avgt   10       0.383 ±     0.065       #/op
+DvAddrBench.c_noBrLive:dTLB-loads                      5000   DENSE_50  avgt   10       1.947 ±     0.348       #/op
+DvAddrBench.c_noBrLive:iTLB-load-misses                5000   DENSE_50  avgt   10       0.419 ±     0.112       #/op
+DvAddrBench.c_noBrLive:iTLB-loads                      5000   DENSE_50  avgt   10       0.726 ±     0.124       #/op
+DvAddrBench.c_noBrLive:instructions                    5000   DENSE_50  avgt   10  640589.277 ± 34625.720       #/op
+DvAddrBench.c_noBrLive:stalled-cycles-frontend         5000   DENSE_50  avgt   10     394.029 ±   174.934       #/op
+DvAddrBench.d_noBrRow                                  5000    DENSE_8  avgt   80      27.824 ±     2.888      us/op
+DvAddrBench.d_noBrRow:CPI                              5000    DENSE_8  avgt   10       0.229 ±     0.021  clks/insn
+DvAddrBench.d_noBrRow:IPC                              5000    DENSE_8  avgt   10       4.375 ±     0.364  insns/clk
+DvAddrBench.d_noBrRow:L1-dcache-load-misses            5000    DENSE_8  avgt   10     101.378 ±    42.748       #/op
+DvAddrBench.d_noBrRow:L1-dcache-loads                  5000    DENSE_8  avgt   10  150289.696 ±  9052.265       #/op
+DvAddrBench.d_noBrRow:L1-icache-load-misses            5000    DENSE_8  avgt   10       0.536 ±     0.161       #/op
+DvAddrBench.d_noBrRow:L1-icache-loads                  5000    DENSE_8  avgt   10      93.771 ±    32.958       #/op
+DvAddrBench.d_noBrRow:branch-misses                    5000    DENSE_8  avgt   10     423.434 ±    26.874       #/op
+DvAddrBench.d_noBrRow:branches                         5000    DENSE_8  avgt   10  135521.374 ±  8399.168       #/op
+DvAddrBench.d_noBrRow:cycles                           5000    DENSE_8  avgt   10  127553.811 ± 17179.854       #/op
+DvAddrBench.d_noBrRow:dTLB-load-misses                 5000    DENSE_8  avgt   10       0.506 ±     0.596       #/op
+DvAddrBench.d_noBrRow:dTLB-loads                       5000    DENSE_8  avgt   10       2.440 ±     1.804       #/op
+DvAddrBench.d_noBrRow:iTLB-load-misses                 5000    DENSE_8  avgt   10       0.436 ±     0.240       #/op
+DvAddrBench.d_noBrRow:iTLB-loads                       5000    DENSE_8  avgt   10       0.701 ±     0.199       #/op
+DvAddrBench.d_noBrRow:instructions                     5000    DENSE_8  avgt   10  555861.385 ± 35511.946       #/op
+DvAddrBench.d_noBrRow:stalled-cycles-frontend          5000    DENSE_8  avgt   10    2390.776 ±  2525.415       #/op
+DvAddrBench.d_noBrRow                                  5000   DENSE_50  avgt   80      22.018 ±     0.157      us/op
+DvAddrBench.d_noBrRow:CPI                              5000   DENSE_50  avgt   10       0.181 ±     0.004  clks/insn
+DvAddrBench.d_noBrRow:IPC                              5000   DENSE_50  avgt   10       5.533 ±     0.130  insns/clk
+DvAddrBench.d_noBrRow:L1-dcache-load-misses            5000   DENSE_50  avgt   10      74.902 ±    18.314       #/op
+DvAddrBench.d_noBrRow:L1-dcache-loads                  5000   DENSE_50  avgt   10  135572.067 ±  8616.746       #/op
+DvAddrBench.d_noBrRow:L1-icache-load-misses            5000   DENSE_50  avgt   10       0.415 ±     0.109       #/op
+DvAddrBench.d_noBrRow:L1-icache-loads                  5000   DENSE_50  avgt   10      65.819 ±    21.542       #/op
+DvAddrBench.d_noBrRow:branch-misses                    5000   DENSE_50  avgt   10       4.299 ±     0.255       #/op
+DvAddrBench.d_noBrRow:branches                         5000   DENSE_50  avgt   10  130191.465 ±  8311.417       #/op
+DvAddrBench.d_noBrRow:cycles                           5000   DENSE_50  avgt   10  105211.014 ±  8195.777       #/op
+DvAddrBench.d_noBrRow:dTLB-load-misses                 5000   DENSE_50  avgt   10       0.250 ±     0.064       #/op
+DvAddrBench.d_noBrRow:dTLB-loads                       5000   DENSE_50  avgt   10       1.596 ±     0.372       #/op
+DvAddrBench.d_noBrRow:iTLB-load-misses                 5000   DENSE_50  avgt   10       0.313 ±     0.057       #/op
+DvAddrBench.d_noBrRow:iTLB-loads                       5000   DENSE_50  avgt   10       0.563 ±     0.090       #/op
+DvAddrBench.d_noBrRow:instructions                     5000   DENSE_50  avgt   10  581945.422 ± 41398.853       #/op
+DvAddrBench.d_noBrRow:stalled-cycles-frontend          5000   DENSE_50  avgt   10     289.570 ±    69.866       #/op
+
+[exited with code 0]
