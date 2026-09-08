@@ -333,3 +333,6 @@ IPC 가 4.7 로 상수라 파이프라인은 아예 막히지 않았다. **F-001
 
 *전체 측정 기록: [`docs/findings.md`](findings.md) · 서사: [`docs/STORY.md`](STORY.md) ·
 이 결과를 공격하는 방법과 방어 상태: [`docs/threats.md`](threats.md)*
+
+*읽기용 HTML: `docs/blog.built.html` (단독 실행 가능 — 메일 첨부용).
+생성: `python3 tools/build_story_html.py docs/blog.built.html docs/BLOG.md`*
