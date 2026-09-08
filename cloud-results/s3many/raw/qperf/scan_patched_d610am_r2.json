@@ -1,0 +1,18 @@
+{
+  "label": "am_patched_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 300,
+  "min_s": 0.10684469099999205,
+  "median_s": 0.12565746799998578,
+  "max_s": 0.24239222100004554,
+  "mean_s": 0.13135591170333402,
+  "is_deleted": false
+}

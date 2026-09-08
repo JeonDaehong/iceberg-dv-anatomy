@@ -1,0 +1,11 @@
+{
+  "label": "patched_eq50_r3",
+  "table": "dv.g.eq50",
+  "n_cols": 1,
+  "iters": 30,
+  "min_s": 0.37031091500011826,
+  "median_s": 0.43483901800027525,
+  "max_s": 0.5750232069995036,
+  "mean_s": 0.43933814739993976,
+  "is_deleted": false
+}

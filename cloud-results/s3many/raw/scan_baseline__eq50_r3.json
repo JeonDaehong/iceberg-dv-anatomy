@@ -1,0 +1,11 @@
+{
+  "label": "baseline_eq50_r3",
+  "table": "dv.g.eq50",
+  "n_cols": 1,
+  "iters": 30,
+  "min_s": 0.37021329999970476,
+  "median_s": 0.4216434299996763,
+  "max_s": 0.698106105000079,
+  "mean_s": 0.45008714986655224,
+  "is_deleted": false
+}

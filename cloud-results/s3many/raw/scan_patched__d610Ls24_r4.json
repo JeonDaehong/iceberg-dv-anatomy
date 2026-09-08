@@ -1,0 +1,18 @@
+{
+  "label": "patched_d610Ls24_r4",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "s17"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.28519274000018413,
+  "median_s": 0.34451527900000656,
+  "max_s": 0.49424217099976886,
+  "mean_s": 0.367539328966662,
+  "is_deleted": false
+}

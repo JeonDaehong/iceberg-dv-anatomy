@@ -1,0 +1,12 @@
+{
+  "label": "patched_d610b20000_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "batch_size": 20000,
+  "iters": 30,
+  "min_s": 0.1352612559999784,
+  "median_s": 0.2073656889999711,
+  "max_s": 0.3430449640000006,
+  "mean_s": 0.22322634186666052,
+  "is_deleted": false
+}

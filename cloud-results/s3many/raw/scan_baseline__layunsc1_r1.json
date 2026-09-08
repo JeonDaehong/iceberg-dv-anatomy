@@ -1,0 +1,17 @@
+{
+  "label": "baseline_layunsc1_r1",
+  "table": "dv.g.lay_uns",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.22548973700000374,
+  "median_s": 0.31343044000001896,
+  "max_s": 0.4330280490000007,
+  "mean_s": 0.3167651436333339,
+  "is_deleted": false
+}

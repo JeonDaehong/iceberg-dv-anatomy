@@ -1,0 +1,18 @@
+{
+  "label": "qp_baseline_cycles__r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1811740269999973,
+  "median_s": 0.2074995369999897,
+  "max_s": 0.3304272560000072,
+  "mean_s": 0.21468302136666845,
+  "is_deleted": false
+}

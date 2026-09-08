@@ -1,0 +1,18 @@
+{
+  "label": "qp_baseline_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.17829202000000066,
+  "median_s": 0.22711823600000258,
+  "max_s": 0.29424155799999596,
+  "mean_s": 0.2290949539333333,
+  "is_deleted": false
+}

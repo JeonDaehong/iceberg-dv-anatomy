@@ -1,0 +1,18 @@
+{
+  "label": "patched_rp800_r2",
+  "table": "dv.g.d800",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1397368389998519,
+  "median_s": 0.20185348900031386,
+  "max_s": 0.33739095100008853,
+  "mean_s": 0.20719174240008822,
+  "is_deleted": false
+}

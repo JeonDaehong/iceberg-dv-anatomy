@@ -1,0 +1,18 @@
+{
+  "label": "baseline_skuns_r5",
+  "table": "dv.g.sk_uns",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1552096749996963,
+  "median_s": 0.20544264300042414,
+  "max_s": 0.3099133380001149,
+  "mean_s": 0.20611514406667386,
+  "is_deleted": false
+}

@@ -1,0 +1,16 @@
+{
+  "table": "dv.g.eq0",
+  "density_bp": 0,
+  "run_length": 1,
+  "occupancy_bp": 10000,
+  "target_density": 0.0,
+  "actual_density": 0.0,
+  "total_rows": 8000000,
+  "deleted_rows": 0,
+  "dv_count": 0,
+  "dv_bytes": 0,
+  "rows_per_file": 2000000,
+  "num_files": 4,
+  "chunks_per_file": 30.517578125,
+  "expected_chunk_cardinality": 0.0
+}

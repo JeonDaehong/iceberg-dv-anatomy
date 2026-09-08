@@ -1,0 +1,16 @@
+{
+  "label": "patched_d610warmc1_r2",
+  "table": "dv.g.d610",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.18304601299951173,
+  "median_s": 0.26381233200027054,
+  "max_s": 0.7165122850001353,
+  "mean_s": 0.2883471566666837,
+  "is_deleted": false
+}

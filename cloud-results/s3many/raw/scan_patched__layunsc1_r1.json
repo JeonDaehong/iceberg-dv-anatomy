@@ -1,0 +1,17 @@
+{
+  "label": "patched_layunsc1_r1",
+  "table": "dv.g.lay_uns",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.1856523850000258,
+  "median_s": 0.26937993400002824,
+  "max_s": 0.5133917050000036,
+  "mean_s": 0.2890898866666722,
+  "is_deleted": false
+}

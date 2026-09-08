@@ -1,0 +1,21 @@
+{
+  "label": "baseline_isdel",
+  "tables": {
+    "dv.g.d50": {
+      "count": 8000000,
+      "sum_id": 31839504165994,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true,
+      "n_deleted": 40154
+    },
+    "dv.g.d610": {
+      "count": 8000000,
+      "sum_id": 30048598214693,
+      "min_id": 0,
+      "max_id": 7999999,
+      "columnar": true,
+      "n_deleted": 488161
+    }
+  }
+}

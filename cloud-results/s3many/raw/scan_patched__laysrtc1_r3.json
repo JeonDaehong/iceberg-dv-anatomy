@@ -1,0 +1,17 @@
+{
+  "label": "patched_laysrtc1_r3",
+  "table": "dv.g.lay_srt",
+  "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "cold": false,
+  "iters": 30,
+  "min_s": 0.11654708899999378,
+  "median_s": 0.15589226100001952,
+  "max_s": 0.35431032200000345,
+  "mean_s": 0.17084980883333287,
+  "is_deleted": false
+}
