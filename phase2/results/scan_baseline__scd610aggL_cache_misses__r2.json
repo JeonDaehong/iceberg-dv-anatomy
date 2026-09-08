@@ -1,0 +1,19 @@
+{
+  "label": "sc_aggL_cache_misses__r2",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k01",
+  "cold": false,
+  "iters": 15,
+  "min_s": 1.9361773170000447,
+  "median_s": 2.005088059000002,
+  "max_s": 2.146318706000045,
+  "mean_s": 2.0240222664000007,
+  "is_deleted": false
+}

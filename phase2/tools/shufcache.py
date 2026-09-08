@@ -23,10 +23,12 @@ C3_MIN = 1.3    # cache-miss 가 몇 배 이상이면 C3 적중
 
 
 def cell(query, event):
+    # 스크립트는 `tr -c 'a-zA-Z0-9' '_'` 로 이름을 만드는데, echo 의 개행까지 바뀌어
+    # 이벤트 이름 뒤에 밑줄이 하나 더 붙는다 (`cycles__c2_r1`). 그래서 뒤에 `*` 를 둔다.
     safe = "".join(c if c.isalnum() else "_" for c in event)
     scan, tot, dv = [], [], []
     for path in sorted(glob.glob(os.path.join(
-            R, "profiles", "baseline__sc%s%s_%s_c*_r*.collapsed" % (TAG, query, safe)))):
+            R, "profiles", "baseline__sc%s%s_%s*_c*_r*.collapsed" % (TAG, query, safe)))):
         stacks = parse_collapsed(path)
         if not stacks:
             continue

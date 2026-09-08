@@ -1,0 +1,19 @@
+{
+  "label": "sc_aggL_instructions__r1",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k01",
+  "cold": false,
+  "iters": 15,
+  "min_s": 2.0595263339999974,
+  "median_s": 2.4016656449999942,
+  "max_s": 5.134046213000005,
+  "mean_s": 2.9710506588,
+  "is_deleted": false
+}

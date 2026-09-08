@@ -1,0 +1,19 @@
+{
+  "label": "sc_aggL_cycles__r3",
+  "table": "dv.g.d610",
+  "n_cols": 2,
+  "cols": [
+    "k01",
+    "k04"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": "k01",
+  "cold": false,
+  "iters": 15,
+  "min_s": 2.0204902410000045,
+  "median_s": 2.0838220670000283,
+  "max_s": 2.3554593979999936,
+  "mean_s": 2.114074620933339,
+  "is_deleted": false
+}
