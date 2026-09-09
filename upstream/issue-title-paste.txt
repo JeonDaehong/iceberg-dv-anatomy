@@ -1,0 +1,1 @@
+Spark: vectorized reads probe the position delete index once per row — 43–58% of scan CPU on narrow projections
