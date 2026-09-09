@@ -152,17 +152,17 @@ td code{font-size:12.4px}
 <header class="top">
   <p class="kicker">Apache Iceberg V3 · Deletion Vector</p>
   <h1>삭제를 더 많이 할수록 스캔이 싸진다</h1>
-  <p class="sub">Roaring 컨테이너가 6.25% 에서 갈리고, 그 경계 바로 아래가 가장 비싸다. 찾고, 고치고, 15번 빗나간 기록.</p>
+  <p class="sub">Roaring 컨테이너가 6.25% 에서 갈리고, 그 경계 바로 아래가 가장 비싸다. 찾고, 고치고, 19번 빗나간 기록.</p>
   <div class="meta">
-    <span>발견 <b>42</b>개</span>
-    <span>측정 축 <b>27</b>개</span>
-    <span>빗나간 예측 <b>15</b>개</span>
+    <span>발견 <b>44</b>개</span>
+    <span>측정 축 <b>28</b>개</span>
+    <span>빗나간 예측 <b>19</b>개</span>
     <span>Spark <b>4.0.4</b> · Iceberg <b>1.11.0</b></span>
     <span>최종 <b>2026-09-08</b></span>
   </div>
 </header>
 <hr>
-<blockquote><strong>한 문장으로</strong>: Iceberg V3 의 deletion vector 는 삭제율이 6.25% 를 넘는 순간 내부 자료구조가 바뀌고, 그 경계 <strong>바로 아래</strong>가 가장 비싸다. 좁은 스캔에서는 그 체크가 CPU 의 절반을 먹는다. 175줄을 고쳐 최악 지점에서 9.28배를 줄였다. 그리고 그 과정에서 내 예측이 <strong>15번 빗나갔다.</strong></blockquote>
+<blockquote><strong>한 문장으로</strong>: Iceberg V3 의 deletion vector 는 삭제율이 6.25% 를 넘는 순간 내부 자료구조가 바뀌고, 그 경계 <strong>바로 아래</strong>가 가장 비싸다. 좁은 스캔에서는 그 체크가 CPU 의 절반을 먹는다. 175줄을 고쳐 최악 지점에서 9.28배를 줄였다. 그리고 그 과정에서 내 예측이 <strong>19번 빗나갔다.</strong></blockquote>
 <p>이 글은 결과보다 <strong>어떻게 틀렸는지</strong>에 대한 이야기다. 숫자는 다 아래에 있고, <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/findings.md" class="ref">전체 측정 기록</a>과 <a href="https://github.com/JeonDaehong/iceberg-dv-anatomy/blob/main/docs/STORY.md">서사 문서</a>는 저장소에 있다.</p>
 <hr>
 <h2 id="1-이상한-곡선에서-시작했다"><span class="num">1</span>1. 이상한 곡선에서 시작했다</h2>
@@ -243,7 +243,7 @@ td code{font-size:12.4px}
 <p>숫자보다 이게 더 오래 갈 것 같다.</p>
 <h3 id="예측을-먼저-적어라">예측을 먼저 적어라</h3>
 <p>모든 실험 스크립트의 헤더에 <strong>측정 전에</strong> 예측을 적었고, 채점 도구는 그 예측을 다시 적지 않는다(적으면 사후에 조용히 고칠 수 있게 된다).</p>
-<p>그 결과 예측이 <strong>15번 빗나갔다.</strong> 적어두지 않았다면 전부 "예상대로였다" 가 됐을 것이다. 빗나간 것들 중 몇 개:</p>
+<p>그 결과 예측이 <strong>19번 빗나갔다.</strong> 적어두지 않았다면 전부 "예상대로였다" 가 됐을 것이다. 빗나간 것들 중 몇 개:</p>
 <ul><li>"분기 예측이 컨테이너 비용을 설명한다" → <strong>반증</strong></li><li>"손익분기는 컬럼 <strong>수</strong>다" → 죽었다. 축은 디코딩 비용이었다</li><li>"정렬하면 파일이 작아진다" → 반대로 커졌다</li><li>"본전 회수 10회 미만" → <strong>약 300회. 30배 빗나갔다</strong></li><li>"컨테이너 개수만 줄이면 1.5배 미만" → <strong>2.22배</strong></li></ul>
 <p><strong>빗나가는 방식도 두 가지였다.</strong> 예측이 틀린 경우와, <strong>예측을 시험하지도 못한 경우</strong>다. 후자가 더 무섭다 — 저장을 없앤 변형은 JIT 이 조건문을 산술로 바꿔버려서 대조군이 못 됐고, 카운터를 안 찍었으면 그걸 모른 채 "저장이 범인" 이라고 발표했을 것이다. 또 한 번은 같은 문서의 T2 와 T3 이 서로 모순됐는데(한쪽은 "패치 일량은 삭제 수에 비례" 라고 쓰고 다른 쪽은 그걸 무시했다) <strong>측정이 그걸 잡아냈다.</strong></p>
 <h3 id="노이즈를-먼저-재라-이게-가장-비싼-교훈이었다">노이즈를 먼저 재라 — 이게 가장 비싼 교훈이었다</h3>

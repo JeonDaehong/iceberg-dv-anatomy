@@ -168,7 +168,7 @@ footer b{color:var(--ink-2);font-weight:500}
       <span>JDK <b>17</b></span>
       <span>WSL2 + EC2 <b>m7i·m7g</b> · async-profiler <b>4.5</b></span>
       <span>800만 행 / 4파일 / 파일당 30.5 청크</span>
-      <span>발견 <b>44</b>개 · 측정 축 <b>29</b>개 · 빗나간 예측 <b>17</b>개</span>
+      <span>발견 <b>__NF__</b>개 · 측정 축 <b>__NAX__</b>개 · 빗나간 예측 <b>__NMISS__</b>개</span>
       <span>최종 <b>2026-09-09</b></span>
     </div>
   </div>
@@ -1293,7 +1293,7 @@ function svgRoot(host,w,h){
      s:"Iceberg를 실제로 고쳐 측정 · 최악 지점 · 정확성 검증 통과"},
     {k:"이식성", v:"5 / 7 축 불변",
      s:"캐시·CPU·스토리지·셔플은 안 움직이고, 파일 수와 분산만 움직인다"},
-    {k:"빗나간 예측", v:"17번",
+    {k:"빗나간 예측", v:"__NMISS__번",
      s:"측정 전에 적었으므로 숨길 수 없었다 · 발견 44개"},
   ];
   document.getElementById("stats").innerHTML = tiles.map(t=>
