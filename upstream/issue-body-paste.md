@@ -20,7 +20,10 @@ I have a working branch with the change, updated tests, and the measurements bel
 ### Where
 
 
-`spark/v4.0/spark/src/main/java/org/apache/iceberg/spark/data/vectorized/ColumnarBatchUtil.java` (same shape in v3.4/v3.5/v4.1):
+`spark/*/spark/src/main/java/org/apache/iceberg/spark/data/vectorized/ColumnarBatchUtil.java` — the
+same loop is duplicated in every Spark version directory currently on `main` (`v3.5`, `v4.0`,
+`v4.1`, `v4.2`). Line numbers below are from `v4.0` at the `apache-iceberg-1.11.0` tag, which is
+what I measured and patched; I have checked that `v4.2` on `main` has the same shape.
 
 ```java
 // :57 buildRowIdMapping

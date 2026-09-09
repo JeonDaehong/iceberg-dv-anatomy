@@ -2077,7 +2077,7 @@ git checkout -b spark-dv-range-scan upstream/main</code></pre>
 <p><strong>다만 Slack 에 한 줄 먼저 던져 보는 것은 값이 싸다</strong> — "이 루프를 구간 API 로 바꾸는 이슈를 준비했는데 관심 있는 분?" 정도. 리뷰어가 붙을 확률이 올라간다.</p>
 <hr>
 <p><em>이 문서의 근거: <a href="https://iceberg.apache.org/contribute/" target="_blank" rel="noopener">contribute</a> · <code>site/docs/contribute.md</code> · <code>site/docs/community.md</code> (2026-09-09 확인)</em></p></article></div></section>
-<section class="doc" id="d4" hidden><div class="doc-h"><p class="kicker">업스트림</p><h1>이슈 초안</h1><p class="sub">그대로 붙여넣을 본문</p><div class="doc-m"><span>upstream/issue-columnarbatchutil.md</span><span>571줄</span></div></div><div class="doc-b"><nav class="dtoc"></nav><article><p>Spark: vectorized reads probe the position delete index once per row, ignoring that batch positions are contiguous</p>
+<section class="doc" id="d4" hidden><div class="doc-h"><p class="kicker">업스트림</p><h1>이슈 초안</h1><p class="sub">그대로 붙여넣을 본문</p><div class="doc-m"><span>upstream/issue-columnarbatchutil.md</span><span>574줄</span></div></div><div class="doc-b"><nav class="dtoc"></nav><article><p>Spark: vectorized reads probe the position delete index once per row, ignoring that batch positions are contiguous</p>
 <hr>
 <h3 id="d4-summary">Summary</h3>
 <p><code>ColumnarBatchUtil.buildRowIdMapping</code> and <code>buildIsDeleted</code> call <code>PositionDeleteIndex.isDeleted(pos)</code> once for every row in a batch. Positions within a batch are a contiguous ascending range and the DV-backed index is a Roaring bitmap, so the same information can be obtained with a single range traversal instead of <code>batchSize</code> independent probes.</p>
@@ -2088,7 +2088,7 @@ git checkout -b spark-dv-range-scan upstream/main</code></pre>
 <p><code>RoaringBitmap</code> already provides the range APIs needed (<code>forEachInRange</code>, <code>forAllInRange</code>, <code>rangeCardinality</code>), and they are present in the version Iceberg pins (<code>1.6.14</code>), including the shaded copy in <code>iceberg-spark-runtime</code>.</p>
 <p>I have a working branch with the change, updated tests, and the measurements below. Happy to open a PR if the direction sounds reasonable.</p>
 <h3 id="d4-where">Where</h3>
-<p><code>spark/v4.0/spark/src/main/java/org/apache/iceberg/spark/data/vectorized/ColumnarBatchUtil.java</code> (same shape in v3.4/v3.5/v4.1):</p>
+<p><code>spark/*/spark/src/main/java/org/apache/iceberg/spark/data/vectorized/ColumnarBatchUtil.java</code> — the same loop is duplicated in every Spark version directory currently on <code>main</code> (<code>v3.5</code>, <code>v4.0</code>, <code>v4.1</code>, <code>v4.2</code>). Line numbers below are from <code>v4.0</code> at the <code>apache-iceberg-1.11.0</code> tag, which is what I measured and patched; I have checked that <code>v4.2</code> on <code>main</code> has the same shape.</p>
 <pre><code>// :57 buildRowIdMapping
 PositionDeleteIndex deletedPositions = deletes.deletedRowPositions();   // :66
 for (int rowId = 0; rowId &lt; batchSize; rowId++) {                       // :72
