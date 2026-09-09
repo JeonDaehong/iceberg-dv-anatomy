@@ -15,6 +15,9 @@ lands just below the array/bitmap container boundary, which is where the current
 code is worst.
 
 Measurements are in #18026 — including where the numbers don't hold. CI is green.
+I kept the raw profiles, flame graphs and per-axis charts as well, so if anything
+there would help the review, just say the word and I'll share it.
+
 Would appreciate a review whenever someone has time, and I'm happy to change the
 approach if there's a better one.
 ```
@@ -26,8 +29,10 @@ approach if there's a better one.
 ```
 Opened #18027 — Spark's vectorized reader probes the position delete index once per
 row; this traverses the batch range once instead. 2.6x–9.3x less delete-check CPU,
-measurements and caveats in #18026. CI is green — would appreciate a review when
-someone has a moment 🙏
+measurements and caveats in #18026. CI is green.
+
+I still have the raw profiles and charts behind those numbers, happy to share if
+useful. Would appreciate a review when someone has a moment 🙏
 ```
 
 ---
@@ -42,8 +47,9 @@ vectorized reader with a single range traversal (2.6x–9.3x less delete-check C
 
 I wrote the predictions down before each measurement, which is how I found out my
 first explanation for the cost was wrong — it isn't branch misprediction. #18026 has
-the full set, including the conditions where the numbers don't hold. CI is green and
-a review would be much appreciated.
+the full set, including the conditions where the numbers don't hold, and I still have
+the raw profiles and charts if any of it would be useful. CI is green and a review
+would be much appreciated.
 ```
 
 ---
