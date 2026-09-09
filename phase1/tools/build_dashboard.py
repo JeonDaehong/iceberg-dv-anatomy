@@ -8,6 +8,7 @@ docs/dashboard.built.html 로 쓴다.
 """
 import json
 import os
+import re
 import sys
 
 
@@ -107,6 +108,21 @@ def main():
             next(k for k, v in EXTRA.items() if v[0] == e["label"])))
 
     html = open(tpl_path, encoding="utf-8").read()
+
+    # 발견 수 · 측정 축 수 · 빗나간 예측 수는 **문서에서 센다.**
+    # 손으로 적었더니 대시보드 17 / 블로그 15 로 어긋났다 (2026-09-09).
+    docs = os.path.join(root, "docs")
+    nf = len(re.findall(r"^## F-0", open(os.path.join(docs, "findings.md"),
+                                         encoding="utf-8").read(), re.M))
+    nax = len([f for f in os.listdir(os.path.join(root, "phase2", "scripts"))
+               if re.match(r"^\d\d.*\.sh$", f)])
+    st = open(os.path.join(docs, "STORY.md"), encoding="utf-8").read()
+    blk = st[st.index("### 10.2"):st.index("### 10.3")]
+    nmiss = len([l for l in blk.splitlines()
+                 if l.startswith("|") and "---" not in l and "예측 | 결과" not in l])
+    html = (html.replace("__NF__", str(nf))
+                .replace("__NAX__", str(nax))
+                .replace("__NMISS__", str(nmiss)))
     html = html.replace("__COST__", json.dumps(cost, ensure_ascii=False))
     html = html.replace("__CLU_COST__", json.dumps(clu, ensure_ascii=False))
     html = html.replace("__PATCH__", json.dumps(patch, ensure_ascii=False))

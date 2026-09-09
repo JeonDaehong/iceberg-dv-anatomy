@@ -28,7 +28,7 @@ HEADS = {
         "Apache Iceberg V3 · Deletion Vector",
         "삭제를 더 많이 할수록 스캔이 싸진다",
         "Roaring 컨테이너가 6.25% 에서 갈리고, 그 경계 바로 아래가 가장 비싸다. "
-        "찾고, 고치고, 15번 빗나간 기록.",
+        "찾고, 고치고, 19번 빗나간 기록.",
     ),
 }
 KICKER, TITLE, SUB = HEADS.get(os.path.basename(SRC), HEADS["STORY.md"])
@@ -346,7 +346,7 @@ td code{font-size:12.4px}
   <div class="meta">
     <span>발견 <b>__NF__</b>개</span>
     <span>측정 축 <b>__NAX__</b>개</span>
-    <span>빗나간 예측 <b>15</b>개</span>
+    <span>빗나간 예측 <b>__NMISS__</b>개</span>
     <span>Spark <b>4.0.4</b> · Iceberg <b>1.11.0</b></span>
     <span>최종 <b>2026-09-08</b></span>
   </div>
@@ -359,13 +359,27 @@ __BODY__
 nf = len(re.findall(r"^## F-0", io.open("docs/findings.md", encoding="utf-8").read(), re.M))
 nax = len([f for f in os.listdir("phase2/scripts") if re.match(r"^\d\d.*\.sh$", f)])
 
+# 빗나간 예측 수는 STORY 의 스코어보드에서 **센다.** 손으로 적었더니 문서마다
+# 15 / 17 로 어긋났다 — 이 저장소가 "규칙은 코드에 박는다" 로 다뤄온 것과 같은 종류다.
+def count_misses():
+    st = io.open("docs/STORY.md", encoding="utf-8").read()
+    try:
+        blk = st[st.index("### 10.2"):st.index("### 10.3")]
+    except ValueError:
+        return 0
+    return len([l for l in blk.splitlines()
+                if l.startswith("|") and "---" not in l and "예측 | 결과" not in l])
+
+nmiss = count_misses()
+
 HTML = (HTML.replace("__TOC__", toc_html)
             .replace("__BODY__", body_html)
             .replace("__KICKER__", KICKER)
             .replace("__TITLE__", TITLE)
             .replace("__SUB__", SUB)
             .replace("__NF__", str(nf))
-            .replace("__NAX__", str(nax)))
+            .replace("__NAX__", str(nax))
+            .replace("__NMISS__", str(nmiss)))
 # 오타로 들어간 잔여 토큰 정리
 HTML = HTML.replace("--amber:#d9a css; ", "")
 
