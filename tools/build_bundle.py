@@ -17,6 +17,7 @@
 사용: python3 tools/build_bundle.py [출력.html]
 """
 import io
+from mdimg import CSS as IMG_CSS, images
 import os
 import re
 import sys
@@ -57,6 +58,7 @@ def anchor(t):
 
 def inline(t, docfile):
     t = esc(t)
+    t = images(t)
     t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
     t = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"(?<![*\w])\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", t)
@@ -192,7 +194,7 @@ HTML = """<title>Deletion Vector Anatomy — 전체 문서</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<style>
+<style>__IMGCSS__
 :root{
   --ground:#f6f7f8; --panel:#fff; --ink:#171b21; --ink-2:#3d4650; --muted:#69737f;
   --rule:#dfe3e8; --rule-2:#eef1f4; --teal:#1f6b66; --teal-soft:#e4efee;
@@ -319,7 +321,8 @@ td strong{color:var(--ink)}
 
 nf = len(re.findall(r"^## F-0", io.open(os.path.join(ROOT, "docs/findings.md"),
                                        encoding="utf-8").read(), re.M))
-html = (HTML.replace("__NAV__", "\n".join(navs))
+html = (HTML.replace("__IMGCSS__", IMG_CSS)
+            .replace("__NAV__", "\n".join(navs))
             .replace("__PANELS__", "\n".join(panels))
             .replace("__NDOC__", str(len(panels)))
             .replace("__NF__", str(nf)))

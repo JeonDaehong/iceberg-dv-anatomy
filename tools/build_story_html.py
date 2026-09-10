@@ -6,6 +6,7 @@
 제목, 표, 목록, 코드블록, 인용, 굵게/기울임/인라인코드, 링크, 수평선.
 """
 import io
+from mdimg import CSS as IMG_CSS, images
 import os
 import re
 import sys
@@ -42,6 +43,7 @@ def esc(t):
 
 def inline(t):
     t = esc(t)
+    t = images(t)
     t = re.sub(r"`([^`]+)`", r"<code>\1</code>", t)
     t = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", t)
     t = re.sub(r"(?<![*\w])\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", t)
@@ -192,7 +194,7 @@ HTML = """<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-<style>
+<style>__IMGCSS__
 :root{
   --ground:#f6f7f8; --panel:#ffffff; --ink:#171b21; --ink-2:#3d4650; --muted:#69737f;
   --rule:#dfe3e8; --rule-2:#eef1f4;
@@ -372,7 +374,8 @@ def count_misses():
 
 nmiss = count_misses()
 
-HTML = (HTML.replace("__TOC__", toc_html)
+HTML = (HTML.replace("__IMGCSS__", IMG_CSS)
+            .replace("__TOC__", toc_html)
             .replace("__BODY__", body_html)
             .replace("__KICKER__", KICKER)
             .replace("__TITLE__", TITLE)
