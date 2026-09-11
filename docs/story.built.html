@@ -77,6 +77,9 @@ nav.toc{display:none}
     color:var(--muted); text-decoration:none; font-size:13.5px; line-height:1.4;
   }
   nav.toc a:hover{color:var(--teal); border-left-color:var(--teal)}
+  nav.toc a.t1{font-weight:700; color:var(--ink); margin-top:14px}
+  nav.toc a.t1:first-child{margin-top:0}
+  nav.toc a.t2{padding-left:20px}
 }
 main{min-width:0}
 
@@ -91,6 +94,12 @@ h2 .num{
   font-family:"JetBrains Mono", monospace; font-size:12px; color:var(--teal);
   display:block; margin-bottom:8px; letter-spacing:.1em;
 }
+main h1{
+  font-family:"Newsreader", Georgia, serif; font-weight:600;
+  font-size:clamp(30px,4.2vw,42px); line-height:1.15; letter-spacing:-.015em;
+  margin:96px 0 8px; padding:0 0 16px; border-bottom:2px solid var(--ink);
+}
+main h1 + h2{margin-top:34px; padding-top:0; border-top:none}
 h3{
   font-family:"Source Sans 3", sans-serif; font-weight:700; font-size:19.5px;
   margin:38px 0 12px; letter-spacing:-.005em; text-wrap:balance; color:var(--ink);
@@ -153,7 +162,7 @@ td code{font-size:12.4px}
 </style>
 
 <div class="wrap">
-<nav class="toc"><a href="#1-왜-했는가">1. 왜 했는가</a><a href="#2-무엇을-왜-실험했는가-설계와-규율">2. 무엇을, 왜 실험했는가 — 설계와 규율</a><a href="#3-결과-①-진단-문제가-실재하는가">3. 결과 ① 진단 — 문제가 실재하는가</a><a href="#4-개선하려면-어떤-방법이-있는가">4. 개선하려면 어떤 방법이 있는가</a><a href="#5-어떻게-개선했는가">5. 어떻게 개선했는가</a><a href="#6-결과-②-개선-얼마나-좋아졌는가">6. 결과 ② 개선 — 얼마나 좋아졌는가</a><a href="#7-결과-③-이식성-내-기계-밖에서도-성립하는가">7. 결과 ③ 이식성 — 내 기계 밖에서도 성립하는가</a><a href="#8-결과-④-처방-패치를-기다리는-동안-할-수-있는-것">8. 결과 ④ 처방 — 패치를 기다리는 동안 할 수 있는 것</a><a href="#9-기전-왜-비싼가">9. 기전 — 왜 비싼가</a><a href="#10-내가-틀린-것들">10. 내가 틀린 것들</a><a href="#11-최종-결론">11. 최종 결론</a><a href="#12-예정-아직-안-한-것-전부">12. 🔜 예정 — 아직 안 한 것 전부</a><a href="#13-한계">13. 한계</a><a href="#14-재현-방법">14. 재현 방법</a><a href="#부록-문서-지도">부록 — 문서 지도</a></nav>
+<nav class="toc"><a href="#1-왜-했는가" class="t2">1. 왜 했는가</a><a href="#2-무엇을-왜-실험했는가-설계와-규율" class="t2">2. 무엇을, 왜 실험했는가 — 설계와 규율</a><a href="#3-결과-①-진단-문제가-실재하는가" class="t2">3. 결과 ① 진단 — 문제가 실재하는가</a><a href="#4-개선하려면-어떤-방법이-있는가" class="t2">4. 개선하려면 어떤 방법이 있는가</a><a href="#5-어떻게-개선했는가" class="t2">5. 어떻게 개선했는가</a><a href="#6-결과-②-개선-얼마나-좋아졌는가" class="t2">6. 결과 ② 개선 — 얼마나 좋아졌는가</a><a href="#7-결과-③-이식성-내-기계-밖에서도-성립하는가" class="t2">7. 결과 ③ 이식성 — 내 기계 밖에서도 성립하는가</a><a href="#8-결과-④-처방-패치를-기다리는-동안-할-수-있는-것" class="t2">8. 결과 ④ 처방 — 패치를 기다리는 동안 할 수 있는 것</a><a href="#9-기전-왜-비싼가" class="t2">9. 기전 — 왜 비싼가</a><a href="#10-내가-틀린-것들" class="t2">10. 내가 틀린 것들</a><a href="#11-최종-결론" class="t2">11. 최종 결론</a><a href="#12-예정-아직-안-한-것-전부" class="t2">12. 🔜 예정 — 아직 안 한 것 전부</a><a href="#13-한계" class="t2">13. 한계</a><a href="#14-재현-방법" class="t2">14. 재현 방법</a><a href="#부록-문서-지도" class="t2">부록 — 문서 지도</a></nav>
 <main>
 <header class="top">
   <p class="kicker">Apache Iceberg V3 · 읽기 경로 해부</p>

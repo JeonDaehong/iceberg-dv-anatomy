@@ -27,9 +27,9 @@ HEADS = {
     ),
     "BLOG.md": (
         "Apache Iceberg V3 · Deletion Vector",
-        "삭제를 더 많이 할수록 스캔이 싸진다",
-        "Roaring 컨테이너가 6.25% 에서 갈리고, 그 경계 바로 아래가 가장 비싸다. "
-        "찾고, 고치고, 19번 빗나간 기록.",
+        "삭제를 더 많이 했는데 스캔이 빨라진 이유",
+        "Roaring 컨테이너가 6.25% 부근에서 바뀌는 이유를 따라가며, "
+        "읽기 경로와 개선 방법을 확인한 기록.",
     ),
 }
 KICKER, TITLE, SUB = HEADS.get(os.path.basename(SRC), HEADS["STORY.md"])
@@ -135,8 +135,10 @@ while i < len(lines):
                 i = j + 1
             continue
         sid = slug(txt)
-        if lvl == 2 and not txt.startswith("목차"):
-            toc.append((sid, txt))
+        # BLOG 가 서론/본론/결론 구조로 바뀌면서 대분류가 H1 이 됐다.
+        # H2 만 담으면 목차에서 대분류가 통째로 빠진다.
+        if lvl in (1, 2) and not txt.startswith("목차"):
+            toc.append((sid, txt, lvl))
         eyebrow = ""
         num = re.match(r"^(\d+)\.\s+(.*)$", re.sub(r"^[🔜⛔🟡]\s*", "", txt))
         if lvl == 2 and num:
@@ -188,7 +190,8 @@ while i < len(lines):
     out.append("<p>%s</p>" % inline(" ".join(buf)))
 
 body_html = "\n".join(out)
-toc_html = "".join('<a href="#%s">%s</a>' % (sid, re.sub(r"[`*]", "", t)) for sid, t in toc)
+toc_html = "".join('<a href="#%s" class="t%d">%s</a>' % (sid, lv, re.sub(r"[`*]", "", t))
+                   for sid, t, lv in toc)
 
 HTML = """<title>__TITLE__</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -263,6 +266,9 @@ nav.toc{display:none}
     color:var(--muted); text-decoration:none; font-size:13.5px; line-height:1.4;
   }
   nav.toc a:hover{color:var(--teal); border-left-color:var(--teal)}
+  nav.toc a.t1{font-weight:700; color:var(--ink); margin-top:14px}
+  nav.toc a.t1:first-child{margin-top:0}
+  nav.toc a.t2{padding-left:20px}
 }
 main{min-width:0}
 
@@ -277,6 +283,12 @@ h2 .num{
   font-family:"JetBrains Mono", monospace; font-size:12px; color:var(--teal);
   display:block; margin-bottom:8px; letter-spacing:.1em;
 }
+main h1{
+  font-family:"Newsreader", Georgia, serif; font-weight:600;
+  font-size:clamp(30px,4.2vw,42px); line-height:1.15; letter-spacing:-.015em;
+  margin:96px 0 8px; padding:0 0 16px; border-bottom:2px solid var(--ink);
+}
+main h1 + h2{margin-top:34px; padding-top:0; border-top:none}
 h3{
   font-family:"Source Sans 3", sans-serif; font-weight:700; font-size:19.5px;
   margin:38px 0 12px; letter-spacing:-.005em; text-wrap:balance; color:var(--ink);
