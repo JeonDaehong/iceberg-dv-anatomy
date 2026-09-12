@@ -323,7 +323,32 @@ Roaring 을 고칠 필요가 없었다.
 구간 API 로 얼마나 줄어드는지는 패치를 쓰기 전에 마이크로벤치로 먼저 확인했다.
 컨테이너와 분포에 따라 **6~146배** 범위였다.
 
-### 구간 API 가 하나가 아니다
+## 2.5 해결
+
+### Range-based traversal
+
+변경의 핵심은 배치가 이미 알고 있는 구간을 API 에 그대로 전달하는 것이다.
+
+`PositionDeleteIndex` 에 구간 순회 메서드를 하나 추가했다.
+
+```java
+default void forEachInRange(long posStart, int length, LongConsumer consumer)
+```
+
+`default` 구현은 지금의 행 단위 루프 그대로다. 그래서 이 인터페이스를 구현한 바깥
+코드는 아무것도 안 고쳐도 계속 돈다. 그리고 실제로 쓰이는 구현체만 재정의한다.
+
+```text
+PositionDeleteIndex
+   ├── BitmapPositionDeleteIndex → 구간을 32비트 비트맵 최대 2개로 좁혀 한 번씩 훑는다
+   ├── EmptyPositionDeleteIndex  → 아무것도 안 한다
+   └── (그 외)                    → 기본 구현, 즉 기존 동작
+```
+
+`PositionDeleteIndex` 는 이미 `merge`, `forEach`, `cardinality`, `serialize` 를
+`default` 메서드로 넓혀온 인터페이스다. 같은 방식을 따랐다.
+
+### 왜 `forEachInRange` 인가 — 후보는 여섯이었다
 
 여기서 고를 게 남아 있었다. RoaringBitmap 이 주는 방법이 하나가 아니라서,
 여섯 구현을 같은 조건으로 재고 골랐다.
@@ -363,31 +388,6 @@ Roaring 을 고칠 필요가 없었다.
 > 버전을 확인하지 않고 쟀던 것은 사실이다.
 
 ---
-
-## 2.5 해결
-
-### Range-based traversal
-
-변경의 핵심은 배치가 이미 알고 있는 구간을 API 에 그대로 전달하는 것이다.
-
-`PositionDeleteIndex` 에 구간 순회 메서드를 하나 추가했다.
-
-```java
-default void forEachInRange(long posStart, int length, LongConsumer consumer)
-```
-
-`default` 구현은 지금의 행 단위 루프 그대로다. 그래서 이 인터페이스를 구현한 바깥
-코드는 아무것도 안 고쳐도 계속 돈다. 그리고 실제로 쓰이는 구현체만 재정의한다.
-
-```text
-PositionDeleteIndex
-   ├── BitmapPositionDeleteIndex → 구간을 32비트 비트맵 최대 2개로 좁혀 한 번씩 훑는다
-   ├── EmptyPositionDeleteIndex  → 아무것도 안 한다
-   └── (그 외)                    → 기본 구현, 즉 기존 동작
-```
-
-`PositionDeleteIndex` 는 이미 `merge`, `forEach`, `cardinality`, `serialize` 를
-`default` 메서드로 넓혀온 인터페이스다. 같은 방식을 따랐다.
 
 ### buildRowIdMapping
 

@@ -28,54 +28,38 @@
 ## 본문
 
 ```
-Good pointer - I did benchmark BatchIterator as one of six candidate
-implementations before settling on this one, and it came out slower.
+Good pointer - I benchmarked BatchIterator as one of six candidates before
+settling on this one, and it came out slower. Same JMH harness for all six:
+5,000-row batch, a full 65,536-position chunk at the target density, round-
+tripped through serialize()/deserialize() so the containers match the read
+path. Microseconds per batch, lower is better:
 
-Same JMH harness for all six: 5,000-row batch, a full 65,536-position chunk
-filled to the target density, round-tripped through
-BitmapPositionDeleteIndex.serialize()/deserialize() so the containers match
-what the read path actually sees. Time per batch in microseconds, lower is
-better:
+  implementation                        sparse 0.5%  medium 5%  dense 12%
+  current (isDeleted per row)                 64.99      80.22      19.76
+  forAllInRange + RelativeRangeConsumer        0.49       1.91       3.07
+  forEachInRange + gap fill (this PR)          0.45       1.87       4.16
+  BatchIterator                                0.63       2.79       5.92
 
-  implementation                        sparse 0.5%   medium 5%   dense 12%
-  current (isDeleted per row)                 64.99       80.22       19.76
-  forAllInRange + RelativeRangeConsumer        0.49        1.91        3.07
-  forEachInRange + gap fill (this PR)          0.45        1.87        4.16
-  BatchIterator                                0.63        2.79        5.92
+My reading of why, though I did not measure the cause directly:
+nextBatch(int[]) hands the deleted positions back in a buffer, so the row-id
+mapping still has to be built from them in a second pass, and there is no
+bulk "this whole stretch is absent" callback. That last one is what makes
+forAllInRange the fastest column - acceptAllAbsent(from, to) skips a clean
+stretch in O(1), and on run containers that alone is 2.7x.
 
-Two reasons it loses, though this part is my reading rather than something
-I measured directly:
+What I did not test, and it may be the version you have in mind: the
+benchmark constructs the iterator per batch. One held open across the
+batches of a file would amortise the container lookup further and would not
+allocate per batch. Happy to add that variant and measure it - though the
+per-batch lookup is already amortised over 5,000 rows, so I would not
+expect a lot there.
 
-- It needs two passes. nextBatch(int[]) hands back the deleted positions in
-  a buffer, and the row-id mapping still has to be built from them
-  afterwards. forEachInRange writes into the mapping as it goes, so the
-  deleted positions are never materialised at all.
-
-- There is no bulk "everything in this stretch is absent" callback. That is
-  what makes forAllInRange the fastest column above - acceptAllAbsent(from,
-  to) skips a clean stretch in O(1), and on run containers it is 2.7x faster
-  than forEachInRange for exactly that reason. A batch iterator has to
-  enumerate.
-
-One thing my benchmark does not answer, and it may be the version you have
-in mind: it constructs the iterator per batch. A PositionBatchIterator held
-open across the batches of a file would amortise the container lookup over
-the whole file rather than per batch, and would not allocate per batch. I
-would expect that to recover part of the gap but not to pass forAllInRange,
-since the two-pass and no-bulk-skip issues remain - and the per-batch lookup
-is already amortised over 5,000 rows, so there is not much left to win
-there. Happy to add that variant and measure it if it is worth pinning down.
-
-There is also an API-shape question, which is really the same question this
-thread is already on. A stateful iterator is a larger addition to
-PositionDeleteIndex than a default method whose default implementation is
-the current loop, and it brings lifecycle with it - create, reset, reuse
-across batches. I leaned towards the smallest thing that produced the
-measured win. If the consensus is that a batch iterator is the better
-abstraction to expose, I am happy to go that way.
+On API shape, which is really this thread's question: a stateful iterator is
+a larger addition to PositionDeleteIndex than a default method whose default
+implementation is the current loop, and it brings lifecycle with it. I took
+the smallest thing that produced the measured win, but I am happy to go the
+other way if that is the consensus.
 ```
-
----
 
 ## 왜 이렇게 썼나
 
