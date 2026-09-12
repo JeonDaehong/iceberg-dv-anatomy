@@ -25,7 +25,7 @@
 
 **Something users can do today, without waiting for this.** Sorting the table by the column the deletes target makes the delete check **2.8x** cheaper on its own, because the Roaring bitmap switches from array to run containers. That only works when the deletes concentrate on relatively few distinct key values. The two remedies overlap but do not replace each other: sorting alone 2.8x, this patch alone 7.8x, both together 12.4x. Conditions and costs are in *what a user can do before this is fixed* below.
 
-`RoaringBitmap` already provides the range APIs needed (`forEachInRange`, `forAllInRange`, `rangeCardinality`), and they are present in the version Iceberg pins (`1.6.14`), including the shaded copy in `iceberg-spark-runtime`.
+`RoaringBitmap` already provides the range APIs needed (`forEachInRange`, `forAllInRange`, `rangeCardinality`), and they are present in the version Iceberg pins (`1.6.20` on `main`, `1.6.14` at the `apache-iceberg-1.11.0` tag I measured against), including the shaded copy in `iceberg-spark-runtime`.
 
 **PR #18027 implements this against `spark/v4.2`**, with the tests described below. `ColumnarBatchUtil` is byte-identical in v3.5, v4.0 and v4.1, so I will backfill those in a follow-up if the direction looks right.
 
