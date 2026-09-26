@@ -2,9 +2,17 @@
   "label": "baseline_d50_r3",
   "table": "dv.g.d50",
   "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
   "iters": 30,
-  "min_s": 0.1671539600001779,
-  "median_s": 0.22505836699997417,
-  "max_s": 0.30594540500010226,
-  "mean_s": 0.23054847416667598
+  "min_s": 0.14730723299999227,
+  "median_s": 0.18222098000001097,
+  "max_s": 0.33133469899996726,
+  "mean_s": 0.19964716786666942,
+  "is_deleted": false
 }

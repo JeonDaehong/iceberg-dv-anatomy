@@ -2,9 +2,17 @@
   "label": "patched_d610_r2",
   "table": "dv.g.d610",
   "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
   "iters": 30,
-  "min_s": 0.11259939100000338,
-  "median_s": 0.15273909899997307,
-  "max_s": 0.22934689199996683,
-  "mean_s": 0.15576106890001332
+  "min_s": 0.1262571790000493,
+  "median_s": 0.1675044200000002,
+  "max_s": 0.32425898300004974,
+  "mean_s": 0.18658540406667043,
+  "is_deleted": false
 }

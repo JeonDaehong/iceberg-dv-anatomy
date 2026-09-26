@@ -2,9 +2,17 @@
   "label": "patched_d50L1_r3",
   "table": "dv.g.d50L1",
   "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
   "iters": 30,
-  "min_s": 0.10739050300003328,
-  "median_s": 0.17501478100007262,
-  "max_s": 0.28801864199999727,
-  "mean_s": 0.173989620999987
+  "min_s": 0.11696765399995002,
+  "median_s": 0.15380961699997897,
+  "max_s": 0.2715153219999138,
+  "mean_s": 0.1581418521999884,
+  "is_deleted": false
 }

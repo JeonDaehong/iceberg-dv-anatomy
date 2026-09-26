@@ -2,9 +2,17 @@
   "label": "baseline_d50L4096_r1",
   "table": "dv.g.d50L4096",
   "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
   "iters": 30,
-  "min_s": 0.10663776299998062,
-  "median_s": 0.12671904800004086,
-  "max_s": 0.4297567489998073,
-  "mean_s": 0.15837414343332057
+  "min_s": 0.12018692800006647,
+  "median_s": 0.15842310000005,
+  "max_s": 0.2436757889998944,
+  "mean_s": 0.16910661466668367,
+  "is_deleted": false
 }

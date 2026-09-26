@@ -2,9 +2,17 @@
   "label": "baseline_d610_r3",
   "table": "dv.g.d610",
   "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
   "iters": 30,
-  "min_s": 0.19111291600006552,
-  "median_s": 0.23732800900006623,
-  "max_s": 0.3855678029999581,
-  "mean_s": 0.24202699316667045
+  "min_s": 0.161521930000049,
+  "median_s": 0.20169149599996672,
+  "max_s": 0.33692770300001484,
+  "mean_s": 0.2082814618999919,
+  "is_deleted": false
 }

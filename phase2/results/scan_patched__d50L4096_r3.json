@@ -2,9 +2,17 @@
   "label": "patched_d50L4096_r3",
   "table": "dv.g.d50L4096",
   "n_cols": 1,
+  "cols": [
+    "id"
+  ],
+  "batch_size": null,
+  "split_size": null,
+  "group_col": null,
+  "cold": false,
   "iters": 30,
-  "min_s": 0.10586288700005753,
-  "median_s": 0.14457444699996813,
-  "max_s": 0.35354844100015725,
-  "mean_s": 0.173612252433342
+  "min_s": 0.10853878599982636,
+  "median_s": 0.14139394399990124,
+  "max_s": 0.2734708719999617,
+  "mean_s": 0.15085508526667582,
+  "is_deleted": false
 }
